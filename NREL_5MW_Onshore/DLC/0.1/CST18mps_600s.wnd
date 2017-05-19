@@ -5,15 +5,17 @@
 ! Rotor diameter = 126.0 m. 
 !  90.0 m hub-height yields   42.0 m turbulence scale. 
 !----------------------------------------------------------
-! IEC Condition: Extreme Operating Gust.
+! IEC Condition: N.A.
 ! Stats for this wind file:
-!     The transient occurs over 10.5 seconds.
+!     The transient occurs over N.A. seconds.
 !
-!     The maximum gust speed is  7.318 m/s.
-!     The maximum total wind speed is 32.318 m/s.
-!     This maximum occurs at  45.250 seconds.
+!     The maximum gust speed is  N.A. m/s.
+!     The maximum total wind speed is N.A. m/s.
+!     This maximum occurs at  N.A. seconds.
 !
 !     The wind inflow inclination angle is  0.0 degrees to the horizontal.
+!
+!     It is a profil of wind at constant velocity = 18m/s during 10min
 !----------------------------------------------------------
 ! Time	Wind	Wind	Vertical	Horiz.	Pwr.Law	Lin.Vert.	Gust
 !	Speed	Dir	Speed	Shear	Vert.Shr	Shear	Speed
