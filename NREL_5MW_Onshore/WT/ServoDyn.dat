@@ -59,7 +59,7 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
           0   NacYawF      - Final yaw angle for override yaw maneuvers (degrees)
 ---------------------- TUNED MASS DAMPER ---------------------------------------
 False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (flag)
-"WT/NREL_5MW_Onshore/NRELOffshrBsline5MW_ServoDyn_TMD.dat"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
+"ServoDyn_TMD.dat"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
 False         CompNTRD     - Compute nacelle tuned mass damper {true/false} (flag)
 "unused"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
