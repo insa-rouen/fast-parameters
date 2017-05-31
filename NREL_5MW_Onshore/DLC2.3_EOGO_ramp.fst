@@ -24,7 +24,7 @@ False         CompUserTwrLd   - Compute additional tower loading (flag) {false: 
 "unused"      BDBldFile(1)    - Name of file containing BeamDyn input parameters for blade 1 (quoted string)
 "unused"      BDBldFile(2)    - Name of file containing BeamDyn input parameters for blade 2 (quoted string)
 "unused"      BDBldFile(3)    - Name of file containing BeamDyn input parameters for blade 3 (quoted string)
-"DLC2.3_EOGO_AD_linear.dat"    AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
+"DLC2.3_EOGO_AD_ramp.dat"    AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
 "WT/ServoDyn.dat"    ServoFile       - Name of file containing control and electrical-drive input parameters (quoted string)
 "unused"      HydroFile       - Name of file containing hydrodynamic input parameters (quoted string)
 "unused"      SubFile         - Name of file containing sub-structural input parameters (quoted string)
