@@ -3,12 +3,12 @@
 #                                         DLC 0.1
 # #-----------------------------------------------------------------------------------------
 # filename = './DLC0.1/DLC0.1'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 0.1 Constant Wind Speed v^{cst}=18m/s'
 # set xlabel 'time (s)'
@@ -22,12 +22,12 @@
 # plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
 
 # filename = './DLC0.1/DLC0.1_InitCond'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 0.1 Constant Wind Speed v^{cst}=18m/s' 
 # set label center at graph 0.5,1.04 '{/*0.9 Begin with an initial condition which is defined at 40^{th}s in a previous study}' 
@@ -45,13 +45,13 @@
 #-----------------------------------------------------------------------------------------
 #                                         DLC 1.1
 #-----------------------------------------------------------------------------------------
-# filename = './DLC1.1/DLC1.1_NTM_9mps'
-# set terminal postscript enhanced color
-# set lmargin 4
-# set rmargin 7
-# set bmargin 0.1
-# set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+filename = './DLC1.1/DLC1.1_NTM_9mps'
+set terminal pdfcairo
+set lmargin 4
+set rmargin 7
+set bmargin 0.1
+set tmargin 1.5
+set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 1.1 Normal Turbulence Model v_{r}=9m/s'
 # set xlabel 'time (s)'
@@ -68,12 +68,12 @@
 
 
 # filename = './DLC1.1/DLC1.1_NTM_19mps'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 1.1 Normal Turbulence Model v_{r}=19m/s'
 # set xlabel 'time (s)'
@@ -90,12 +90,12 @@
 
 
 # filename = './DLC1.1/DLC1.1_NTM_23mps'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 1.1 Normal Turbulence Model v_{r}=23m/s'
 # set xlabel 'time (s)'
@@ -114,12 +114,12 @@
 #                                         DLC 2.3
 #-----------------------------------------------------------------------------------------
 # filename = './DLC2.3/DLC2.3_EOGO'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 2.3 EOG v_{out}=25m/s'
 # set xlabel 'time (s)'
@@ -132,14 +132,13 @@
 # set grid
 # plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
 
-
 # filename = './DLC2.3/DLC2.3_EOGO_InitCond'
-# set terminal postscript enhanced color
+# set terminal pdfcairo
 # set lmargin 4
 # set rmargin 7
 # set bmargin 0.1
 # set tmargin 1.5
-# set output '| ps2pdf - '.filename.'.pdf'
+# set output filename.'.pdf'
 
 # set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 2.3 EOG v_{out}=25m/s'
 # set label center at graph 0.5,1.04 '{/*0.9 Begin with an initial condition which is defined at 40^{th}s in a previous study}'
