@@ -24,8 +24,9 @@ set ytics 0.0125
 set yrange [-0.05:0.05]
 set y2tics 0.2
 set y2range [-0.8:0.8]
+set logscale y
 set grid
-plot filename.".out" using ($1-30):2 with points pointtype 6 pointsize 0.2 axis x1y2 title 'Method 1: Wind speed ramp', filename.".out" using 3:4 with lines linewidth 1.5 linecolor "gold" axis x1y2 title 'Method 2: Under initial condition', filename.".out" using 3:($2-$4) with impulses axis x1y1 title 'Error = Method 1 - Method 2'
+plot filename.".out" using ($1-30):2 with points pointtype 6 pointsize 0.2 axis x1y2 title 'Method 1: Wind speed ramp', filename.".out" using 3:4 with lines linewidth 1.5 linecolor "gold" axis x1y2 title 'Method 2: Under initial condition', filename.".out" using 3:(sqrt(($2-$4)*($2-$4))) with impulses axis x1y1 title 'Error = Method 1 - Method 2'
 
 
 
