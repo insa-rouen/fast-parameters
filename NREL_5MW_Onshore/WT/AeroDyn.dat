@@ -10,20 +10,20 @@ NREL 5.0 MW offshore baseline aerodynamic input properties; Compatible with Aero
 "NEWTOWER"                         TwrShad        - INSTEAD OF:   0.0      TwrShad     - Tower-shadow velocity deficit (-)
 True                             TwrPotent      - Calculate tower potential flow (flag)  INSTEAD OF  9999.9      ShadHWid    - Tower-shadow half width (m)
 False                            TwrShadow      - Calculate tower shadow (flag)          INSTEAD OF  9999.9      T_Shad_Refpt- Tower-shadow reference point (m)
-"WT/AeroDyn_Tower.dat"           TwrFile        - Tower drag file name (quoted string)
+"AeroDyn_Tower.dat"           TwrFile        - Tower drag file name (quoted string)
 True                             CalcTwrAero    - Calculate aerodynamic drag of the tower at the ElastoDyn nodes.  TwrPotent must be true.
    1.225                         AirDens        - Air density (kg/m^3)
    1.464E-5                      KinVisc        - Kinematic air viscosity [CURRENTLY IGNORED] (m^2/sec)
  "default"                       DTAero         - Time interval for aerodynamic calculations (sec) !bjj: was 0.02479
    8                             NumFoil        - Number of airfoil files (-)
-"WT/AeroData/Cylinder1.dat"      FoilNm         - Names of the airfoil files [NumFoil lines] (quoted strings)
-"WT/AeroData/Cylinder2.dat"
-"WT/AeroData/DU40_A17.dat"
-"WT/AeroData/DU35_A17.dat"
-"WT/AeroData/DU30_A17.dat"
-"WT/AeroData/DU25_A17.dat"
-"WT/AeroData/DU21_A17.dat"
-"WT/AeroData/NACA64_A17.dat"
+"AeroData/Cylinder1.dat"      FoilNm         - Names of the airfoil files [NumFoil lines] (quoted strings)
+"AeroData/Cylinder2.dat"
+"AeroData/DU40_A17.dat"
+"AeroData/DU35_A17.dat"
+"AeroData/DU30_A17.dat"
+"AeroData/DU25_A17.dat"
+"AeroData/DU21_A17.dat"
+"AeroData/NACA64_A17.dat"
   17                             BldNodes    - Number of blade nodes used for analysis (-)
 RNodes   AeroTwst  DRNodes  Chord  NFoil  PrnElm
  2.8667  13.308    2.7333   3.542  1      NOPRINT
