@@ -143,23 +143,23 @@
 
 
 # reset
-# filename = './DLC2.3/DLC2.3_EOGO_InitCond'
-# set terminal pdfcairo
-# set output filename.'.pdf'
+filename = './DLC2.3/DLC2.3_EOGO_InitCond'
+set terminal pdfcairo
+set output filename.'.pdf'
 
-# set title 'NREL 5MW Onshore : DLC 2.3 EOG v_{out}=25m/s'
-# set label center at graph 0.5,1.03 '{/*0.9 [Method 2] Begin from the status of tower at 120s in DLC0.1 v^{cst}=25m/s}'
-# set xlabel 'time (s)'
-# set xtics 10
-# set ylabel 'Wind speed (m/s)'
-# set y2label 'Deflection (m)'
-# set ytics nomirror
-# set ytics 5
-# set yrange [0:40]
-# set y2tics 0.2
-# set y2range [-0.8:0.8]
-# set grid
-# plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
+set title 'NREL 5MW Onshore : DLC 2.3 EOG v_{out}=25m/s'
+set label center at graph 0.5,1.03 '{/*0.9 [Method 2] Begin from the status of tower at 120s in DLC0.1 v^{cst}=25m/s}'
+set xlabel 'time (s)'
+set xtics 10
+set ylabel 'Wind speed (m/s)'
+set y2label 'Deflection (m)'
+set ytics nomirror
+set ytics 5
+set yrange [0:40]
+set y2tics 0.2
+set y2range [-0.8:0.8]
+set grid
+plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
 
 
 
