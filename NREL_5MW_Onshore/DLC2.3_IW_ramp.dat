@@ -1,5 +1,5 @@
 ------- InflowWind v3.01.* INPUT FILE -------------------------------------------------------------------------
-DLC2.3 EOG v_cut-out=25m/s wind
+DLC2.3 EOG v_cut-out=25m/s wind with 'Ramp wind'
 ---------------------------------------------------------------------------------------------------------------
 False         Echo           - Echo input data to <RootName>.ech (flag)
           2   WindType       - switch for wind file type (1=steady; 2=uniform; 3=binary TurbSim FF; 4=binary Bladed-style FF; 5=HAWC format; 6=User defined)
