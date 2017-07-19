@@ -116,27 +116,30 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
           0   TStart      - Time to begin tabular output (s) (currently unused)
           1   DecFact     - Decimation factor for tabular output {1: output every time step} (-) (currently unused)
           3   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
-         1,         10,         20    TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
+          1,         10,         20    TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
           3   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
           5,          9,         13    BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
               OutList     - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
-"YawBrTDxt"   - Tower-top / yaw bearing fore-aft (translational) deflection (relative to the undeflected position)
-"TwHt3TDxt"
-"YawBrTDyt"   - ...                     side-to-side ...
-"TwHt3TDyt"
-"YawBrTDzt"   - ...                     axial ...
-"TwHt3TDzt"
-"YawBrFxp"    - Tower-top / yaw bearing fore-aft (non-rotating) shear force
+"TwHt3TDxt"   - Local tower fore-aft (translational) deflection (relative to the undeflected position)
+"TwHt3TDyt"   - ...         side-to-side (translational) deflection (relative to the undeflected position)
+"TwHt3TDzt"   - ...         axial (translational) deflection (relative to the undeflected position)
+
 "TwHt3FLxt"   - Local tower roll (or side-to-side) force
-"YawBrFyp"    - ...                     side-to-side ...
-"TwHt3FLyt"   - Local tower pitching (or fore-aft) force
-"YawBrFzp"    - ...                     axial force
-"TwHt3FLzt"   - Local tower yaw (or torsional) force of tower gage 1
-"YawBrMxp"    - Non-rotating tower-top / yaw bearing roll moment
+"TwHt3FLyt"   - ...         pitching (or fore-aft) force
+"TwHt3FLzt"   - ...         yaw (or torsional) force
+
 "TwHt3MLxt"   - Local tower roll (or side-to-side) moment
-"YawBrMyp"    - ...                                  pitch moment
-"TwHt3MLyt"   - Local tower pitching (or fore-aft) moment
-"YawBrMzp"    - Tower-top / yaw bearing yaw moment
-"TwHt3MLzt"   - Local tower yaw (or torsional) moment
+"TwHt3MLyt"   - ...         pitching (or fore-aft) moment
+"TwHt3MLzt"   - ...         yaw (or torsional) moment
+
+"TwHt1TDxt"
+"TwHt1TDyt"
+"TwHt1TDzt"
+"TwHt1FLxt"
+"TwHt1FLyt"
+"TwHt1FLzt"
+"TwHt1MLxt"
+"TwHt1MLyt"
+"TwHt1MLzt"
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
