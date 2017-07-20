@@ -2,7 +2,7 @@
 DLC 1.1 NTM @ 23m/s for NREL 5MW baseline
 ---------Runtime Options-----------------------------------
 False          Echo            - Echo input data to <RootName>.ech (flag)
-110631303      RandSeed1       - First random seed  (-2147483648 to 2147483647)
+-1502902390    RandSeed1       - First random seed  (-2147483648 to 2147483647)
 RanLux         RandSeed2       - Second random seed (-2147483648 to 2147483647) for intrinsic pRNG, or an alternative pRNG: "RanLux" or "RNSNLW"
 False          WrBHHTP         - Output hub-height turbulence parameters in binary form?  (Generates RootName.bin)
 False          WrFHHTP         - Output hub-height turbulence parameters in formatted form?  (Generates RootName.dat)

@@ -3,7 +3,7 @@ Generate Maximum output.  Autodetecting format.
 -----  Job Options  ------------------------------------------------------------
 False       Echo   - The flag for echoing input to <root>.ech.
 True		- Output statistics?
-True		- Output modified data?
+False		- Output modified data?
 False		- Tab-delimited output?  (best for spreadsheets)
 "ES11.3"	- Numerical-output format specifier.  See manual for limitations.
 False		- Output aggregate analysis files?  False for separate analysis files for each input file.
