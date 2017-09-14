@@ -115,31 +115,101 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "ES10.3E2"    OutFmt      - Format used for text tabular output (except time).  Resulting field should be 10 characters. (quoted string)  [not checked for validity!] (currently unused)
           0   TStart      - Time to begin tabular output (s) (currently unused)
           1   DecFact     - Decimation factor for tabular output {1: output every time step} (-) (currently unused)
-          3   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
-          1,         10,         20    TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
-          3   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
-          5,          9,         13    BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
+          9   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
+1,3,5 8,11,14, 16,18,20  TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0]
+          0   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
+          1   BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
               OutList     - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
-"TwHt3TDxt"   - Local tower fore-aft (translational) deflection (relative to the undeflected position)
-"TwHt3TDyt"   - ...         side-to-side (translational) deflection (relative to the undeflected position)
-"TwHt3TDzt"   - ...         axial (translational) deflection (relative to the undeflected position)
+"TwHt1TDxt"   - Local tower fore-aft (translational) deflection (relative to the undeflected position)
+"TwHt1TDyt"   - ...         side-to-side (translational) deflection (relative to the undeflected position)
+"TwHt1TDzt"   - ...         axial (translational) deflection (relative to the undeflected position)
 
-"TwHt3FLxt"   - Local tower roll (or side-to-side) force
-"TwHt3FLyt"   - ...         pitching (or fore-aft) force
-"TwHt3FLzt"   - ...         yaw (or torsional) force
+"TwHt1FLxt"   - Local tower roll (or side-to-side) force
+"TwHt1FLyt"   - ...         pitching (or fore-aft) force
+"TwHt1FLzt"   - ...         yaw (or torsional) force
 
-"TwHt3MLxt"   - Local tower roll (or side-to-side) moment
-"TwHt3MLyt"   - ...         pitching (or fore-aft) moment
-"TwHt3MLzt"   - ...         yaw (or torsional) moment
+"TwHt1MLxt"   - Local tower roll (or side-to-side) moment
+"TwHt1MLyt"   - ...         pitching (or fore-aft) moment
+"TwHt1MLzt"   - ...         yaw (or torsional) moment
 
-"TwHt1TDxt"
-"TwHt1TDyt"
-"TwHt1TDzt"
-"TwHt1FLxt"
-"TwHt1FLyt"
-"TwHt1FLzt"
-"TwHt1MLxt"
-"TwHt1MLyt"
-"TwHt1MLzt"
+"TwHt2TDxt"
+"TwHt2TDyt"
+"TwHt2TDzt"
+"TwHt2FLxt"
+"TwHt2FLyt"
+"TwHt2FLzt"
+"TwHt2MLxt"
+"TwHt2MLyt"
+"TwHt2MLzt"
+
+"TwHt3TDxt"
+"TwHt3TDyt"
+"TwHt3TDzt"
+"TwHt3FLxt"
+"TwHt3FLyt"
+"TwHt3FLzt"
+"TwHt3MLxt"
+"TwHt3MLyt"
+"TwHt3MLzt"
+
+"TwHt4TDxt"
+"TwHt4TDyt"
+"TwHt4TDzt"
+"TwHt4FLxt"
+"TwHt4FLyt"
+"TwHt4FLzt"
+"TwHt4MLxt"
+"TwHt4MLyt"
+"TwHt4MLzt"
+
+"TwHt5TDxt"
+"TwHt5TDyt"
+"TwHt5TDzt"
+"TwHt5FLxt"
+"TwHt5FLyt"
+"TwHt5FLzt"
+"TwHt5MLxt"
+"TwHt5MLyt"
+"TwHt5MLzt"
+
+"TwHt6TDxt"
+"TwHt6TDyt"
+"TwHt6TDzt"
+"TwHt6FLxt"
+"TwHt6FLyt"
+"TwHt6FLzt"
+"TwHt6MLxt"
+"TwHt6MLyt"
+"TwHt6MLzt"
+
+"TwHt7TDxt"
+"TwHt7TDyt"
+"TwHt7TDzt"
+"TwHt7FLxt"
+"TwHt7FLyt"
+"TwHt7FLzt"
+"TwHt7MLxt"
+"TwHt7MLyt"
+"TwHt7MLzt"
+
+"TwHt8TDxt"
+"TwHt8TDyt"
+"TwHt8TDzt"
+"TwHt8FLxt"
+"TwHt8FLyt"
+"TwHt8FLzt"
+"TwHt8MLxt"
+"TwHt8MLyt"
+"TwHt8MLzt"
+
+"TwHt9TDxt"
+"TwHt9TDyt"
+"TwHt9TDzt"
+"TwHt9FLxt"
+"TwHt9FLyt"
+"TwHt9FLzt"
+"TwHt9MLxt"
+"TwHt9MLyt"
+"TwHt9MLzt"
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------

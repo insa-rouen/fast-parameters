@@ -131,14 +131,5 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "NacYaw"
 "TTDspFA"
 "TTDspSS"
-"TwHt1TDxt"
-"TwHt1TDyt"
-"TwHt1TDzt"
-"TwHt2TDxt"
-"TwHt2TDyt"
-"TwHt2TDzt"
-"TwHt3TDxt"
-"TwHt3TDyt"
-"TwHt3TDzt"
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
