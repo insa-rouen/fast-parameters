@@ -1,0 +1,27 @@
+!HEADER: Input file for IECWind version 5.01.01
+!DLC 3.1 NWP for NREL 5MW baseline
+True       SI UNITS (True=SI or False=ENGLISH)
+40.0       Time for start of IEC transient condition, sec
+!Wind Site parameters
+1          IEC WIND TURBINE CLASS (1, 2 or 3)
+A          WIND TURBULENCE CATEGORY (A, B or C)
+0.0        Slope of the wind inflow (IEC specifies between -8 and +8), deg
+3          IEC standard used for wind shear exponent
+!Turbine parameters
+90.0       Wind turbine hub-height, m or ft
+126.0      Wind turbine rotor diameter, m or ft
+3.0        Cut-in wind speed, m/s or ft/s
+11.4       Rated wind speed, m/s or ft/s
+25.0       Cut-out wind speed, m/s or ft/s
+!List of Conditions to generate (one per line)
+NWP03.0
+NWP05.0
+NWP07.0
+NWP09.0
+NWP11.0
+NWP13.0
+NWP15.0
+NWP17.0
+NWP19.0
+NWP21.0
+NWP23.0
