@@ -1,5 +1,5 @@
 !HEADER: Input file for IECWind version 5.01.01
-!DLC 4.1 NWP for NREL 5MW baseline
+!DLC 3.1 NWP for NREL 5MW baseline
 True       SI UNITS (True=SI or False=ENGLISH)
 40.0       Time for start of IEC transient condition, sec
 !Wind Site parameters

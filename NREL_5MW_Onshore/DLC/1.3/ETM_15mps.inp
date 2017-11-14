@@ -33,7 +33,7 @@ True           Clockwise       - Clockwise rotation looking downwind? (used only
 "1-ED3"        IECstandard     - Number of IEC 61400-x standard (x=1,2, or 3 with optional 61400-1 edition number (i.e. "1-Ed2") )
 "A"            IECturbc        - IEC turbulence characteristic ("A", "B", "C" or the turbulence intensity in percent) ("KHTEST" option with NWTCUP, not used for other models)
 "1ETM"         IEC_WindType    - IEC turbulence type ("NTM"=normal, "xETM"=extreme turbulence, "xEWM1"=extreme 1-year wind, "xEWM50"=extreme 50-year wind, where x=wind turbine class 1, 2, or 3)
-2              ETMc            - IEC Extreme turbulence model "c" parameter [m/s]
+"default"      ETMc            - IEC Extreme turbulence model "c" parameter (by deafult c=2m/s) [m/s]
 PL             WindProfileType - Wind profile type ("JET"=Low-level jet,"LOG"=Logarithmic,"PL"=Power law, or "default", or "USR"=User-defined)
 "unused"       ProfileFile     - Name of the file that contains input profiles for WindProfileType="USR" and/or TurbModel="USRVKM" [-]
  90.0          RefHt           - Height of the reference wind speed [m]
