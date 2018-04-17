@@ -1,4 +1,4 @@
- ------- TRD V1.00.* INPUT FILE --------------------------------------------
+------- TRD V1.00.* INPUT FILE --------------------------------------------
 Input file for twin rotor damper
 ---------------------- TRD CONFIGURATION --------------------------------------
 277.8       TRD_K_1    - TRD K vector first coefficient (-)
