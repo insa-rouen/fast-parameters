@@ -1,12 +1,12 @@
-------- TRD V1.00.* INPUT FILE --------------------------------------------
+ ------- TRD V1.00.* INPUT FILE --------------------------------------------
 Input file for twin rotor damper
 ---------------------- TRD CONFIGURATION --------------------------------------
 277.8       TRD_K_1    - TRD K vector first coefficient (-)
 26.7        TRD_K_2    - TRD K vector second coefficient (-)
 -86.712     TRD_L_1    - TRD L vector first coefficient (-)
 -17.0222    TRD_L_2    - TRD L vector second coefficient (-)
-871190.0    TRD_M  	   - TRD modal mass of the first mode (kg)
-0.262422055 TRD_F_0    - TRD frequency of the first mode to be damped (Hz)
+4.66497E+05 TRD_M  	   - TRD modal mass of the first mode (kg)
+3.21797E-01 TRD_F_0    - TRD frequency of the first mode to be damped (Hz)
 2000.0      TRD_MC     - TRD mass (kg)
 1.0         TRD_RC     - TRD radius (m)
   0         TRD_P_X    - position of the TRD w.r.t. nacelle	(m)
@@ -15,7 +15,7 @@ Input file for twin rotor damper
 ---------------------- TRD INITIAL CONDITIONS ---------------------------------
 0.0         TRD_PHI_DSP  - TRD_PHI initial position (radians)
 ---------------------- TRD CONTROL --------------------------------------------
-0           TRD_CMODE  - control mode {0:none; 1: simple built-in model} (-)
+1           TRD_CMODE  - control mode {0:none; 1: simple built-in model} (-)
 0.0         TRD_AON    - TRD activation threshold (-)
 0.0         TRD_AOFF   - TRD deactivation threshold (-)
 ---------------------------------------------------------------------------------------
