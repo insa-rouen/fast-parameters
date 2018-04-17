@@ -4,10 +4,10 @@ Uniform wind at constant speed 18m/s or 25m/s
 False         Echo           - Echo input data to <RootName>.ech (flag)
           2   WindType       - switch for wind file type (1=steady; 2=uniform; 3=binary TurbSim FF; 4=binary Bladed-style FF; 5=HAWC format; 6=User defined)
           0   PropagationDir - Direction of wind propagation (meteoroligical rotation from aligned with X (positive rotates towards -Y) -- degrees)
-          1   NWindVel       - Number of points to output the wind velocity (0 to 9)
-          0   WindVxiList    - if NWindVel<>0, List of coordinates in the inertial X direction (m)
-          0   WindVyiList    - if NWindVel<>0, List of coordinates in the inertial Y direction (m)
-         90   WindVziList    - if NWindVel<>0, List of coordinates in the inertial Z direction (m)
+          3   NWindVel       - Number of points to output the wind velocity (0 to 9)
+    0, 0, 0   WindVxiList    - if NWindVel<>0, List of coordinates in the inertial X direction (m)
+    0, 0, 0   WindVyiList    - if NWindVel<>0, List of coordinates in the inertial Y direction (m)
+28, 90, 152   WindVziList    - if NWindVel<>0, List of coordinates in the inertial Z direction (m)
 ================== Parameters for Steady Wind Conditions [used only for WindType = 1] =========================
           0   HWindSpeed     - Horizontal windspeed (m/s)
          90   RefHt          - Reference (hub) height for horizontal wind speed (m)
@@ -51,5 +51,13 @@ False         SumPrint       - Print summary data to <RootName>.IfW.sum (flag)
 "Wind1VelX"                  - X-direction wind velocity at point WindList(1)
 "Wind1VelY"                  - Y-direction wind velocity at point WindList(1)
 "Wind1VelZ"                  - Z-direction wind velocity at point WindList(1)
+
+"Wind2VelX"
+"Wind2VelY"
+"Wind2VelZ"
+
+"Wind3VelX"
+"Wind3VelY"
+"Wind3VelZ"
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
