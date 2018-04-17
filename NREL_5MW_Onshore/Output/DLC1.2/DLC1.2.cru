@@ -60,51 +60,34 @@ Format for peak-list info is: Channel, WriteTroughs?, Trough Thresh., WritePeaks
 0      - is the number of bins.
 Format for column info is: Column #, Minimum, Maximum.  If Min=Max=0, autocalculate them.
 -----  Rainflow Cycles  --------------------------------------------------------
-0      - of the output columns will have rainflow cycle counts generated for them.  Next six lines ignored if zero.
-0      - seconds is the rainflow counting period.
+18      - of the output columns will have rainflow cycle counts generated for them.  Next six lines ignored if zero.
+1      - seconds is the rainflow counting period.
 False  - Normalize rainflow cycle counts by bin width?
 True   - For bins with zero counts, output a space if we are using tab-delimited output?
-0      - is the number of rainflow range bins.  Use "0" to output the actual cycles instead of binned cycles.
-0      - is the number of rainflow means bins.  Use "1" to output ranges only.
+10      - is the number of rainflow range bins.  Use "0" to output the actual cycles instead of binned cycles.
+10      - is the number of rainflow means bins.  Use "1" to output ranges only.
 Format for column info is: Column #, Half-Cycle Multiplier, Max Range, Min Mean, Max Mean.
+5   0.5   0   0   0
+6   0.5   0   0   0
+7   0.5   0   0   0
+8   0.5   0   0   0
+9   0.5   0   0   0
+10   0.5   0   0   0
+11   0.5   0   0   0
+12   0.5   0   0   0
+13   0.5   0   0   0
+14   0.5   0   0   0
+15   0.5   0   0   0
+16   0.5   0   0   0
+17   0.5   0   0   0
+18   0.5   0   0   0
+19   0.5   0   0   0
+20   0.5   0   0   0
+21   0.5   0   0   0
+22   0.5   0   0   0
 -----  Extreme Events  ---------------------------------------------------------
-27     NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
+0      NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
 Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols long), #InfCols(may be 0), ColList(#InfCols long)
-"[Point 1] Deflection(m)",     3, 5,6,7        2, 1,2
-"[Point 1] Force(kN)",         3, 8,9,10       2, 1,2
-"[Point 1] Moment(kN.m)",      3, 11,12,13     2, 1,2
-
-"[Point 2] Deflection(m)",     3, 14,15,16     2, 1,2
-"[Point 2] Force(kN)",         3, 17,18,19     2, 1,2
-"[Point 2] Moment(kN.m)",      3, 20,21,22     2, 1,2
-
-"[Point 3] Deflection(m)",     3, 23,24,25     2, 1,2
-"[Point 3] Force(kN)",         3, 26,27,28     2, 1,2
-"[Point 3] Moment(kN.m)",      3, 29,30,31     2, 1,2
-
-"[Point 4] Deflection(m)",     3, 32,33,34     2, 1,2
-"[Point 4] Force(kN)",         3, 35,36,37     2, 1,2
-"[Point 4] Moment(kN.m)",      3, 38,39,40     2, 1,2
-
-"[Point 5] Deflection(m)",     3, 41,42,43     2, 1,2
-"[Point 5] Force(kN)",         3, 44,45,46     2, 1,2
-"[Point 5] Moment(kN.m)",      3, 47,48,49     2, 1,2
-
-"[Point 6] Deflection(m)",     3, 50,51,52     2, 1,2
-"[Point 6] Force(kN)",         3, 53,54,55     2, 1,2
-"[Point 6] Moment(kN.m)",      3, 56,57,58     2, 1,2
-
-"[Point 7] Deflection(m)",     3, 59,60,61     2, 1,2
-"[Point 7] Force(kN)",         3, 62,63,64     2, 1,2
-"[Point 7] Moment(kN.m)",      3, 65,66,67     2, 1,2
-
-"[Point 8] Deflection(m)",     3, 68,69,70     2, 1,2
-"[Point 8] Force(kN)",         3, 71,72,73     2, 1,2
-"[Point 8] Moment(kN.m)",      3, 74,75,76     2, 1,2
-
-"[Point 9] Deflection(m)",     3, 77,78,79     2, 1,2
-"[Point 9] Force(kN)",         3, 80,81,82     2, 1,2
-"[Point 9] Moment(kN.m)",      3, 83,84,85     2, 1,2
 -----  Summary Files  ----------------------------------------------------------
 0      - of the output columns will have statistics put in separate summary files.  Next line ignored if zero.
 0
@@ -113,15 +96,15 @@ Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols
 Format for statistics info is: Col_#,  Hours_to_extrapolate_to, Quantile desired
 -----  Input Files  ------------------------------------------------------------
 12 input files to read:
-DLC1.1_NTM_3mps.out
-DLC1.1_NTM_5mps.out
-DLC1.1_NTM_7mps.out
-DLC1.1_NTM_9mps.out
-DLC1.1_NTM_11mps.out
-DLC1.1_NTM_13mps.out
-DLC1.1_NTM_15mps.out
-DLC1.1_NTM_17mps.out
-DLC1.1_NTM_19mps.out
-DLC1.1_NTM_21mps.out
-DLC1.1_NTM_23mps.out
-DLC1.1_NTM_25mps.out
+DLC1.2_NTM_3mps.out
+DLC1.2_NTM_5mps.out
+DLC1.2_NTM_7mps.out
+DLC1.2_NTM_9mps.out
+DLC1.2_NTM_11mps.out
+DLC1.2_NTM_13mps.out
+DLC1.2_NTM_15mps.out
+DLC1.2_NTM_17mps.out
+DLC1.2_NTM_19mps.out
+DLC1.2_NTM_21mps.out
+DLC1.2_NTM_23mps.out
+DLC1.2_NTM_25mps.out
