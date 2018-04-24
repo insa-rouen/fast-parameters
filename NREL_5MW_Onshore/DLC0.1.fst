@@ -1,5 +1,5 @@
 ------- FAST v8.16.* INPUT FILE ------------------------------------------------
-DLC 0.1 @18m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
+DLC 0.1 @18m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore) 
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}

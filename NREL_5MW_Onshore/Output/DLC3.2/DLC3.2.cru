@@ -60,14 +60,13 @@ Format for peak-list info is: Channel, WriteTroughs?, Trough Thresh., WritePeaks
 0      - is the number of bins.
 Format for column info is: Column #, Minimum, Maximum.  If Min=Max=0, autocalculate them.
 -----  Rainflow Cycles  --------------------------------------------------------
-1      - of the output columns will have rainflow cycle counts generated for them.  Next six lines ignored if zero.
-1      - seconds is the rainflow counting period.
+0      - of the output columns will have rainflow cycle counts generated for them.  Next six lines ignored if zero.
+0      - seconds is the rainflow counting period.
 False  - Normalize rainflow cycle counts by bin width?
 True   - For bins with zero counts, output a space if we are using tab-delimited output?
-0      - is the number of rainflow range bins.  Use "0" to output the actual cycles instead of binned cycles.
-0      - is the number of rainflow means bins.  Use "1" to output ranges only.
+10      - is the number of rainflow range bins.  Use "0" to output the actual cycles instead of binned cycles.
+10      - is the number of rainflow means bins.  Use "1" to output ranges only.
 Format for column info is: Column #, Half-Cycle Multiplier, Max Range, Min Mean, Max Mean.
-5    1.0    1.0
 -----  Extreme Events  ---------------------------------------------------------
 27     NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
 Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols long), #InfCols(may be 0), ColList(#InfCols long)
@@ -113,16 +112,9 @@ Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols
 0      - of the output columns will have their statistics extrapolated.
 Format for statistics info is: Col_#,  Hours_to_extrapolate_to, Quantile desired
 -----  Input Files  ------------------------------------------------------------
-12 input files to read:
-DLC1.1_NTM_3mps.out
-DLC1.1_NTM_5mps.out
-DLC1.1_NTM_7mps.out
-DLC1.1_NTM_9mps.out
-DLC1.1_NTM_11mps.out
-DLC1.1_NTM_13mps.out
-DLC1.1_NTM_15mps.out
-DLC1.1_NTM_17mps.out
-DLC1.1_NTM_19mps.out
-DLC1.1_NTM_21mps.out
-DLC1.1_NTM_23mps.out
-DLC1.1_NTM_25mps.out
+5 input files to read:
+DLC3.2_EOGI.out
+DLC3.2_EOGO.out
+DLC3.2_EOGR+0.0.out
+DLC3.2_EOGR+2.0.out
+DLC3.2_EOGR-2.0.out

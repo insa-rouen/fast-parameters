@@ -1,0 +1,64 @@
+!HEADER: Input file for IECWind version 5.01.01
+!DLC 1.5 EWS for NREL 5MW baseline
+True       SI UNITS (True=SI or False=ENGLISH)
+40.0       Time for start of IEC transient condition, sec
+!Wind Site parameters
+1          IEC WIND TURBINE CLASS (1, 2 or 3)
+A          WIND TURBULENCE CATEGORY (A, B or C)
+0.0        Slope of the wind inflow (IEC specifies between -8 and +8), deg
+3          IEC standard used for wind shear exponent
+!Turbine parameters
+90.0       Wind turbine hub-height, m or ft
+126.0      Wind turbine rotor diameter, m or ft
+3.0        Cut-in wind speed, m/s or ft/s
+11.4       Rated wind speed, m/s or ft/s
+25.0       Cut-out wind speed, m/s or ft/s
+!List of Conditions to generate (one per line)
+EWSV+3.0
+EWSV-3.0
+EWSH+3.0
+EWSH-3.0
+EWSV+5.0
+EWSV-5.0
+EWSH+5.0
+EWSH-5.0
+EWSV+7.0
+EWSV-7.0
+EWSH+7.0
+EWSH-7.0
+EWSV+9.0
+EWSV-9.0
+EWSH+9.0
+EWSH-9.0
+EWSV+11.0
+EWSV-11.0
+EWSH+11.0
+EWSH-11.0
+EWSV+13.0
+EWSV-13.0
+EWSH+13.0
+EWSH-13.0
+EWSV+15.0
+EWSV-15.0
+EWSH+15.0
+EWSH-15.0
+EWSV+17.0
+EWSV-17.0
+EWSH+17.0
+EWSH-17.0
+EWSV+19.0
+EWSV-19.0
+EWSH+19.0
+EWSH-19.0
+EWSV+21.0
+EWSV-21.0
+EWSH+21.0
+EWSH-21.0
+EWSV+23.0
+EWSV-23.0
+EWSH+23.0
+EWSH-23.0
+EWSV+25.0
+EWSV-25.0
+EWSH+25.0
+EWSH-25.0
