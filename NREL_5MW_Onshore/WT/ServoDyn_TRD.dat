@@ -15,7 +15,7 @@ Input file for twin rotor damper
 ---------------------- TRD INITIAL CONDITIONS ---------------------------------
 0.0         TRD_PHI_DSP  - TRD_PHI initial position (radians)
 ---------------------- TRD CONTROL --------------------------------------------
-1           TRD_CMODE  - control mode {0:none; 1: simple built-in model} (-)
+1           TRD_CMODE  - control mode {0:none; 1:damping of the first mode; 2:damping of all vibrations} (-)
 0.0         TRD_AON    - TRD activation threshold (-)
 0.0         TRD_AOFF   - TRD deactivation threshold (-)
 ---------------------------------------------------------------------------------------
