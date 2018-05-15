@@ -66,10 +66,15 @@ class data(object):
             next(datareader) # ignore the row with the unit
             for i in self.gagelist:
                 self.dataInput[i] = {'FLzt':[], 'MLxt':[], 'MLyt':[]}
+            self.dataInput['Time'] = []
 
             for row in datareader:
                 self.fieldnamesInput = row.keys() # save the titles of the talbe
-                for i in self.gagelist:
+                
+                self.dataInput['Time'].append( float(row['Time      ']) ) # time steps
+
+                for i in self.gagelist:            
+                    # force and moment on each node
                     forceZt = float(row['TwHt'+str(i)+'FLzt '])
                     momentXt = float(row['TwHt'+str(i)+'MLxt '])
                     momentYt = float(row['TwHt'+str(i)+'MLyt '])
@@ -124,33 +129,36 @@ class data(object):
 
         stress = []
         for j in range(self.dataLength):
-            result = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] - \
-                     self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] + \
-                     self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
+            result = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
+                     - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
+                     + self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
             stress.append(result)
         return stress
 
     def __writeToRow(self):
         # Prepare the row that will be written
+
+
         
         for j in range(self.dataLength):
             row = {}
+            row['Time      '] = str("{:>10.4f}").format(self.dataInput['Time'][j])
             for i in self.gagelist:
-                row['TwHt'+str(i)+'FLzt'] = self.dataInput[i]['FLzt'][j]
-                row['TwHt'+str(i)+'MLxt'] = self.dataInput[i]['MLxt'][j]
-                row['TwHt'+str(i)+'MLyt'] = self.dataInput[i]['MLyt'][j]
+                row['TwHt'+str(i)+'FLzt'] = str("{:>10.3E}").format(self.dataInput[i]['FLzt'][j])
+                row['TwHt'+str(i)+'MLxt'] = str("{:>10.3E}").format(self.dataInput[i]['MLxt'][j])
+                row['TwHt'+str(i)+'MLyt'] = str("{:>10.3E}").format(self.dataInput[i]['MLyt'][j])
 
-                row['TwHt'+str(i)+'Sigzt'] = self.resultField[i]['SigmaMax'][j]
+                row['TwHt'+str(i)+'Sigzt'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMax'][j])
 
             self.dataOutput.append(row)
     
-        print self.dataOutput
     def calculate(self):
         self.stressField()
         self.__writeToRow()
 
     def save(self,filename):
         # Create the title line
+        self.fieldnamesOutput.append('Time      ')
         for i in self.gagelist:
             self.fieldnamesOutput.append('TwHt'+str(i)+'FLzt')
             self.fieldnamesOutput.append('TwHt'+str(i)+'MLxt')
@@ -159,23 +167,24 @@ class data(object):
 
         with open(filename, 'wb') as f:
             self.filenameOutput = filename
-            # [next(f) for i in range(self.startline-1)]
+            
+            for i in range(self.startline-1):
+                f.write("\n")
+
             datawriter=csv.DictWriter(f, delimiter='\t', fieldnames=self.fieldnamesOutput)
             self.datawriter = datawriter
-
+            # [datawriter.writerow(" ") for i in range(self.startline-1)]
             datawriter.writeheader()
-            # datawriter.writerow() # ignore the unit line
 
-            #TO BE CONTINUED: ADD THE VALUE OF SIGMA AT THE END OF EACH ROW#
             for row in self.dataOutput:
                 datawriter.writerow(row)
 
 
 def main():
-    mydata = data(7, [1,9])
-    # mydata.open('DLC1.2_NTM_3mps.out')
+    mydata = data(startline=7, gagelist=[1,9])
+    mydata.open('DLC1.2_NTM_3mps.out')
 
-    mydata.open('test.out')
+    # mydata.open('test.out')
     mydata.calculate()
     mydata.save('testStress.out')
     # print mydata.dataInput
