@@ -27,6 +27,7 @@
 
 #============================== Modules Communs ==============================
 import csv, math, numpy
+from math import sin, cos, radians
 
 
 #-----------------------------------------------------------------------------------------
@@ -114,8 +115,14 @@ class data(object):
 
     def stressField(self):
         for i in self.gagelist:
-            self.resultField[i] = {'SigmaMax':None}
-            self.resultField[i]['SigmaMax'] = self.stress(i)
+            self.resultField[i] = dict.fromkeys(('ThetaMin', 'SigmaMin', 'ThetaMax', \
+                                                 'SigmaMax'))
+            minTheta, minSigma, maxTheta, maxSigma = self.stress(i)
+
+            self.resultField[i]['ThetaMin'] = minTheta
+            self.resultField[i]['SigmaMin'] = minSigma
+            self.resultField[i]['ThetaMax'] = maxTheta
+            self.resultField[i]['SigmaMax'] = maxSigma
 
     def stress(self, i):
         """
@@ -124,22 +131,35 @@ class data(object):
         *INPUT*
             i : the number of gage node
         """
-        x = math.sqrt(2) * self.section[i]['Re']
-        y = math.sqrt(2) * self.section[i]['Re']
+        allMinTheta = []
+        allMinSigma = []
+        allMaxTheta = []
+        allMaxSigma = []
 
-        stress = []
         for j in range(self.dataLength):
-            result = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
-                     - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
-                     + self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
-            stress.append(result)
-        return stress
+            stress = []
+            # calculate the stress in plane
+            for theta in range(0, 360, 5):
+                x = self.section[i]['Re'] * sin(radians(theta))
+                y = self.section[i]['Re'] * cos(radians(theta))
+
+                result = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
+                         - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
+                         + self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
+                stress.append( (theta, result) )
+
+            minResult = min(stress, key=lambda x:x[1])
+            maxResult = max(stress, key=lambda x:x[1]) 
+
+            allMinTheta.append(minResult[0])
+            allMinSigma.append(minResult[1])
+            allMaxTheta.append(maxResult[0])
+            allMaxSigma.append(maxResult[1])
+
+        return allMinTheta, allMinSigma, allMaxTheta, allMaxSigma
 
     def __writeToRow(self):
         # Prepare the row that will be written
-
-
-        
         for j in range(self.dataLength):
             row = {}
             row['Time      '] = str("{:>10.4f}").format(self.dataInput['Time'][j])
@@ -148,7 +168,11 @@ class data(object):
                 row['TwHt'+str(i)+'MLxt'] = str("{:>10.3E}").format(self.dataInput[i]['MLxt'][j])
                 row['TwHt'+str(i)+'MLyt'] = str("{:>10.3E}").format(self.dataInput[i]['MLyt'][j])
 
-                row['TwHt'+str(i)+'Sigzt'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMax'][j])
+                row['TwHt'+str(i)+'ThMin'] = str("{:>10.4f}").format(self.resultField[i]['ThetaMin'][j])
+                row['TwHt'+str(i)+'SiMin'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMin'][j])
+                row['TwHt'+str(i)+'ThMax'] = str("{:>10.4f}").format(self.resultField[i]['ThetaMax'][j])
+
+                row['TwHt'+str(i)+'SiMax'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMax'][j])
 
             self.dataOutput.append(row)
     
@@ -163,7 +187,11 @@ class data(object):
             self.fieldnamesOutput.append('TwHt'+str(i)+'FLzt')
             self.fieldnamesOutput.append('TwHt'+str(i)+'MLxt')
             self.fieldnamesOutput.append('TwHt'+str(i)+'MLyt')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'Sigzt')
+
+            self.fieldnamesOutput.append('TwHt'+str(i)+'ThMin')
+            self.fieldnamesOutput.append('TwHt'+str(i)+'SiMin')
+            self.fieldnamesOutput.append('TwHt'+str(i)+'ThMax')
+            self.fieldnamesOutput.append('TwHt'+str(i)+'SiMax')
 
         with open(filename, 'wb') as f:
             self.filenameOutput = filename
@@ -182,9 +210,9 @@ class data(object):
 
 def main():
     mydata = data(startline=7, gagelist=[1,9])
-    mydata.open('DLC1.2_NTM_3mps.out')
+    # mydata.open('DLC1.2_NTM_3mps.out')
 
-    # mydata.open('test.out')
+    mydata.open('test.out')
     mydata.calculate()
     mydata.save('testStress.out')
     # print mydata.dataInput
