@@ -48,6 +48,7 @@ class data(object):
         self.fieldnamesOutput = []
         self.startline = startline
         self.gagelist = gagelist
+        self.listOfTheta = []
         self.datareader = None
         self.datawriter = None
         self.dataInput = dict.fromkeys(self.gagelist)
@@ -113,50 +114,39 @@ class data(object):
 
         return elevation, outerR, area, inertia
 
-    def stressField(self):
-        for i in self.gagelist:
-            self.resultField[i] = dict.fromkeys(('ThetaMin', 'SigmaMin', 'ThetaMax', \
-                                                 'SigmaMax'))
-            minTheta, minSigma, maxTheta, maxSigma = self.stress(i)
-
-            self.resultField[i]['ThetaMin'] = minTheta
-            self.resultField[i]['SigmaMin'] = minSigma
-            self.resultField[i]['ThetaMax'] = maxTheta
-            self.resultField[i]['SigmaMax'] = maxSigma
-
-    def stress(self, i):
+    def stress(self, i, j, theta):
         """
         Calculate the stress
 
         *INPUT*
             i : the number of gage node
+            j : the number of line in input file (time)
+            theta : the stress location
         """
-        allMinTheta = []
-        allMinSigma = []
-        allMaxTheta = []
-        allMaxSigma = []
+        x = self.section[i]['Re'] * sin(radians(theta))
+        y = self.section[i]['Re'] * cos(radians(theta))
 
-        for j in range(self.dataLength):
-            stress = []
-            # calculate the stress in plane
-            for theta in range(0, 360, 5):
-                x = self.section[i]['Re'] * sin(radians(theta))
-                y = self.section[i]['Re'] * cos(radians(theta))
+        stress = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
+                 - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
+                 + self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
+        
+        return stress
 
-                result = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
-                         - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
-                         + self.dataInput[i]['MLyt'][j]*x / self.section[i]['Igy']
-                stress.append( (theta, result) )
+    def __makeListOfTheta(self, thetaStep):
+        [self.listOfTheta.append(theta) for theta in range(0, 360, thetaStep)]
 
-            minResult = min(stress, key=lambda x:x[1])
-            maxResult = max(stress, key=lambda x:x[1]) 
+    def stressInPlane(self, i, j):
+        # calculate the stress in plane
+        for theta in self.listOfTheta:
+            stress = self.stress(i,j,theta)            
+            self.resultField[i][theta].append(stress)
 
-            allMinTheta.append(minResult[0])
-            allMinSigma.append(minResult[1])
-            allMaxTheta.append(maxResult[0])
-            allMaxSigma.append(maxResult[1])
+    def stressField(self):
+        for i in self.gagelist:
+            self.resultField[i] = dict.fromkeys(self.listOfTheta, [])
+            for j in range(self.dataLength):
+                self.stressInPlane(i,j)
 
-        return allMinTheta, allMinSigma, allMaxTheta, allMaxSigma
 
     def __writeToRow(self):
         # Prepare the row that will be written
@@ -164,19 +154,16 @@ class data(object):
             row = {}
             row['Time      '] = str("{:>10.4f}").format(self.dataInput['Time'][j])
             for i in self.gagelist:
-                row['TwHt'+str(i)+'FLzt'] = str("{:>10.3E}").format(self.dataInput[i]['FLzt'][j])
-                row['TwHt'+str(i)+'MLxt'] = str("{:>10.3E}").format(self.dataInput[i]['MLxt'][j])
-                row['TwHt'+str(i)+'MLyt'] = str("{:>10.3E}").format(self.dataInput[i]['MLyt'][j])
-
-                row['TwHt'+str(i)+'ThMin'] = str("{:>10.4f}").format(self.resultField[i]['ThetaMin'][j])
-                row['TwHt'+str(i)+'SiMin'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMin'][j])
-                row['TwHt'+str(i)+'ThMax'] = str("{:>10.4f}").format(self.resultField[i]['ThetaMax'][j])
-
-                row['TwHt'+str(i)+'SiMax'] = str("{:>10.3E}").format(self.resultField[i]['SigmaMax'][j])
+                # row['TwHt'+str(i)+'FLzt'] = str("{:>10.3E}").format(self.dataInput[i]['FLzt'][j])
+                # row['TwHt'+str(i)+'MLxt'] = str("{:>10.3E}").format(self.dataInput[i]['MLxt'][j])
+                # row['TwHt'+str(i)+'MLyt'] = str("{:>10.3E}").format(self.dataInput[i]['MLyt'][j])
+                for theta in self.listOfTheta:
+                    row['TwHt'+str(i)+'@'+str(theta)] = str("{:>10.4f}").format(self.resultField[i][theta][j])
 
             self.dataOutput.append(row)
     
-    def calculate(self):
+    def calculate(self, thetaStep=5):
+        self.__makeListOfTheta(thetaStep)
         self.stressField()
         self.__writeToRow()
 
@@ -184,14 +171,16 @@ class data(object):
         # Create the title line
         self.fieldnamesOutput.append('Time      ')
         for i in self.gagelist:
-            self.fieldnamesOutput.append('TwHt'+str(i)+'FLzt')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'MLxt')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'MLyt')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'FLzt')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'MLxt')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'MLyt')
 
-            self.fieldnamesOutput.append('TwHt'+str(i)+'ThMin')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'SiMin')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'ThMax')
-            self.fieldnamesOutput.append('TwHt'+str(i)+'SiMax')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'ThMin')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'SiMin')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'ThMax')
+            # self.fieldnamesOutput.append('TwHt'+str(i)+'SiMax')
+            for theta in self.listOfTheta:
+                self.fieldnamesOutput.append('TwHt'+str(i)+'@'+str(theta))
 
         with open(filename, 'wb') as f:
             self.filenameOutput = filename
@@ -211,7 +200,6 @@ class data(object):
 def main():
     mydata = data(startline=7, gagelist=[1,9])
     # mydata.open('DLC1.2_NTM_3mps.out')
-
     mydata.open('test.out')
     mydata.calculate()
     mydata.save('testStress.out')
