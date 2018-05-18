@@ -89,10 +89,10 @@ class data(object):
     def __geometry(self):
         self.twrNodes = 9
         self.twrElevation = [0.00, 8.76, 17.52, 26.28, 35.04, 43.80, 52.56, 61.32, 70.08,\
-                            78.84, 87.60]
+                            78.84, 87.60] # [m]
         self.twrHt = self.twrElevation[-1]
         self.outerDiameter = [6.0000, 5.7870, 5.5740, 5.3610, 5.1480, 4.9350, 4.7220, \
-                              4.5090, 4.2960, 4.0830, 3.8700]
+                              4.5090, 4.2960, 4.0830, 3.8700] # [m]
         self.thickness = [0.03510, 0.03406, 0.03302, 0.03198, 0.03094, 0.02990, 0.02886, \
                           0.02782, 0.02678, 0.02574, 0.02470]
         self.innerDiameter = [i[0]-2*i[1] for i in zip(self.outerDiameter,self.thickness)]
@@ -133,19 +133,25 @@ class data(object):
         return stress
 
     def __makeListOfTheta(self, thetaStep):
-        [self.listOfTheta.append(theta) for theta in range(0, 360, thetaStep)]
+        self.listOfTheta = tuple(range(0, 360, thetaStep))
 
     def stressInPlane(self, i, j):
         # calculate the stress in plane
         for theta in self.listOfTheta:
-            stress = self.stress(i,j,theta)            
-            self.resultField[i][theta].append(stress)
+            stress = self.stress(i,j,theta)
+            
+            self.resultField[i][j][theta] = stress
+            # print "NOW : node ",i, "line ",j,"angle ",theta,"°", self.resultField[i][j][theta]
 
     def stressField(self):
-        for i in self.gagelist:
-            self.resultField[i] = dict.fromkeys(self.listOfTheta, [])
+        for i in self.gagelist:            
+            self.resultField[i] = dict.fromkeys(range(self.dataLength))
             for j in range(self.dataLength):
+                self.resultField[i][j] = {}
                 self.stressInPlane(i,j)
+                # print self.resultField[i][j]
+                # print self.resultField[i]
+            
 
 
     def __writeToRow(self):
@@ -158,30 +164,34 @@ class data(object):
                 # row['TwHt'+str(i)+'MLxt'] = str("{:>10.3E}").format(self.dataInput[i]['MLxt'][j])
                 # row['TwHt'+str(i)+'MLyt'] = str("{:>10.3E}").format(self.dataInput[i]['MLyt'][j])
                 for theta in self.listOfTheta:
-                    row['TwHt'+str(i)+'@'+str(theta)] = str("{:>10.4f}").format(self.resultField[i][theta][j])
+                    header = str("TwHt{0}@{1:<4d}").format(i, theta)
+                    row[header] = str("{:>10.3E}").format(self.resultField[i][j][theta])
 
             self.dataOutput.append(row)
     
-    def calculate(self, thetaStep=5):
+    def calculate(self, thetaStep=10):
         self.__makeListOfTheta(thetaStep)
         self.stressField()
         self.__writeToRow()
 
-    def save(self,filename):
+    def save(self,filename=None):
+        if filename is None: filename = self.filenameInput+'Stress' 
+
         # Create the title line
         self.fieldnamesOutput.append('Time      ')
         for i in self.gagelist:
             # self.fieldnamesOutput.append('TwHt'+str(i)+'FLzt')
             # self.fieldnamesOutput.append('TwHt'+str(i)+'MLxt')
             # self.fieldnamesOutput.append('TwHt'+str(i)+'MLyt')
-
-            # self.fieldnamesOutput.append('TwHt'+str(i)+'ThMin')
-            # self.fieldnamesOutput.append('TwHt'+str(i)+'SiMin')
-            # self.fieldnamesOutput.append('TwHt'+str(i)+'ThMax')
-            # self.fieldnamesOutput.append('TwHt'+str(i)+'SiMax')
             for theta in self.listOfTheta:
-                self.fieldnamesOutput.append('TwHt'+str(i)+'@'+str(theta))
+                header = str("TwHt{0}@{1:<4d}").format(i, theta)
+                self.fieldnamesOutput.append(header)
 
+        # Create the unit line
+        self.fieldunitsOutput = dict.fromkeys(self.fieldnamesOutput, "{:^10}".format("(kPa)"))
+        self.fieldunitsOutput['Time      '] = "{:^10}".format("(s)")
+        
+        # Save result to the file
         with open(filename, 'wb') as f:
             self.filenameOutput = filename
             
@@ -193,6 +203,7 @@ class data(object):
             # [datawriter.writerow(" ") for i in range(self.startline-1)]
             datawriter.writeheader()
 
+            datawriter.writerow(self.fieldunitsOutput)
             for row in self.dataOutput:
                 datawriter.writerow(row)
 
@@ -200,13 +211,12 @@ class data(object):
 def main():
     mydata = data(startline=7, gagelist=[1,9])
     # mydata.open('DLC1.2_NTM_3mps.out')
-    mydata.open('test.out')
-    mydata.calculate()
-    mydata.save('testStress.out')
-    # print mydata.dataInput
-    # print mydata.section
-
-
+    for i in range(3,27,2):
+        filename = 'DLC1.2_NTM_'+str(i)+'mps.out'
+        print "Processing "+filename+" ..."
+        mydata.open(filename)
+        mydata.calculate()
+        mydata.save()
 
 
 #-----------------------------------------------------------------------------------------
