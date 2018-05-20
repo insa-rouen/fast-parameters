@@ -123,8 +123,8 @@ class data(object):
             j : the number of line in input file (time)
             theta : the stress location
         """
-        x = self.section[i]['Re'] * sin(radians(theta))
-        y = self.section[i]['Re'] * cos(radians(theta))
+        x = self.section[i]['Re'] * cos(radians(theta))
+        y = self.section[i]['Re'] * sin(radians(theta))
 
         stress = self.dataInput[i]['FLzt'][j] / self.section[i]['A'] \
                  - self.dataInput[i]['MLxt'][j]*y / self.section[i]['Igx'] \
@@ -141,7 +141,6 @@ class data(object):
             stress = self.stress(i,j,theta)
             
             self.resultField[i][j][theta] = stress
-            # print "NOW : node ",i, "line ",j,"angle ",theta,"°", self.resultField[i][j][theta]
 
     def stressField(self):
         for i in self.gagelist:            
@@ -149,10 +148,6 @@ class data(object):
             for j in range(self.dataLength):
                 self.resultField[i][j] = {}
                 self.stressInPlane(i,j)
-                # print self.resultField[i][j]
-                # print self.resultField[i]
-            
-
 
     def __writeToRow(self):
         # Prepare the row that will be written
@@ -200,17 +195,20 @@ class data(object):
 
             datawriter=csv.DictWriter(f, delimiter='\t', fieldnames=self.fieldnamesOutput)
             self.datawriter = datawriter
-            # [datawriter.writerow(" ") for i in range(self.startline-1)]
-            datawriter.writeheader()
 
-            datawriter.writerow(self.fieldunitsOutput)
+            datawriter.writeheader() # channel titles
+
+            datawriter.writerow(self.fieldunitsOutput) # channel units
             for row in self.dataOutput:
                 datawriter.writerow(row)
 
 
 def main():
     mydata = data(startline=7, gagelist=[1,9])
-    # mydata.open('DLC1.2_NTM_3mps.out')
+    # mydata.open('DLC1.2_NTM_15mps.out')
+    # mydata.calculate()
+    # mydata.save()
+    
     for i in range(3,27,2):
         filename = 'DLC1.2_NTM_'+str(i)+'mps.out'
         print "Processing "+filename+" ..."

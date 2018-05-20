@@ -12,7 +12,7 @@ False		- Output aggregate analysis files?  False for separate analysis files for
 False       FASTbin        - The flag that indicates if the input files are in FAST binary form.  Considered traditionally formatted if FALSE.  All records will be processed.
 7           CTRow          - The row with the channel titles on it (zero if no titles are available of if titles are specified below, ignored if FASTbin is true).
 8           CURow          - The row with the channel units on it (zero if no units are available of if units are specified below, ignored if FASTbin is true).
-9           FDRow          - The first row of data (ignored if FASTbin is true).
+4809           FDRow          - The first row of data (ignored if FASTbin is true).
 0           NumRecs        - The number of data records to read from each file (0 to automatically determine which rows to read and if TEnd>0, ignored if FASTbin is true).
 0.0, 0.0    TStart , TEnd  - The start and end times (enter zeros if you want to use all the data records in the file).
 -----  Channel Information  ----------------------------------------------------
@@ -149,17 +149,6 @@ Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols
 0      - of the output columns will have their statistics extrapolated.
 Format for statistics info is: Col_#,  Hours_to_extrapolate_to, Quantile desired
 -----  Input Files  ------------------------------------------------------------
-12 input files to read:
-DLC1.2_NTM_3mps.outStress
-DLC1.2_NTM_5mps.outStress
-DLC1.2_NTM_7mps.outStress
-DLC1.2_NTM_9mps.outStress
-DLC1.2_NTM_11mps.outStress
-DLC1.2_NTM_13mps.outStress
+1 input files to read:
 DLC1.2_NTM_15mps.outStress
-DLC1.2_NTM_17mps.outStress
-DLC1.2_NTM_19mps.outStress
-DLC1.2_NTM_21mps.outStress
-DLC1.2_NTM_23mps.outStress
-DLC1.2_NTM_25mps.outStress
 
