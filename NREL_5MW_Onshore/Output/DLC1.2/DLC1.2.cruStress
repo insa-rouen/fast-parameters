@@ -34,7 +34,7 @@ Format for column info is: Col_Title(10 char max), [opt]Units(10 char max), Equa
 Format for moving-average info is: "Title" (10 char max), channel #, averaging period
 -----  Time and Wind Speed  ----------------------------------------------------
 1      - is the Time column.
-2      - is the primary wind-speed column (used for mean wind speed and turbulence intensity, 0 for none)
+0      - is the primary wind-speed column (used for mean wind speed and turbulence intensity, 0 for none)
 -----  Load Roses  -------------------------------------------------------------
 0      - pair(s) of channels will have load roses generated for them.
 Format for column info is: Rose_Title(8 char max), 0 degree load, 90 degree load, # sectors
@@ -149,6 +149,17 @@ Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols
 0      - of the output columns will have their statistics extrapolated.
 Format for statistics info is: Col_#,  Hours_to_extrapolate_to, Quantile desired
 -----  Input Files  ------------------------------------------------------------
-1 input files to read:
+12 input files to read:
+DLC1.2_NTM_3mps.outStress
+DLC1.2_NTM_5mps.outStress
+DLC1.2_NTM_7mps.outStress
+DLC1.2_NTM_9mps.outStress
+DLC1.2_NTM_11mps.outStress
+DLC1.2_NTM_13mps.outStress
 DLC1.2_NTM_15mps.outStress
+DLC1.2_NTM_17mps.outStress
+DLC1.2_NTM_19mps.outStress
+DLC1.2_NTM_21mps.outStress
+DLC1.2_NTM_23mps.outStress
+DLC1.2_NTM_25mps.outStress
 
