@@ -12,7 +12,7 @@ False         Echo         - Echo input data to <RootName>.ech (flag)
           2   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s)
           2   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
           2   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
-          0   BlPitchF(1)  - Blade 1 final pitch for pitch maneuvers (degrees)
+          0   BlPitchF(1)  - Blade 1 final pitch for pitch maneuvers (degrees) [cf. FAST User's Guide page 9 for the coordinates system]
           0   BlPitchF(2)  - Blade 2 final pitch for pitch maneuvers (degrees)
           0   BlPitchF(3)  - Blade 3 final pitch for pitch maneuvers (degrees) [unused for 2 blades]
 ---------------------- GENERATOR AND TORQUE CONTROL ----------------------------
