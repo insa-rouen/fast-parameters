@@ -230,20 +230,20 @@ class data(object):
 
 
 def main():
-    # mydata=data(file='DLC1.2_NTM_3mps.out', startline=7, gageOutput=[1,9], thetaStep=5,\
-    #             checkInfo=True)
+    mydata=data(file='DLC1.2_NTM_3mps.out', startline=7, gageOutput=[1,9], thetaStep=5,\
+                checkInfo=True)
     
-    for i in range(3,27,2):
-        TIK = time.time()
+    # for i in range(3,27,2):
+    #     TIK = time.time()
         
-        filename = 'DLC1.2_NTM_'+str(i)+'mps.out'
-        mydata = data(filename, 7, [1,9])
+    #     filename = 'DLC1.2_NTM_'+str(i)+'mps.out'
+    #     mydata = data(filename, 7, [1,9])
         
-        del mydata
+    #     del mydata
 
-        TOK = time.time()
-        elapsedTime = TOK - TIK
-        print "|- Finished! "+str("{:.2f}").format(elapsedTime)+"s used.\n"
+    #     TOK = time.time()
+    #     elapsedTime = TOK - TIK
+    #     print "|- Finished! "+str("{:.2f}").format(elapsedTime)+"s used.\n"
 
 
 #-----------------------------------------------------------------------------------------

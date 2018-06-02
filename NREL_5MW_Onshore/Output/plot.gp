@@ -40,26 +40,26 @@
 #-----------------------------------------------------------------------------------------
 #                                         DLC 1.1
 #-----------------------------------------------------------------------------------------
-# filename = './DLC1.1/DLC1.1_NTM_3mps'
-# set terminal pdfcairo
-# set lmargin 4
-# set rmargin 7
-# set bmargin 0.1
-# set tmargin 1.5
-# set output filename.'.pdf'
+filename = './DLC1.1/DLC1.1_NTM_3mps'
+set terminal pdfcairo
+set lmargin 4
+set rmargin 7
+set bmargin 0.1
+set tmargin 1.5
+set output filename.'.pdf'
 
-# set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 1.1 Normal Turbulence Model v_{r}=9m/s'
-# set xlabel 'time (s)'
-# set xtics 60
-# set ylabel 'Wind speed (m/s)'
-# set y2label 'Deflection (m)'
-# set ytics nomirror
-# set ytics 1
-# set yrange [0:14]
-# set y2tics 0.2
-# set y2range [-1.0:1.8]
-# set grid
-# plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
+set label center at graph 0.5,1.08 'NREL 5MW Onshore : DLC 1.1 Normal Turbulence Model v_{r}=9m/s'
+set xlabel 'time (s)'
+set xtics 60
+set ylabel 'Wind speed (m/s)'
+set y2label 'Deflection (m)'
+set ytics nomirror
+set ytics 1
+set yrange [0:14]
+set y2tics 0.2
+set y2range [-1.0:1.8]
+set grid
+plot filename.".out" using 1:2 with line axis x1y1 title 'WindVxi: wind velocity at HH (downwind component)', filename.".out" using 1:14 with line axis x2y2 title 'TTDspFA: yaw bearing at tower-top (fore-aft deflection)'
 
 
 # filename = './DLC1.1/DLC1.1_NTM_19mps'
