@@ -63,9 +63,8 @@ class counting(object):
         self.open()
         print "|- Counting Rainflow cycles ..."
         self.count()
-        print "|- Binning Rainflow counts ..."
-        self.bin()
-        print "|- Saving data ..."
+        self.show()
+        # print "|- Saving data ..."
         # self.save()
 
     def open(self, filename=None):
@@ -101,87 +100,21 @@ class counting(object):
                 self.rainflowData[spotName]['Range'].append(rangeValue)
                 self.rainflowData[spotName]['Mean'].append(meanValue)
 
-    # Binning stress ranges
-    def bin(self):
-        for spotName in self.spotOutput:
-            data = self.rainflowData[spotName]
-
-            # Calculate range bins bounds
-            mini = min(data['Range'])
-            maxi = max(data['Range'])
-            unitRange = (maxi - mini)/self.binsNumber
-
-            startRange = mini
-            temp = [startRange]
-            for i in range(self.binsNumber):
-                if i == self.binsNumber-1:
-                    endRange = maxi
-                else:
-                    endRange = startRange + unitRange
-                temp.append(endRange)
-                startRange = endRange
-            self.ranges[spotName] = temp
-            print self.ranges[spotName]
-            exit()
-
-            mini = min(data['Mean'])
-            maxi = max(data['Mean'])
-            unitMean = (maxi - mini)/self.binsNumber
-            self.means[spotName] = {'Mini':mini, 'Maxi':maxi, 'unitMean':unitMean}
-
-            
-            self.bins[spotName] = {}
-            
-
-                # Calculate mean bins bounds
-            startMean = self.means[spotName]['Mean']['Mini']
-            for j in range(self.binsNumber):
-                if j == self.binsNumber-1:
-                    endMean = self.means[spotName]['Mean']['Maxi']
-                else:
-                    endMean = startMean + self.means[spotName]['Mean']['unitMean']
-                # 
-                length = len(data['Range'])
-                for k in range(length):
-                    if startRange <= data['Range'][k] < endRange:
-                        pass
-                self.bins[spotName][i] = {'Start':start,'End':end,'Cycles':0.}
-
-                startMean = endMean
-            startRange = endRange
-
-            # Binning Rainflow cycles
-            residue = []
-            for i in range(self.binsNumber):
-                if i == self.binsNumber-1:
-                    self.bins[spotName][i]['Cycles'] = len(data)
-                else:
-                    lowerBound = self.bins[spotName][i]['Start']
-                    upperBound = self.bins[spotName][i]['End']
-                    cycles = 0
-                    length = len(data)
-                    for j in range(length):
-                        if lowerBound <= data[j] < upperBound:
-                            cycles = cycles + 1
-                        else:
-                            residue.append(data[j])
-                    self.bins[spotName][i]['Cycles'] = cycles
-                    data = residue
-
     # Showing result table in screen
     def show(self):
         for spotName in self.spotOutput:
+            data = self.rainflowData[spotName]
+            length = len(data['Cycle'])
             print('========== '+spotName+' ==========')
-
+            print('Num. of Cycles','Stress Range (MPa)','Stess Mean (MPa)')
+            for i in range(length):
+                print(data['Cycle'][i], data['Range'][i], data['Mean'][i])
             print(' ')
-
-
-
 
 
 def main():
     myCount = counting('test', startline=7, spotOutput=['TwHt1@0   ', 'TwHt1@10  ', \
-                    'TwHt1@20  '], binsNumber=10)
+                    'TwHt1@20  '])
     print('|- OK')
 
 
