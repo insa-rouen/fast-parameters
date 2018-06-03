@@ -25,7 +25,6 @@
 #============================== Modules Communs ==============================
 from collections import namedtuple
 from math import log10
-from matplotlib import pyplot as plt
 #-----------------------------------------------------------------------------------------
 #                                          PROGRAMME PRINCIPALE
 #-----------------------------------------------------------------------------------------
@@ -51,6 +50,7 @@ class dnvgl(object):
                                        'F3','G','W1', 'W2', 'W3'))
         self.__materials = dict.fromkeys(('C','C-Mn'))
 
+        # print "S-N curve v0.0 (June 3 2018)"
         self.__build()
         self.__choose()
 
@@ -147,6 +147,8 @@ class dnvgl(object):
         """
         Plot S-N curve
         """
+        from matplotlib import pyplot as plt
+
         X = range(int(1e4), int(1e8+1), int(1e6))
         Y = []
         [Y.append(self.whichNS(x, self.curveRef)) for x in X]
