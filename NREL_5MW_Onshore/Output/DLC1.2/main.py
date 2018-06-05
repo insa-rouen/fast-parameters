@@ -37,13 +37,31 @@ class fatigue(object):
         
     """
     def __init__(self, file, startline, spotNames):
-        self.spotNames = spotNames
-        self.RFdata = count.counting(file, startline, self.spotNames)
-        self.damage = dict.fromkeys(self.spotNames)
+        if isinstance(spotNames[0], str):
+            self.RFdata = count.counting(file, startline, spotNames)
+            self.spotNames = self.RFdata.rainflowData.keys()
+            self.damage = dict.fromkeys(self.spotNames)
+        elif isinstance(spotNames[0], int):
+            self.fatigueStress = count.finding(file, startline, spotNames)
+            self.RFdata = count.counting(self.fatigueStress)
+            self.spotNames = self.RFdata.rainflowData.keys()
+            self.damage = dict.fromkeys(self.spotNames)
+        else:
+            print("[Error] Wrong spot index name or gage node nubmer !")
+            exit()
+        
+        self.lifetime = 20*365*24*6 # Wind tower's designed lifetime per 10min
+        self.run()
+
+    def run(self):
+        print("Fatigue anlaysis v0.0 (June 4 2018)")
+        print("|- Analysising ...")
+        self.assess()
+        print("|- [OK] Analysis completed !")
 
     def assess(self):
         for spot in self.spotNames:
-            self.damage[spot] = {'n':[], 'N':[], 'D':[], 'Dtotal':0.0}
+            self.damage[spot] = {'n':[], 'N':[], 'D':[], 'Dtotal':0.0, 'Dlife':0.0}
             self.damage[spot]['n'] = self.RFdata.rainflowData[spot]['Cycle']
             ranges = self.RFdata.rainflowData[spot]['Range']
             means = self.RFdata.rainflowData[spot]['Mean']
@@ -58,17 +76,18 @@ class fatigue(object):
                 self.damage[spot]['D'].append(D)
                 self.damage[spot]['Dtotal'] = self.damage[spot]['Dtotal'] + D
 
-            print spot
-            print self.damage[spot]['Dtotal']
+            self.damage[spot]['Dlife'] = self.damage[spot]['Dtotal'] * self.lifetime
+            print spot, " : ", self.damage[spot]['Dtotal'], ", ", self.damage[spot]['Dlife']
+
 
 
 def main():
     TIK = time.time()
-    analysis = fatigue('test', startline=7, spotNames=['TwHt1@0   ', 'TwHt1@10  ', \
-                       'TwHt1@20  '])
-    analysis.assess()
+    # analysis = fatigue('DLC1.2_NTM_25mps', startline=7, spotNames=['TwHt1@0   ', 'TwHt1@90  ', \
+    #                    'TwHt1@180 ', 'TwHt1@270 ', 'TwHt9@0   ', 'TwHt9@90  ', 'TwHt9@180 ', 'TwHt9@270 '])
+    analysis = fatigue('DLC1.2_NTM_25mps', 7, [1,5,9])
     TOK = time.time()
-    print "Time(s) : ",TOK-TIK
+    print "Total Time(s) : ",TOK-TIK
 
 
 #-----------------------------------------------------------------------------------------
