@@ -64,6 +64,17 @@ class finding(object):
             self.datareader = datareader
             self.fieldnamesInput = datareader.fieldnames # save the titles of the talbe
 
+            if self.gageOutput is None: # count cycles on every spot
+                print("|- [MESSAGE] You did''nt specify a gage node or a local stress " +
+                      "spot. The program will automatically find the fatigue stress " +
+                      "among all stress histories given in input file.")
+                spotNames = copy.deepcopy(datareader.fieldnames)
+                spotNames.pop(0)
+                gages = []
+                for spot in spotNames:
+                    if gages.count(int(spot[4])) == 0: gages.append(int(spot[4]))
+                self.gageOutput = gages
+
             for key in self.fieldnamesInput:
                 self.dataInput[key] = []
 
@@ -124,8 +135,8 @@ class counting(object):
             self.startline = startline
             self.spotNames = spotNames
             self.dataInput = {}
-            self.runFlag = 0 # read data from <class finding> instance
-        elif isinstance(file, finding):
+            self.runFlag = 0
+        elif isinstance(file, finding): # read data from <class finding> instance
             self.spotNames = []
             self.dataInput = file.dataOutput
             self.runFlag = 1
@@ -166,15 +177,22 @@ class counting(object):
             [next(f) for i in range(self.startline-1)] # read the file from the title line                
             datareader = csv.DictReader(f, delimiter='\t')
             self.datareader = datareader
+            self.fieldnamesInput = datareader.fieldnames # save the titles of the talbe
+
+            if self.spotNames is False: # count cycles on every spot
+                print("|- [ALERT] Every stress history will be used to count Rainflow " +
+                      "cycles. Try to use <class finding> in order to extract firstly " +
+                      "fatigue stress and reduce time consumption")
+                spotNames = copy.deepcopy(datareader.fieldnames)
+                spotNames.pop(0)
+                self.spotNames = spotNames
 
             next(datareader) # ignore the row with the unit
             for spot in self.spotNames:
                 self.dataInput[spot] = []
             self.dataInput['Time'] = []
 
-            for row in datareader:
-                self.fieldnamesInput = row.keys() # save the titles of the talbe
-                
+            for row in datareader:                
                 self.dataInput['Time'].append( float(row['Time      ']) ) # time steps
 
                 # save stress at this time slip for each spot
