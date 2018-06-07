@@ -126,7 +126,7 @@ class counting(object):
         filename : the filename of stress history file
         startline : the number of the row which has the channel titles
     """
-    def __init__(self, file, startline=None, spotNames=None):
+    def __init__(self, file, startline, spotNames=None):
         if isinstance(file, str): # read data from file
             self.filenameInput = str(file+'.outStress')
             self.filenameOutput = ''
@@ -179,13 +179,22 @@ class counting(object):
             self.datareader = datareader
             self.fieldnamesInput = datareader.fieldnames # save the titles of the talbe
 
-            if self.spotNames is False: # count cycles on every spot
+            if self.spotNames is None: # count cycles on every spot
                 print("|- [ALERT] Every stress history will be used to count Rainflow " +
                       "cycles. Try to use <class finding> in order to extract firstly " +
                       "fatigue stress and reduce time consumption")
                 spotNames = copy.deepcopy(datareader.fieldnames)
                 spotNames.pop(0)
                 self.spotNames = spotNames
+            elif isinstance(self.spotNames[0], int):
+                spotNames = []
+                for i in self.spotNames:
+                    for name in datareader.fieldnames:
+                        if name[4] == str(i):
+                            spotNames.append(name)
+                self.spotNames = spotNames
+                print("|- [ALERT] The input file doesn't contain "+"TwHt"+str(i))
+            
 
             next(datareader) # ignore the row with the unit
             for spot in self.spotNames:
@@ -232,11 +241,12 @@ class counting(object):
 
 
 def main():
-    myFinding = finding('test', startline=7, gageOutput=[1,5,9])
+    # myFinding = finding('test', startline=7, gageOutput=[1,5,9])
     # myCount = counting('test', startline=7, spotNames=['TwHt1@0   ', 'TwHt1@10  ', \
     #                 'TwHt1@20  '])
-    myCount2 = counting(myFinding)
-    # myCount2.show()
+    # myCount2 = counting(myFinding)
+    myCount3 = counting('test', startline=7, spotNames=[1,5,9])
+    # myCount3.show()
     print('OK !!!')
 
 
