@@ -24,8 +24,8 @@
 #============================== Modules Personnels ==============================
 import fatigue
 #============================== Modules Communs ==============================
-import pickle, time
-
+import pickle, time, math
+from matplotlib import pyplot as plt
 
 #-----------------------------------------------------------------------------------------
 #                                          PROGRAMME PRINCIPALE
@@ -67,10 +67,6 @@ class life(object):
             print("|- [Error] The distribution law is not supported !")
             exit()
 
-    def isoprobability(self):
-        self.propability = [1/float(self.numberOfSpeed)] * self.numberOfSpeed
-
-
         for key, value in self.life.items():
             self.life[key] = {'D_i':[], 'Dlife_i':[], 'Dlife':0.0}
 
@@ -88,9 +84,21 @@ class life(object):
             print(" - Total damage for " + key + "during lifetime is " + \
                   str(self.life[key]['Dlife']))
 
+    def isoprobability(self):
+        self.propability = [1/float(self.numberOfSpeed)] * self.numberOfSpeed
+ 
 
-    def weibull(self):
-        pass
+    def weibull(self, k=2, lamb=13.0):
+        # speedTry = [i/10. for i in range(251)]
+        # print speedTry
+
+        for speed in self.listOfSpeed:
+            propability = (k/lamb) * (speed/lamb)**(k-1) * math.exp(-(speed/lamb)**k)
+            self.propability.append(propability)
+
+        # plt.plot(speedTry, self.propability)
+        # plt.show()
+        # exit()
     
     def plotDlife(self, listOfSpot):
         from matplotlib import pyplot as plt
@@ -139,9 +147,11 @@ class life(object):
 def main():
     TIK = time.time()
     
-    myLife = life(range(3,27,2), 'isoprobability')
+    # myLife = life(range(3,27,2), 'isoprobability')
+    myLife = life(range(3,27,2), 'weibull')
     # print myLife.damage.keys()
     # myLife.plotDlife(['TwHt1@0   ', 'TwHt1@90  ', 'TwHt1@180 ', 'TwHt1@270 '])
+    myLife.plotDlife(['TwHt1@0   '])
 
     TOK = time.time()
     print "Total Time(s) : ",TOK-TIK
