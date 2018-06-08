@@ -192,8 +192,10 @@ class counting(object):
                     for name in datareader.fieldnames:
                         if name[4] == str(i):
                             spotNames.append(name)
+                    # print("|- [ALERT] The input file doesn't contain "+"TwHt"+str(i))
+                    # TO BE COMPLETED
                 self.spotNames = spotNames
-                print("|- [ALERT] The input file doesn't contain "+"TwHt"+str(i))
+                
             
 
             next(datareader) # ignore the row with the unit

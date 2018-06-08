@@ -11,7 +11,7 @@
 # Date: 04/06/2018
 #
 # Version:
-#   - 0.0: combine Rainflow counting with S-N curves
+#   - 0.0: calculate cumulative damage under a given wind speed
 #
 # Comments:
 # 
@@ -24,7 +24,7 @@
 #============================== Modules Personnels ==============================
 import count, sn
 #============================== Modules Communs ==============================
-import time
+import time, pickle
 
 
 #-----------------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ class fatigue(object):
             print("[Error] Wrong spot index name or gage node nubmer !")
             exit()
         
+        self.filenameInput = file
         self.spotNames = self.RFdata.rainflowData.keys()
         self.spotNames.sort()
         self.damage = dict.fromkeys(self.spotNames)
@@ -83,15 +84,15 @@ class fatigue(object):
                 self.damage[spot]['Dtotal'] = self.damage[spot]['Dtotal'] + D
 
             self.damage[spot]['Dlife'] = self.damage[spot]['Dtotal'] * self.lifetime
-            print spot, " : ", self.damage[spot]['Dtotal'], ", ", self.damage[spot]['Dlife']
+            print(spot, " : "+self.damage[spot]['Dtotal']+", "+self.damage[spot]['Dlife'])
             allSpot.append(spot)
             allDtotal.append(self.damage[spot]['Dtotal'])
             allDlife.append(self.damage[spot]['Dlife'])
 
         spot_max = allSpot[allDtotal.index(max(allDtotal))]
-        print "Maxi cumulative damage during 10 min : ",spot_max, " ", max(allDtotal)
+        print("Maxi cumulative damage during 10 min : " + spot_max + " " + max(allDtotal))
         spot_max = allSpot[allDlife.index(max(allDlife))]
-        print "Maxi cumulative damage during 20 years : ",spot_max, " ", max(allDlife)
+        print("Maxi cumulative damage during 20 years : " + spot_max, " " + max(allDlife))
 
     def assessAllStressSpot(self):
         for spot in self.spotNames:
@@ -111,19 +112,30 @@ class fatigue(object):
                 self.damage[spot]['Dtotal'] = self.damage[spot]['Dtotal'] + D
 
             self.damage[spot]['Dlife'] = self.damage[spot]['Dtotal'] * self.lifetime
-            print spot, " : ", self.damage[spot]['Dtotal'], ", ", self.damage[spot]['Dlife']
+            print spot," : ",self.damage[spot]['Dtotal'],", ",self.damage[spot]['Dlife']
 
+    def save(self, filename=None):
+        if filename is None: filename = self.filenameInput + ".damage"
+        print("|- Saving data to "+filename)
+        with open(filename, 'wb') as f:
+            pickle.dump(self.damage, f)
 
 def main():
     TIK = time.time()
     # analysis = fatigue('DLC1.2_NTM_25mps', startline=7, spotNames=['TwHt1@0   ', 'TwHt1@90  ', \
     #                    'TwHt1@180 ', 'TwHt1@270 ', 'TwHt9@0   ', 'TwHt9@90  ', 'TwHt9@180 ', 'TwHt9@270 '])
-    analysis = fatigue('DLC1.2_NTM_25mps', 7, [1,5,9]) # BUG !!!!!
+    # analysis = fatigue('DLC1.2_NTM_25mps', 7, [1])
+    
     # analysis = fatigue('DLC1.2_NTM_25mps', 7, stressFilter=True)
     # analysis = fatigue('DLC1.2_NTM_25mps', 7)
     # analysis.assessExtremeStressSpot()
 
-    analysis.assessAllStressSpot()
+    for i in range(3,27,2):
+        file = 'DLC1.2_NTM_'+str(i)+'mps'
+        analysis = fatigue(file, 7, [1])
+        analysis.assessAllStressSpot()
+        analysis.save()
+
 
 
     TOK = time.time()
