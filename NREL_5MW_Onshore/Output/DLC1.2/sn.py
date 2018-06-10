@@ -189,7 +189,7 @@ class dnvgl(object):
 
 def main():
     curve = dnvgl('B1', Goodman=(True, 20.0))
-    print curve.sn(curve.ns(1e7))
+    print(curve.sn(curve.ns(1e7)))
     curve.plotSN()
     print('|- OK')
 

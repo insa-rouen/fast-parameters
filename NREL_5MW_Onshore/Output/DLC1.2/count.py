@@ -166,7 +166,7 @@ class counting(object):
             print("|- Counting Rainflow cycles ...")
             self.count()
         # self.show()
-        print "|- [OK] Rainflow count finished !"
+        print("|- [OK] Rainflow count finished !")
         # self.save()
 
     # runFlag = 0: read data from file
@@ -249,7 +249,7 @@ def main():
     # myCount2 = counting(myFinding)
     myCount3 = counting('test', startline=7, spotNames=[1,5,9])
     # myCount3.show()
-    print('OK !!!')
+    print("OK !!!")
 
 
 #-----------------------------------------------------------------------------------------

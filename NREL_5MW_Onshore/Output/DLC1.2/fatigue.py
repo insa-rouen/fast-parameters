@@ -112,7 +112,7 @@ class fatigue(object):
                 self.damage[spot]['Dtotal'] = self.damage[spot]['Dtotal'] + D
 
             self.damage[spot]['Dlife'] = self.damage[spot]['Dtotal'] * self.lifetime
-            print spot," : ",self.damage[spot]['Dtotal'],", ",self.damage[spot]['Dlife']
+            print(spot," : ",self.damage[spot]['Dtotal'],", ",self.damage[spot]['Dlife'])
 
     def save(self, filename=None):
         if filename is None: filename = self.filenameInput + ".damage"
@@ -139,7 +139,7 @@ def main():
 
 
     TOK = time.time()
-    print "Total Time(s) : ",TOK-TIK
+    print("Total Time(s) : ",TOK-TIK)
 
 
 #-----------------------------------------------------------------------------------------

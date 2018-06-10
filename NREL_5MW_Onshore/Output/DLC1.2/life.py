@@ -111,9 +111,6 @@ class life(object):
                 print(" - "+elem[0]+" : "+str(elem[1]['Dlife']))
                 i = i + 1
 
-
-
-
     def plotDlife(self, listOfSpot):
         from matplotlib import pyplot as plt
 
@@ -168,7 +165,7 @@ def main():
     # myLife.plotDlife(['TwHt1@0   '])
 
     TOK = time.time()
-    print "Total Time(s) : ",TOK-TIK
+    print("Total Time(s) : "+ str(TOK-TIK))
 
 
 #-----------------------------------------------------------------------------------------
