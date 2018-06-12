@@ -96,18 +96,18 @@ class life(object):
             propability = (k/lamb) * (speed/lamb)**(k-1) * math.exp(-(speed/lamb)**k)
             self.propability.append(propability)
     
-    def sort(self, defaultShowCase=3):
+    def sort(self, damageDisplay=3):
         sortedList = sorted(self.life.items(), key=lambda x:x[1]['Dlife'], reverse=True)
         self.life = collections.OrderedDict()
 
-        print(" - The most "+str(defaultShowCase)+" dangerous spots:")
+        print(" - Top "+str(damageDisplay)+" dangerous spots:")
         i = 1
         for elem in sortedList:
             self.life[elem[0]] = elem[1]
 
             if elem[1]['Dlife'] >= 1:
                 print(" - "+elem[0]+" : "+str(elem[1]['Dlife']))
-            elif i <= defaultShowCase:
+            elif i <= damageDisplay:
                 print(" - "+elem[0]+" : "+str(elem[1]['Dlife']))
                 i = i + 1
 
@@ -126,9 +126,11 @@ class life(object):
 
             plt.subplot(2,1,1)
             plt.title("Fatigue life at each wind speed")
-            plt.plot(X, Y)
+            plt.plot(X, Y,'o-')
             # plt.xlabel("Wind speed (m/s)")
+            plt.xticks(X)
             plt.ylabel("Cumulative damage")
+            plt.grid()
 
             # ================
             X = self.listOfSpeed
@@ -136,9 +138,11 @@ class life(object):
             
             plt.subplot(2,1,2)
             plt.title("Probability of wind speed occurence")
-            plt.plot(X, Y)
+            plt.plot(X, Y, 'go-')
             plt.xlabel("Wind speed (m/s)")
+            plt.xticks(X)
             plt.ylabel("Probability (%) ")
+            plt.grid()
 
             plt.suptitle('Fatigue assessment during lifetime for '+spot)
         
@@ -161,7 +165,7 @@ def main():
     # myLife = life(range(3,27,2), 'Uniform')
     myLife = life(range(3,27,2), 'Weibull')
     # print myLife.damage.keys()
-    # myLife.plotDlife(['TwHt1@0   ', 'TwHt1@90  ', 'TwHt1@180 ', 'TwHt1@270 '])
+    myLife.plotDlife(['TwHt1@0   ', 'TwHt1@340 ', 'TwHt1@350 '])
     # myLife.plotDlife(['TwHt1@0   '])
 
     TOK = time.time()
