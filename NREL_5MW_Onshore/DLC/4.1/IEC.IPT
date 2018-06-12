@@ -6,7 +6,7 @@ True       SI UNITS (True=SI or False=ENGLISH)
 1          IEC WIND TURBINE CLASS (1, 2 or 3)
 A          WIND TURBULENCE CATEGORY (A, B or C)
 0.0        Slope of the wind inflow (IEC specifies between -8 and +8), deg
-3          IEC standard used for wind shear exponent
+1          IEC standard used for wind shear exponent
 !Turbine parameters
 90.0       Wind turbine hub-height, m or ft
 126.0      Wind turbine rotor diameter, m or ft
