@@ -4,7 +4,7 @@ True       SI UNITS (True=SI or False=ENGLISH)
 40.0       Time for start of IEC transient condition, sec
 !Wind Site parameters
 1          IEC WIND TURBINE CLASS (1, 2 or 3)
-A          WIND TURBULENCE CATEGORY (A, B or C)
+B          WIND TURBULENCE CATEGORY (A, B or C)
 0.0        Slope of the wind inflow (IEC specifies between -8 and +8), deg
 1          IEC standard used for wind shear exponent
 !Turbine parameters
