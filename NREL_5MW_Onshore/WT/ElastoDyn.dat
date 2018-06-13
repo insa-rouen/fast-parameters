@@ -85,9 +85,9 @@ False         PtfmYDOF    - Platform yaw rotation DOF (flag)
         0.0   PtfmYIner   - Platform inertia for yaw rotation about the platform CM (kg m^2)
 ---------------------- BLADE ---------------------------------------------------
          17   BldNodes    - Number of blade nodes (per blade) used for analysis (-)
-"Blade.dat"    BldFile(1)  - Name of file containing properties for blade 1 (quoted string)
-"Blade.dat"    BldFile(2)  - Name of file containing properties for blade 2 (quoted string)
-"Blade.dat"    BldFile(3)  - Name of file containing properties for blade 3 (quoted string) [unused for 2 blades]
+"Blade.dat"   BldFile(1)  - Name of file containing properties for blade 1 (quoted string)
+"Blade.dat"   BldFile(2)  - Name of file containing properties for blade 2 (quoted string)
+"Blade.dat"   BldFile(3)  - Name of file containing properties for blade 3 (quoted string) [unused for 2 blades]
 ---------------------- ROTOR-TEETER --------------------------------------------
           0   TeetMod     - Rotor-teeter spring/damper model {0: none, 1: standard, 2: user-defined from routine UserTeet} (switch) [unused for 3 blades]
           0   TeetDmpP    - Rotor-teeter damper position (degrees) [used only for 2 blades and when TeetMod=1]
@@ -116,21 +116,96 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
           0   TStart      - Time to begin tabular output (s) (currently unused)
           1   DecFact     - Decimation factor for tabular output {1: output every time step} (-) (currently unused)
           9   NTwGages    - Number of tower nodes that have strain gages for output [0 to 9] (-)
-1,3,5, 8,11,14, 16,18,20  TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0] 1 is closest to tower base
+1,2,3, 7, 10,11, 15, 19,20  TwrGagNd    - List of tower nodes that have strain gages [1 to TwrNodes] (-) [unused if NTwGages=0] 1 is closest to tower base
           1   NBlGages    - Number of blade nodes that have strain gages for output [0 to 9] (-)
           1   BldGagNd    - List of blade nodes that have strain gages [1 to BldNodes] (-) [unused if NBlGages=0]
               OutList     - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
+"TwrBsFxt"    - Tower base fore-aft shear force
+"TwrBsFyt"    - ...        side-to-side shear force
+"TwrBsFzt"    - ...        axial force
+"TwrBsMxt"    - Tower base roll (or side-to-side) moment (i.e., the moment caused by side-to-side forces)
+"TwrBsMyt"    - ...        pitching (or fore-aft) moment (i.e., the moment caused by fore-aft forces)
+"TwrBsMzt"    - ...        yaw (or torsional) moment
+
 "TwHt1TDxt"   - Local tower fore-aft (translational) deflection (relative to the undeflected position)
 "TwHt1TDyt"   - ...         side-to-side (translational) deflection (relative to the undeflected position)
 "TwHt1TDzt"   - ...         axial (translational) deflection (relative to the undeflected position)
-
 "TwHt1FLxt"   - Local tower roll (or side-to-side) force
 "TwHt1FLyt"   - ...         pitching (or fore-aft) force
 "TwHt1FLzt"   - ...         yaw (or torsional) force
-
 "TwHt1MLxt"   - Local tower roll (or side-to-side) moment
 "TwHt1MLyt"   - ...         pitching (or fore-aft) moment
 "TwHt1MLzt"   - ...         yaw (or torsional) moment
+
+"TwHt2TDxt"
+"TwHt2TDyt"
+"TwHt2TDzt"
+"TwHt2FLxt"
+"TwHt2FLyt"
+"TwHt2FLzt"
+"TwHt2MLxt"
+"TwHt2MLyt"
+"TwHt2MLzt"
+
+"TwHt3TDxt"
+"TwHt3TDyt"
+"TwHt3TDzt"
+"TwHt3FLxt"
+"TwHt3FLyt"
+"TwHt3FLzt"
+"TwHt3MLxt"
+"TwHt3MLyt"
+"TwHt3MLzt"
+
+"TwHt4TDxt"
+"TwHt4TDyt"
+"TwHt4TDzt"
+"TwHt4FLxt"
+"TwHt4FLyt"
+"TwHt4FLzt"
+"TwHt4MLxt"
+"TwHt4MLyt"
+"TwHt4MLzt"
+
+"TwHt5TDxt"
+"TwHt5TDyt"
+"TwHt5TDzt"
+"TwHt5FLxt"
+"TwHt5FLyt"
+"TwHt5FLzt"
+"TwHt5MLxt"
+"TwHt5MLyt"
+"TwHt5MLzt"
+
+"TwHt6TDxt"
+"TwHt6TDyt"
+"TwHt6TDzt"
+"TwHt6FLxt"
+"TwHt6FLyt"
+"TwHt6FLzt"
+"TwHt6MLxt"
+"TwHt6MLyt"
+"TwHt6MLzt"
+
+"TwHt7TDxt"
+"TwHt7TDyt"
+"TwHt7TDzt"
+"TwHt7FLxt"
+"TwHt7FLyt"
+"TwHt7FLzt"
+"TwHt7MLxt"
+"TwHt7MLyt"
+"TwHt7MLzt"
+
+"TwHt8TDxt"
+"TwHt8TDyt"
+"TwHt8TDzt"
+"TwHt8FLxt"
+"TwHt8FLyt"
+"TwHt8FLzt"
+"TwHt8MLxt"
+"TwHt8MLyt"
+"TwHt8MLzt"
 
 "TwHt9TDxt"
 "TwHt9TDyt"
@@ -141,6 +216,16 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "TwHt9MLxt"
 "TwHt9MLyt"
 "TwHt9MLzt"
+
+"YawBrTDxt"  - Tower-top / yaw bearing fore-aft (translational) deflection (relative to the undeflected position)
+"YawBrTDyt"  - ...                     side-to-side (translation) deflection
+"YawBrTDzt"  - ...                     axial (translational) deflection
+"YawBrFxp"   - Tower-top / yaw bearing fore-aft (nonrotating) shear force
+"YawBrFyp"   - ...                     side-to-side (nonrotating) shear force
+"YawBrFzp"   - ...                     axial force
+"YawBrMxp"   - Tower-top / yaw bearing roll moment (nonrotating)
+"YawBrMyp"   - ...                     pitch moment (nonrotating)
+"YawBrMzp"   - ...                     yaw moment
 
 "RootMxc1"   - Blade 1 in-plane moment at the blade root (kN.m)
 "RootMyc1"   - ...     out-of-plane moment at the blade root (kN.m)
