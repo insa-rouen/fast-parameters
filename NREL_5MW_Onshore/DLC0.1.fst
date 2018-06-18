@@ -4,7 +4,7 @@ DLC 0.1 at uniform wind speed for NREL 5.0 MW Baseline Wind Turbine (Onshore)
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
         600   TMax            - Total run time (s) > 40s + transient duration
-    0.00625   DT              - Recommended module time step (s)
+       0.01   DT              - Recommended module time step (s)
           2   InterpOrder     - Interpolation order for input/output time history (-) {1=linear, 2=quadratic}
           0   NumCrctn        - Number of correction iterations (-) {0=explicit calculation, i.e., no corrections}
       99999   DT_UJac         - Time between calls to get Jacobians (s)
@@ -32,7 +32,7 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
 "unused"      IceFile         - Name of file containing ice input parameters (quoted string)
 ---------------------- OUTPUT --------------------------------------------------
 True          SumPrint        - Print summary data to "<RootName>.sum" (flag)
-          5   SttsTime        - Amount of time between screen status messages (s)
+         10   SttsTime        - Amount of time between screen status messages (s)
       99999   ChkptTime       - Amount of time between creating checkpoint files for potential restart (s)
 "default"     DT_Out          - Time step for tabular output (s)
           0   TStart          - Time to begin tabular output (s)

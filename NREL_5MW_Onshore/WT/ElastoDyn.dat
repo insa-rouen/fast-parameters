@@ -235,5 +235,7 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "TipDzc1"    - ...     axial tip deflection (relative to the pitch axis) (m)
 "TipDxb1"    - ...     flapwise tip deflection (relative to the pitch axis) (m)
 "TipDyb1"    - ...     edgewise tip deflection (relative to the pitch axis) (m)
+"RotSpeed"
+"Azimuth"
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
