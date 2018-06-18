@@ -13,6 +13,7 @@
 # Version:
 #   - 0.0: only applicable to a annulus secion (that is to say Igx=Igy)
 #   - 0.1: [20/05/2018] write stress in MPa, reform data class structure
+#   - 0.2: [18/06/2018] upgrade codes to Python3
 # Comments:
 # 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -59,19 +60,19 @@ class data(object):
         self.run()
 
     def run(self):
-        print "Nominal stress v0.1 (May 20 2018)"
+        print("Nominal stress v0.1 (May 20 2018)")
         self.__geometry()
-        print "|- Importing "+self.filenameInput+" ..."
+        print("|- Importing "+self.filenameInput+" ...")
         self.open()
-        print "|- Calculating the nominal stress ..."
+        print("|- Calculating the nominal stress ...")
         self.calculate(self.thetaStep)
-        print "|- Saving data ..."
+        print("|- Saving data ...")
         self.save()
 
     def open(self, filename=None):
         if filename is not None: self.filenameInput = filename
 
-        with open(self.filenameInput, 'rb') as f:
+        with open(self.filenameInput, 'rt', encoding='ISO-8859-1') as f:
             [next(f) for i in range(self.startline-1)] # read the file from the title line                
             datareader = csv.DictReader(f, delimiter='\t')
             self.datareader = datareader
@@ -119,16 +120,16 @@ class data(object):
         
         # print the geometry information of strain gages
         if self.checkInfo is True:
-            print "   ===== Tower geometry and Cross section infomation =====   "
-            print "Tower height : ", self.TowerHt, "m"
-            print "Total tower nodes : ", self.TwrNodes
-            print "Total strain gage locations : ", self.NTwGages
-            print " Gage n° | Tower node n° | Elevation(m) | Outer Radius(m) |", \
-                  "Area(m2) | 2nd moment of inertia(m4) "
+            print("   ===== Tower geometry and Cross section infomation =====   ")
+            print("Tower height :", self.TowerHt, "m")
+            print("Total tower nodes :", self.TwrNodes)
+            print("Total strain gage locations :", self.NTwGages)
+            print(" Gage n° | Tower node n° | Elevation(m) | Outer Radius(m) |", \
+                  "Area(m2) | 2nd moment of inertia(m4) ")
             for i in self.gageOutput:
-                print "{0:^9d}|{1:^15d}|{2:^14.2f}|{3:^17.4f}|{4:^10.4f}|{5:^27.4f}"\
-                      .format(i, self.section[i]['TwrNodeNo'], self.section[i]['z'], \
-                       self.section[i]['Re'],self.section[i]['A'],self.section[i]['Igx'],)
+                print("{0:^9d}|{1:^15d}|{2:^14.2f}|{3:^17.4f}|{4:^10.4f}|{5:^27.4f}"\
+                     .format(i, self.section[i]['TwrNodeNo'], self.section[i]['z'], \
+                      self.section[i]['Re'],self.section[i]['A'],self.section[i]['Igx'],))
 
     def property(self, i):
         j = self.TwrGagNd[i-1]
@@ -213,7 +214,7 @@ class data(object):
         self.fieldunitsOutput['Time      '] = "{:^10}".format("(s)")
         
         # Save result to the file
-        with open(filename, 'wb') as f:
+        with open(filename, 'wt') as f:
             self.filenameOutput = filename
             
             for i in range(self.startline-1):
@@ -230,9 +231,12 @@ class data(object):
 
 
 def main():
-    mydata=data(file='DLC1.2_NTM_3mps.out', startline=7, gageOutput=[1,9], thetaStep=5,\
-                checkInfo=True)
-    
+    # mydata=data(file='DLC1.2_NTM_3mps.out', startline=7, gageOutput=[1,9], thetaStep=5,\
+    #             checkInfo=True)
+    tik=time.time()
+    mydata=data(file='../DLC0.1/DLC0.1_CST_-1mps.out', startline=7, gageOutput=[1,2,9], thetaStep=5)
+    tok=time.time()
+    print(tok-tik)
     # for i in range(3,27,2):
     #     TIK = time.time()
         
@@ -243,7 +247,7 @@ def main():
 
     #     TOK = time.time()
     #     elapsedTime = TOK - TIK
-    #     print "|- Finished! "+str("{:.2f}").format(elapsedTime)+"s used.\n"
+    #     print("|- Finished! "+str("{:.2f}").format(elapsedTime)+"s used.\n")
 
 
 #-----------------------------------------------------------------------------------------
