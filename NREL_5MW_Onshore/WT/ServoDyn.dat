@@ -63,7 +63,7 @@ False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (fla
 False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
 "unused"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
-False         CompNTRD
+True          CompNTRD
 "ServoDyn_TRD.dat"    NTRDfile
 ---------------------- BLADED INTERFACE ----------------------------------------
 "DISCON_dar64.so"     DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
@@ -98,6 +98,13 @@ True          TabDelim     - Use tab delimiters in text tabular output file? (fl
               OutList      - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
 "GenPwr"                   - Electrical generator power and torque
 "GenTq"                    - Electrical generator power and torque
+
+
+
+"NTRD_FC"    - The force that TRD applys on structure (kN)
+"NTRD_A"     - Status of TRD [0: inactive | 1:active]
+"NTRD_VA"    - Amplitude of vibration (m/s)
+"NTRD_XS"
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
