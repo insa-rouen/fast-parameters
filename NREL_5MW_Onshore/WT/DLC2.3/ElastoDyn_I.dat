@@ -1,5 +1,5 @@
 ------- ELASTODYN V1.03.* INPUT FILE -------------------------------------------
-NREL 5.0 MW Baseline Wind Turbine for Use in Offshore Analysis. Properties from Dutch Offshore Wind Energy Converter (DOWEC) 6MW Pre-Design (10046_009.pdf) and REpower 5M 5MW (5m_uk.pdf)
+DLC2.3 EOG v_cut-in = 3 m/s for NREL 5.0 MW with INITIAL CONDITIONS
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo        - Echo input data to "<RootName>.ech" (flag)
           3   Method      - Integration method: {1: RK4, 2: AB4, or 3: ABM4} (-)
@@ -25,17 +25,17 @@ False         PtfmRDOF    - Platform roll tilt rotation DOF (flag)
 False         PtfmPDOF    - Platform pitch tilt rotation DOF (flag)
 False         PtfmYDOF    - Platform yaw rotation DOF (flag)
 ---------------------- INITIAL CONDITIONS --------------------------------------
-          0   OoPDefl     - Initial out-of-plane blade-tip displacement (meters)
-          0   IPDefl      - Initial in-plane blade-tip deflection (meters)
-          0   BlPitch(1)  - Blade 1 initial pitch (degrees)
-          0   BlPitch(2)  - Blade 2 initial pitch (degrees)
-          0   BlPitch(3)  - Blade 3 initial pitch (degrees) [unused for 2 blades]
+     0.9927   TipDxc1     - Initial out-of-plane blade-tip displacement (meters)
+    -0.2595   TipDyc1      - Initial in-plane blade-tip deflection (meters)
+        0.0   PtchPMzc1  - Blade 1 initial pitch (degrees)
+        0.0   PtchPMzc2  - Blade 2 initial pitch (degrees)
+        0.0   PtchPMzc3  - Blade 3 initial pitch (degrees) [unused for 2 blades]
           0   TeetDefl    - Initial or fixed teeter angle (degrees) [unused for 3 blades]
-          0   Azimuth     - Initial azimuth angle for blade 1 (degrees)
-       12.1   RotSpeed    - Initial or fixed rotor speed (rpm)
-          0   NacYaw      - Initial or fixed nacelle-yaw angle (degrees)
-          0   TTDspFA     - Initial fore-aft tower-top displacement (meters)
-          0   TTDspSS     - Initial side-to-side tower-top displacement (meters)
+      24.26   Azimuth     - Initial azimuth angle for blade 1 (degrees)
+      6.966   RotSpeed    - Initial or fixed rotor speed (rpm)
+        0.0   NacYaw      - Initial or fixed nacelle-yaw angle (degrees)
+    0.02946   YawBrTDxt     - Initial fore-aft tower-top displacement (meters)
+ -0.0009095   YawBrTDyt     - Initial side-to-side tower-top displacement (meters)
           0   PtfmSurge   - Initial or fixed horizontal surge translational displacement of platform (meters)
           0   PtfmSway    - Initial or fixed horizontal sway translational displacement of platform (meters)
           0   PtfmHeave   - Initial or fixed vertical heave translational displacement of platform (meters)

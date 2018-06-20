@@ -1,5 +1,5 @@
 ------- InflowWind v3.01.* INPUT FILE -------------------------------------------------------------------------
-DLC2.3 EOG v_cut-out=25m/s wind
+DLC2.3 EOG v_cut-in = 3 m/s wind
 ---------------------------------------------------------------------------------------------------------------
 False         Echo           - Echo input data to <RootName>.ech (flag)
           2   WindType       - switch for wind file type (1=steady; 2=uniform; 3=binary TurbSim FF; 4=binary Bladed-style FF; 5=HAWC format; 6=User defined)
@@ -13,7 +13,7 @@ False         Echo           - Echo input data to <RootName>.ech (flag)
          90   RefHt          - Reference (hub) height for horizontal wind speed (m)
           0   PLexp          - Power law exponent (-)
 ================== Parameters for Uniform wind file   [used only for WindType = 2] ============================
-"DLC/2.3/EOGO.wnd"    Filename       - Filename of time series data for uniform wind field (formerly 'hub-height' wind file) (-)
+"DLC/2.3/EOGI.wnd"    Filename       - Filename of time series data for uniform wind field (formerly 'hub-height' wind file) (-)
          90   RefHt          - Reference height for horizontal wind speed                (m)
      125.88   RefLength      - Reference length for linear horizontal and vertical sheer (-)
 ================== Parameters for Binary TurbSim Full-Field files   [used only for WindType = 3] ==============
@@ -46,7 +46,7 @@ False         TowerFile      - Have tower file (.twr) (flag)
           0   PLExp          - Power law exponent (-) (used for PL wind profile type only)
        0.03   Z0             - Surface roughness length (m) (used for LG wind profile type only)
 ====================== OUTPUT ==================================================
-False         SumPrint       - Print summary data to <RootName>.IfW.sum (flag)
+True          SumPrint       - Print summary data to <RootName>.IfW.sum (flag)
               OutList        - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
 "Wind1VelX"                  - X-direction wind velocity at point WindList(1)
 "Wind1VelY"                  - Y-direction wind velocity at point WindList(1)

@@ -1,5 +1,5 @@
 ------- FAST v8.16.* INPUT FILE ------------------------------------------------
-DLC 2.3 EOG @ 25 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
+DLC 2.3 EOG @ 13.4 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
@@ -19,11 +19,11 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
           0   CompMooring     - Compute mooring system (switch) {0=None; 1=MAP++; 2=FEAMooring; 3=MoorDyn}
           0   CompIce         - Compute ice loads (switch) {0=None; 1=IceFloe; 2=IceDyn}
 ---------------------- INPUT FILES ---------------------------------------------
-"WT/DLC2.3/ElastoDyn_O.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
+"WT/DLC2.3/ElastoDyn_R+2.0.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
 "unused"      BDBldFile(1)    - Name of file containing BeamDyn input parameters for blade 1 (quoted string)
 "unused"      BDBldFile(2)    - Name of file containing BeamDyn input parameters for blade 2 (quoted string)
 "unused"      BDBldFile(3)    - Name of file containing BeamDyn input parameters for blade 3 (quoted string)
-"DLC2.3_EOGO_IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
+"DLC2.3_EOGR+2.0_IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
 "WT/AeroDyn.dat"     AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
 "WT/ServoDyn.dat"    ServoFile       - Name of file containing control and electrical-drive input parameters (quoted string)
 "unused"      HydroFile       - Name of file containing hydrodynamic input parameters (quoted string)
