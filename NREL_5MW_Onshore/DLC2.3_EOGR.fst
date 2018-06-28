@@ -31,7 +31,7 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
 "unused"      MooringFile     - Name of file containing mooring system input parameters (quoted string)
 "unused"      IceFile         - Name of file containing ice input parameters (quoted string)
 ---------------------- OUTPUT --------------------------------------------------
-True          SumPrint        - Print summary data to "<RootName>.sum" (flag)
+False          SumPrint        - Print summary data to "<RootName>.sum" (flag)
           5   SttsTime        - Amount of time between screen status messages (s)
       99999   ChkptTime       - Amount of time between creating checkpoint files for potential restart (s)
   "default"   DT_Out          - Time step for tabular output (s)
