@@ -105,6 +105,8 @@ True          TabDelim     - Use tab delimiters in text tabular output file? (fl
 "NTRD_A"     - Status of TRD [0: inactive | 1:active]
 "NTRD_VA"    - Amplitude of vibration (m/s)
 "NTRD_XS"
+"NTRD_CE1"
+"NTRD_CE2"
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
