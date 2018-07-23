@@ -6,15 +6,15 @@ False         Echo         - Echo input data to <RootName>.ech (flag)
 ---------------------- PITCH CONTROL -------------------------------------------
           5   PCMode       - Pitch control mode {0: none, 3: user-defined from routine PitchCntrl, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
           0   TPCOn        - Time to enable active pitch control (s) [unused when PCMode=0]
-     9999.9   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
-     9999.9   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
-     9999.9   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
-          2   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s)
-          2   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
-          2   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
-          0   BlPitchF(1)  - Blade 1 final pitch for pitch maneuvers (degrees)
-          0   BlPitchF(2)  - Blade 2 final pitch for pitch maneuvers (degrees)
-          0   BlPitchF(3)  - Blade 3 final pitch for pitch maneuvers (degrees) [unused for 2 blades]
+        300   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
+        300   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
+        300   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
+          8   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s) [see 0_NREL 5MW.pdf page 26]
+          8   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
+          8   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
+         90   BlPitchF(1)  - Blade 1 final pitch for pitch maneuvers (degrees)
+         90   BlPitchF(2)  - Blade 2 final pitch for pitch maneuvers (degrees)
+         90   BlPitchF(3)  - Blade 3 final pitch for pitch maneuvers (degrees) [unused for 2 blades]
 ---------------------- GENERATOR AND TORQUE CONTROL ----------------------------
           5   VSContrl     - Variable-speed control mode {0: none, 1: simple VS, 3: user-defined from routine UserVSCont, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
           2   GenModel     - Generator model {1: simple, 2: Thevenin, 3: user-defined from routine UserGen} (switch) [used only when VSContrl=0]
@@ -99,7 +99,9 @@ True          TabDelim     - Use tab delimiters in text tabular output file? (fl
 "GenPwr"                   - Electrical generator power and torque
 "GenTq"                    - Electrical generator power and torque
 
-
+"BlPitchC1"  - Blade 1 pitch angle command
+"BlPitchC2"  - Blade 2 pitch angle command
+"BlPitchC3"  - Blade 3 pitch angle command
 
 "NTRD_FC"    - The force that TRD applys on structure (kN)
 "NTRD_A"     - Status of TRD [0: inactive | 1:active]
