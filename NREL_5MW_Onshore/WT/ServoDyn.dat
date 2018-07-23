@@ -6,9 +6,9 @@ False         Echo         - Echo input data to <RootName>.ech (flag)
 ---------------------- PITCH CONTROL -------------------------------------------
           5   PCMode       - Pitch control mode {0: none, 3: user-defined from routine PitchCntrl, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
           0   TPCOn        - Time to enable active pitch control (s) [unused when PCMode=0]
-     9999.9   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
-     9999.9   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
-     9999.9   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
+      300.2   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
+      300.2   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
+      300.2   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
           8   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s) [see 0_NREL 5MW.pdf page 26]
           8   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
           8   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
