@@ -229,22 +229,28 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 
 
 
-"RootMxc1"   - Blade 1 in-plane moment at the blade root (kN.m)
-"RootMyc1"   - ...     out-of-plane moment at the blade root (kN.m)
-
 "TipDxc1"    - Blade 1 out-of-plane tip deflection (relative to the pitch axis) (m) = OoPDefl1
 "TipDyc1"    - ...     in-plane tip deflection (relative to the pitch axis) (m) = IPDefl1
 "TipDzc1"    - ...     axial tip deflection (relative to the pitch axis) (m)
-"TipDxb1"    - ...     flapwise tip deflection (relative to the pitch axis) (m)
-"TipDyb1"    - ...     edgewise tip deflection (relative to the pitch axis) (m)
-"TipRDzc1"   - Blade 1 torsional tip deflection (relative to the undeflected position) (°) = TwstDefl1
+"TipClrnc1"  - ...     tip-to-tower clearance estimate (m): distance between yaw AXIS and tip of blade 1
+"TipDxc2"    - Blade 2 
+"TipDyc2"    - ...    
+"TipDzc2"    - ...    
+"TipClrnc2"  - ...
+"TipDxc3"    - Blade 3
+"TipDyc3"    - ...    
+"TipDzc3"    - ...    
+"TipClrnc3"  - ...
 
 "PtchPMzc1"  - BldPitch1: Blade 1 pitch angle
 "PtchPMzc2"  - BldPitch2: Blade 2 pitch angle
 "PtchPMzc3"  - BldPitch3: Blade 3 pitch angle
+
+"NacYaw"     - YawPzn: Nacelle yaw angle (position) (°)
+
 "Azimuth"    - LSSTipPxa: Rotor azimuth angle (position) (°) = Low-speed shaft tip position = Blade 1 azimuth angle
 "RotSpeed"   - LSSTipVxa: Rotor azimuth angular speed (rpm) = Low-speed shaft tip speed
-"NacYaw"     - YawPzn: Nacelle yaw angle (position) (°)
+"GenSpeed"   - HSShftV: Angular speed of the high-speed shaft and generator (rpm)
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------

@@ -245,9 +245,12 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "PtchPMzc1"  - BldPitch1: Blade 1 pitch angle
 "PtchPMzc2"  - BldPitch2: Blade 2 pitch angle
 "PtchPMzc3"  - BldPitch3: Blade 3 pitch angle
+
+"NacYaw"     - YawPzn: Nacelle yaw angle (position) (°)
+
 "Azimuth"    - LSSTipPxa: Rotor azimuth angle (position) (°) = Low-speed shaft tip position = Blade 1 azimuth angle
 "RotSpeed"   - LSSTipVxa: Rotor azimuth angular speed (rpm) = Low-speed shaft tip speed
-"NacYaw"     - YawPzn: Nacelle yaw angle (position) (°)
+"GenSpeed"   - HSShftV: Angular speed of the high-speed shaft and generator (rpm)
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------

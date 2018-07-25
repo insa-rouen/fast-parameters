@@ -6,9 +6,9 @@ False         Echo         - Echo input data to <RootName>.ech (flag)
 ---------------------- PITCH CONTROL -------------------------------------------
           5   PCMode       - Pitch control mode {0: none, 3: user-defined from routine PitchCntrl, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
           0   TPCOn        - Time to enable active pitch control (s) [unused when PCMode=0]
-       55.2   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
-       55.2   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
-       55.2   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
+      120.2   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
+      120.2   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
+      120.2   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
           8   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s)
           8   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
           8   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
@@ -23,7 +23,7 @@ True          GenTiStr     - Method to start the generator {T: timed using TimGe
 True          GenTiStp     - Method to stop the generator {T: timed using TimGenOf, F: when generator power = 0} (flag)
      9999.9   SpdGenOn     - Generator speed to turn on the generator for a startup (HSS speed) (rpm) [used only when GenTiStr=False]
           0   TimGenOn     - Time to turn on the generator for a startup (s) [used only when GenTiStr=True]
-         55   TimGenOf     - Time to turn off the generator (s) [used only when GenTiStp=True]
+        120   TimGenOf     - Time to turn off the generator (s) [used only when GenTiStp=True]
 ---------------------- SIMPLE VARIABLE-SPEED TORQUE CONTROL --------------------
      9999.9   VS_RtGnSp    - Rated generator speed for simple variable-speed generator control (HSS side) (rpm) [used only when VSContrl=1]
      9999.9   VS_RtTq      - Rated generator torque/constant generator torque in Region 3 for simple variable-speed generator control (HSS side) (N-m) [used only when VSContrl=1]
@@ -61,10 +61,10 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
 False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (flag)
 "ServoDyn_TMD.dat"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
 False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
-"unused"    TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
+"unused"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
 False         CompNTRD     - Compute nacelle tuned mass damper {true/false} (flag)
-"unused"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
+"ServoDyn_TRD.dat"    NTRDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
 ---------------------- BLADED INTERFACE ----------------------------------------
 "DISCON_dar64.so"    DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
 "DISCON.IN"   DLL_InFile   - Name of input file sent to the DLL (-) [used only with Bladed Interface]
@@ -98,5 +98,11 @@ True          TabDelim     - Use tab delimiters in text tabular output file? (fl
               OutList      - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
 "GenPwr"                   - Electrical generator power and torque
 "GenTq"                    - Electrical generator power and torque
+
+"NTRD_FC"    - The force that TRD applys on structure (kN)
+"NTRD_A"     - Status of TRD [0: inactive | 1:active]
+"NTRD_VA"    - Amplitude of vibration (m/s)
+"NTRD_XS"
+
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
