@@ -23,7 +23,7 @@
 #                                        MODULES
 #-----------------------------------------------------------------------------------------
 #============================== Modules Communs ==============================
-import os, re, numpy, time
+import os, re, time
 import fileinput # iterate over lines from multiple input files
 import shutil # high-level file operations
 import subprocess # call a bash command e.g. 'ls'
@@ -49,7 +49,7 @@ class DLC(object):
     """docstring for DLC"""
     def __init__(self, wind='', gridLossTime=[], outputFolder='/', toLog=False):
         self.wind =  wind
-        self.time = {'start':gridLossTime[0],'end':gridLossTime[1],'step':gridLossTime[2]}
+        self.time = {'start':gridLossTime[0],'stop':gridLossTime[1],'step':gridLossTime[2]}
         self.outputFolder = outputFolder
         self.toLog = toLog
         # some fixed path
@@ -62,8 +62,8 @@ class DLC(object):
 
     def run(self, loop=False, silence=False):
         if loop:
-            for t in numpy.arange(self.time['start'], self.time['end']+self.time['step'],
-                                  self.time['step']):
+            for t in frange(self.time['start'], self.time['stop']+self.time['step'],
+                            self.time['step']):
                 print("|- Simulating loss of grid at", t,"s")
                 self.change_gridloss(t)
                 self.__fast(silence)
@@ -108,7 +108,8 @@ class DLC(object):
                 subprocess.call([command], shell=True)
                 # Note:
                 # When shell=False, args[:] is a command line to execute
-                # When shell=True, args[0] is a command line to execute and args[1:] is arguments to sh
+                # When shell=True, args[0] is a command line to execute and args[1:] is 
+                # arguments to sh
 
 
 
@@ -116,8 +117,19 @@ class DLC(object):
 #-----------------------------------------------------------------------------------------
 #                                  FUNCTION DEFINITION
 #-----------------------------------------------------------------------------------------
-
-
+def frange(start, stop=None, step=1, precision=None):
+    if precision is None:
+        fois = 1e7
+    else:
+        fois = 10**precision
+    
+    new_start = int(start * fois)
+    new_stop = int(stop * fois)
+    new_step = int(step * fois)
+    r = range(new_start, new_stop, new_step)
+    
+    l = [i/fois for i in r]
+    return l
 
 #-----------------------------------------------------------------------------------------
 #                                     MAIN FUNCTION
