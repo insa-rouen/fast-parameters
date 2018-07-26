@@ -10,7 +10,7 @@
 # Date: 25/07/2018
 #
 # Comments:
-#     - 0.0: 
+#     - 0.0: Init version
 #
 # Description:
 # Combine wind condition EOG with loss of grid at different moment
@@ -60,20 +60,18 @@ class DLC(object):
         self.__servodyn = os.path.expanduser(
                             '~/Eolien/Parameters/NREL_5MW_Onshore/WT/ServoDyn_DLC2.3.dat')
 
-    def run(self, loop=False):
+    def run(self, loop=False, silence=False):
         if loop:
             for t in numpy.arange(self.time['start'], self.time['end']+self.time['step'],
                                   self.time['step']):
-                print("|- Simulating loss of grid at", t,"s ...")
+                print("|- Simulating loss of grid at", t,"s")
                 self.change_gridloss(t)
-                self.__fast(False)
-                print(os.getcwd())
-                # self.move_and_rename(t)
-                print("|- [ OK ] Output file has been moved to {} folder !"
+                self.__fast(silence)
+                self.move_and_rename(t)
+                print("[ OK ] Output file has been moved to {} folder !"
                       .format(self.outputFolder))
         else:
-            self.__fast()
-
+            self.__fast(silence)
 
     def move_and_rename(self, time):
         shutil.move(self.__fstPath+self.__prefix+self.wind+'.out',
@@ -92,7 +90,7 @@ class DLC(object):
     def __replace(self, string, keyword, value):
         position = string.find(keyword)
         substring = string[:position]
-        # replace float number (e.g. )
+        # replace float number (e.g. 12.34; 12.; .34)
         newtime = re.sub('[+-]?([0-9]+([.][0-9]*)?|[.][0-9]+)', str(value), substring)
         newline = newtime + string[position:]
         return newline
@@ -100,25 +98,21 @@ class DLC(object):
     def __fast(self, silence=False):            
         with cd('~/Eolien/FAST'):
             # command = 'fast {}{}{}.fst'.format(self.__fstPath, self.__prefix, self.wind)
-            command = './FAST_gdar64 {}{}{}.fst'.format(self.__fstPath, self.__prefix, self.wind)
+            command = './FAST_gdar64 {}{}{}.fst'.format(self.__fstPath, self.__prefix,
+                      self.wind)
             if silence:
-                # print("|- Running FAST in silence mode ...")
-                subprocess.check_output([os.getenv('SHELL'), '-i', '-c', command])
+                print("|- Running FAST in silence mode ...")
+                subprocess.check_output([command], shell=True)
             else:
                 print("|- Running FAST ...")
-                # a = subprocess.check_output([os.getenv('SHELL'), '-i', '-c', command])
-                # print(a)
-                print(os.getcwd())
                 subprocess.call([command], shell=True)
-                subprocess.call([command], shell=True)
-                #When shell=False, args[:] is a command line to execute
-                #When shell=True, args[0] is a command line to execute and args[1:] is arguments to sh
-
-                # subprocess.call([os.getenv('SHELL'), '-i', '-c', 'exit'])
-                # subprocess.call([command])
+                # Note:
+                # When shell=False, args[:] is a command line to execute
+                # When shell=True, args[0] is a command line to execute and args[1:] is arguments to sh
 
 
-                
+
+
 #-----------------------------------------------------------------------------------------
 #                                  FUNCTION DEFINITION
 #-----------------------------------------------------------------------------------------
@@ -129,9 +123,11 @@ class DLC(object):
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
-    simu1 = DLC(wind='EOGR', gridLossTime=[110, 140.5, 20], outputFolder='/withoutTRD')
-    simu1.run(True)
-    # simu1.change_gridloss()
+    TIK = time.time()
+    simu1 = DLC(wind='EOGR', gridLossTime=[110, 140.5, 30], outputFolder='/withoutTRD')
+    simu1.run(loop=True, silence=True)
+    TOK = time.time()
+    print("|- Total time :", TOK-TIK, "s")
 
 
 #-----------------------------------------------------------------------------------------
