@@ -98,7 +98,7 @@ class DLC(object):
     def __fast(self, silence=False):            
         with cd('~/Eolien/FAST'):
             # command = 'fast {}{}{}.fst'.format(self.__fstPath, self.__prefix, self.wind)
-            command = './FAST_gdar64 {}{}{}.fst'.format(self.__fstPath, self.__prefix,
+            command = './FAST_glin64 {}{}{}.fst'.format(self.__fstPath, self.__prefix,
                       self.wind)
             if silence:
                 print("|- Running FAST in silence mode ...")
@@ -124,10 +124,32 @@ class DLC(object):
 #-----------------------------------------------------------------------------------------
 def main():
     TIK = time.time()
-    simu1 = DLC(wind='EOGR', gridLossTime=[110, 140.5, 30], outputFolder='/withoutTRD')
+    timerange = [110, 140.5, 0.1]
+
+    simu1 = DLC(wind='EOGR-2.0', gridLossTime=timerange, outputFolder='/withoutTRD')
+    print("========== {} ==========".format(simu1.wind))
     simu1.run(loop=True, silence=True)
     TOK = time.time()
     print("|- Total time :", TOK-TIK, "s")
+
+    simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
+    print("========== {} ==========".format(simu2.wind))
+    simu2.run(loop=True, silence=True)
+    TIK = time.time()
+    print("|- Total time :", TIK-TOK, "s")
+
+    simu3 = DLC(wind='EOGR+2.0', gridLossTime=timerange, outputFolder='/withoutTRD')
+    print("========== {} ==========".format(simu3.wind))
+    simu3.run(loop=True, silence=True)
+    TOK = time.time()
+    print("|- Total time :", TOK-TIK, "s")
+
+    simu4 = DLC(wind='EOGO', gridLossTime=timerange, outputFolder='/withoutTRD')
+    print("========== {} ==========".format(simu4.wind))
+    simu4.run(loop=True, silence=True)
+    TIK = time.time()
+    print("|- Total time :", TIK-TOK, "s")
+
 
 
 #-----------------------------------------------------------------------------------------
