@@ -48,9 +48,9 @@ def cd(newdir):
 
 class DLC(object):
     """docstring for DLC"""
-    def __init__(self, wind='', gridLossTime=[0,0,0], outputFolder='/', toLog=False):
+    def __init__(self, wind='', gridLossTime=[], outputFolder='/', toLog=False):
         self.wind =  wind
-        self.time = {'start':gridLossTime[0],'stop':gridLossTime[1],'step':gridLossTime[2]}
+        self.timerange = gridLossTime
         self.outputFolder = outputFolder
         self.toLog = toLog
         # Get OS platform name
@@ -67,8 +67,7 @@ class DLC(object):
 
     def run(self, loop=False, silence=False):
         if loop:
-            for t in frange(self.time['start'], self.time['stop']+self.time['step'],
-                            self.time['step']):
+            for t in self.timerange:
                 print("|- Simulating loss of grid at", t,"s")
                 self.change_gridloss(t)
                 self._fast(silence)
@@ -100,14 +99,10 @@ class DLC(object):
         newline = newtime + string[position:]
         return newline
 
-
     def _fast(self, silence=False):            
         with cd('~/Eolien/FAST'):
-            # command = 'fast {}{}{}.fst'.format(self._fstPath, self._prefix, self.wind)
             command = './{0} {1}{2}{3}{4}.fst'.format(self._fastName, self._fstPath,
                       self._prefix, self.wind, self._suffix)
-
-            # command = 'ls && echo TEST'
             if silence:
                 # print("|- Running FAST in silence mode ...")
                 subprocess.check_output([command], shell=True)
@@ -127,18 +122,17 @@ class DLC_para(DLC):
         self.time = gridLoss
         # some fixed path
         self.__outputPath = os.path.expanduser(
-                                     '~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3')
+                                        '~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3')
         self._fstPath = os.path.expanduser('~/Eolien/Parameters/Python/DLC2.3')
         self._prefix = '/DLC2.3_'
         self.__servodyn = os.path.expanduser(
-                            '~/Eolien/Parameters/Python/DLC2.3/WT/ServoDyn_DLC2.3.dat')
+                               '~/Eolien/Parameters/Python/DLC2.3/WT/ServoDyn_DLC2.3.dat')
 
         self._suffix = '_'+str(gridLoss)
         self.__fst_copy = ''
         self.__servodyn_copy = ''
 
         self.make_copy()
-       
 
     def make_copy(self):
         # ServoDyn.dat
@@ -209,13 +203,14 @@ def run_multiprocess(wind, gridloss):
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
-    TIK = time.time()
-    timerange = frange(110, 140.5+0.01, 1)
-    n = 23
-    print("Processor",n)
+    # ----- Running on multi processor
+    TIK = time.time()    
+    timerange = frange(110, 140.5+0.01, 30)
+
+    wind = 'EOGR'
+    print("========== {} ==========".format(wind))
     pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    # # pool.map(run_multiprocess, timerange) # map/apply: lock the main program untill all processes are finished
-    [pool.apply_async(run_multiprocess, args=('EOGR', t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+    [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
     pool.close() # close: call .close only when never going to submit more work to the Pool instance
     pool.join() # join: wait for the worker processes to terminate
 
@@ -223,10 +218,9 @@ def main():
     print("|- Total time :", TOK-TIK, "s")
 
 
-
+    # ----- Running on single processor
     # TIK = time.time()
-
-    # timerange = [110, 140.5, 3]
+    # timerange = frange(110, 140.5+0.01, 30)
 
     # simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
     # print("========== {} ==========".format(simu2.wind))
@@ -234,21 +228,6 @@ def main():
 
     # TOK = time.time()
     # print("|- Total time :", TOK-TIK, "s")
-
-
-
-
-    # simu3 = DLC(wind='EOGR+2.0', gridLossTime=timerange, outputFolder='/withoutTRD')
-    # print("========== {} ==========".format(simu3.wind))
-    # simu3.run(loop=True, silence=True)
-    # TOK = time.time()
-    # print("|- Total time :", TOK-TIK, "s")
-
-    # simu4 = DLC(wind='EOGO', gridLossTime=timerange, outputFolder='/withoutTRD')
-    # print("========== {} ==========".format(simu4.wind))
-    # simu4.run(loop=True, silence=True)
-    # TIK = time.time()
-    # print("|- Total time :", TIK-TOK, "s")
 
 
 
