@@ -11,7 +11,7 @@
 #
 # Comments:
 #     - 0.0: Init version
-#
+#     - 1.0: Enable multiprocessing
 # Description:
 # Combine wind condition EOG with loss of grid at different moment
 # 
@@ -27,7 +27,7 @@ import os, platform, re, time
 import fileinput # iterate over lines from multiple input files
 import shutil # high-level file operations
 import subprocess # call a bash command e.g. 'ls'
-from multiprocessing import Pool # enable multiprocessing
+import multiprocessing # enable multiprocessing
 from contextlib import contextmanager # utilities for with-statement contexts
 #============================== Modules Personnels ==============================
 
@@ -79,7 +79,7 @@ class DLC(object):
             self._fast(silence)
 
     def move_and_rename(self, time):
-        shutil.move(self._fstPath+self._prefix+self.wind+'.out',
+        shutil.move(self._fstPath+self._prefix+self.wind+self._suffix+'.out',
                    self.__outputPath+self.outputFolder+'/'+self.wind+'/'+str(time)+'.out')
 
     def change_gridloss(self, time):
@@ -168,8 +168,8 @@ class DLC_para(DLC):
             f.write(data)
         self.__fst_copy = filename # update .fst file
 
-    def run(self):
-        self._fast()
+    def run(self, silence=False):
+        self._fast(silence)
 
     def _change_string(self, text, keyword, new=""):
         if keyword == 'ServoFile':
@@ -199,30 +199,43 @@ def frange(start, stop=None, step=1, precision=None):
     l = [i/fois for i in r]
     return l
 
+def run_multiprocess(wind, gridloss):
+    simulation = DLC_para(wind=wind, gridLoss=gridloss, outputFolder='/withoutTRD')
+    simulation.run(True)
+    simulation.move_and_rename(simulation.time)
+
 #-----------------------------------------------------------------------------------------
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
+    # TIK = time.time()
+    # timerange = frange(110, 140.5+3, 3)
+    # n = "default"
+    # print("Processor",n)
+    # pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
+    # # pool.map(run_multiprocess, timerange) # map/apply: lock the main program untill all processes are finished
+    # [pool.apply_async(run_multiprocess, args=('EOGR', t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+    # pool.close() # close: call .close only when never going to submit more work to the Pool instance
+    # pool.join() # join: wait for the worker processes to terminate
+
+    # TOK = time.time()
+    # print("|- Total time :", TOK-TIK, "s")
+
+
+
     TIK = time.time()
-    timerange = [110, 140.5, 30]
 
-    # simu1 = DLC(wind='EOGR-2.0', gridLossTime=timerange, outputFolder='/withoutTRD')
-    simu0 = DLC_para(wind='EOGR', gridLoss=130.5, outputFolder='/withoutTRD')
-    simu0.run()    
+    timerange = [110, 140.5, 3]
 
-    # processPool = Pool() # define number of worker (= numbers of processor by default)
-    # processPool.map(simu0.run_multiprocess, timerange)
-    # processPool.close()
-    # processPool.join()
+    simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
+    print("========== {} ==========".format(simu2.wind))
+    simu2.run(loop=True, silence=False)
 
     TOK = time.time()
     print("|- Total time :", TOK-TIK, "s")
 
-    # simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
-    # print("========== {} ==========".format(simu2.wind))
-    # simu2.run(loop=True, silence=False)
-    # TIK = time.time()
-    # print("|- Total time :", TIK-TOK, "s")
+
+
 
     # simu3 = DLC(wind='EOGR+2.0', gridLossTime=timerange, outputFolder='/withoutTRD')
     # print("========== {} ==========".format(simu3.wind))
