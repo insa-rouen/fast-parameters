@@ -109,10 +109,10 @@ class DLC(object):
 
             # command = 'ls && echo TEST'
             if silence:
-                print("|- Running FAST in silence mode ...")
+                # print("|- Running FAST in silence mode ...")
                 subprocess.check_output([command], shell=True)
             else:
-                print("|- Running FAST ...")
+                # print("|- Running FAST ...")
                 subprocess.call([command], shell=True)
                 # Note:
                 # When shell=False, args[:] is a command line to execute
@@ -169,6 +169,7 @@ class DLC_para(DLC):
         self.__fst_copy = filename # update .fst file
 
     def run(self, silence=False):
+        print("|- Calculating the case of", self.time, "...")
         self._fast(silence)
 
     def _change_string(self, text, keyword, new=""):
@@ -208,31 +209,31 @@ def run_multiprocess(wind, gridloss):
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
-    # TIK = time.time()
-    # timerange = frange(110, 140.5+3, 3)
-    # n = "default"
-    # print("Processor",n)
-    # pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    # # pool.map(run_multiprocess, timerange) # map/apply: lock the main program untill all processes are finished
-    # [pool.apply_async(run_multiprocess, args=('EOGR', t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    # pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    # pool.join() # join: wait for the worker processes to terminate
-
-    # TOK = time.time()
-    # print("|- Total time :", TOK-TIK, "s")
-
-
-
     TIK = time.time()
-
-    timerange = [110, 140.5, 3]
-
-    simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
-    print("========== {} ==========".format(simu2.wind))
-    simu2.run(loop=True, silence=False)
+    timerange = frange(110, 140.5+0.01, 1)
+    n = 23
+    print("Processor",n)
+    pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
+    # # pool.map(run_multiprocess, timerange) # map/apply: lock the main program untill all processes are finished
+    [pool.apply_async(run_multiprocess, args=('EOGR', t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+    pool.close() # close: call .close only when never going to submit more work to the Pool instance
+    pool.join() # join: wait for the worker processes to terminate
 
     TOK = time.time()
     print("|- Total time :", TOK-TIK, "s")
+
+
+
+    # TIK = time.time()
+
+    # timerange = [110, 140.5, 3]
+
+    # simu2 = DLC(wind='EOGR', gridLossTime=timerange, outputFolder='/withoutTRD')
+    # print("========== {} ==========".format(simu2.wind))
+    # simu2.run(loop=True, silence=False)
+
+    # TOK = time.time()
+    # print("|- Total time :", TOK-TIK, "s")
 
 
 
