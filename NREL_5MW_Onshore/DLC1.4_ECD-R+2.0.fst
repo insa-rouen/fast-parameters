@@ -1,10 +1,10 @@
 ------- FAST v8.16.* INPUT FILE ------------------------------------------------
-DLC 1.4 @18m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore) 
+DLC 1.4 ECD @ -13.4 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore) 
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
-        120   TMax            - Total run time (s) > 40s + transient duration
-     0.0125   DT              - Recommended module time step (s)
+        190   TMax            - Total run time (s) > 40s + transient duration
+       0.01   DT              - Recommended module time step (s)
           2   InterpOrder     - Interpolation order for input/output time history (-) {1=linear, 2=quadratic}
           0   NumCrctn        - Number of correction iterations (-) {0=explicit calculation, i.e., no corrections}
       99999   DT_UJac         - Time between calls to get Jacobians (s)
@@ -19,11 +19,11 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
           0   CompMooring     - Compute mooring system (switch) {0=None; 1=MAP++; 2=FEAMooring; 3=MoorDyn}
           0   CompIce         - Compute ice loads (switch) {0=None; 1=IceFloe; 2=IceDyn}
 ---------------------- INPUT FILES ---------------------------------------------
-"WT/ElastoDyn.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
+"WT/DLC2.3/ElastoDyn_R+2.0.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
 "unused"      BDBldFile(1)    - Name of file containing BeamDyn input parameters for blade 1 (quoted string)
 "unused"      BDBldFile(2)    - Name of file containing BeamDyn input parameters for blade 2 (quoted string)
 "unused"      BDBldFile(3)    - Name of file containing BeamDyn input parameters for blade 3 (quoted string)
-"DLC1.4_ECD+R-2_IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
+"DLC1.4_ECD-R+2.0_IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
 "WT/AeroDyn.dat"     AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
 "WT/ServoDyn.dat"    ServoFile       - Name of file containing control and electrical-drive input parameters (quoted string)
 "unused"      HydroFile       - Name of file containing hydrodynamic input parameters (quoted string)
@@ -34,7 +34,7 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
 True          SumPrint        - Print summary data to "<RootName>.sum" (flag)
           5   SttsTime        - Amount of time between screen status messages (s)
       99999   ChkptTime       - Amount of time between creating checkpoint files for potential restart (s)
-     0.0125   DT_Out          - Time step for tabular output (s)
+  "default"   DT_Out          - Time step for tabular output (s)
           0   TStart          - Time to begin tabular output (s)
           1   OutFileFmt      - Format for tabular (time-marching) output file (switch) {1: text file [<RootName>.out], 2: binary file [<RootName>.outb], 3: both}
 True          TabDelim        - Use tab delimiters in text tabular output file? (flag) {uses spaces if false}
