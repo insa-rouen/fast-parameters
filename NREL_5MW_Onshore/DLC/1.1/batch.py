@@ -50,6 +50,8 @@ class Turbulence(object):
         self.filename = self.prefix + self.inpFile + self.suffix + self._extension
 
     def run(self, silence=False):
+        print("|- Generating {} wind at {} m/s with seed ID {} ...".format(self.seed[0],
+                                                              self.seed[1], self.seed[2]))
         self.change_seed()
         self._turbsim(silence)
 
@@ -125,9 +127,8 @@ def frange(start, stop=None, step=1, precision=None):
     return l
 
 def run_multiprocess(seed):
-    print(seed)
     simulation = Turbulence_para(seed)
-    simulation.run()
+    simulation.run(True)
 
 
 
@@ -141,7 +142,11 @@ def main():
     with open('../6seeds.json','r') as f:
         seeds = json.loads(f.read())
 
-    pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
+    liste = []
+    [liste.append(s) for s in seeds if s[0] == "NTM"]
+    seeds = liste
+
+    pool = multiprocessing.Pool(4) # define number of worker (= numbers of processor by default)
     # [pool.apply_async(run_multiprocess, args=s) for s in seeds] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
     pool.map(run_multiprocess, seeds)
     pool.close() # close: call .close only when never going to submit more work to the Pool instance

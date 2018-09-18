@@ -66,7 +66,7 @@ class DLC(object):
         self.fastFile = '{}{}_{}mps.fst'.format(self.prefix, self.seed[0], self.seed[1])
 
     def run(self, silence=False):
-        print("|- Calculating {} at {} m/s seed ID {} ...".format(self.seed[0],
+        print("|- Calculating {} at {} m/s with seed ID {} ...".format(self.seed[0],
                                                               self.seed[1], self.seed[2]))
         self.change_wind_profil()
         self._fast(silence)
@@ -160,6 +160,10 @@ def main():
     with cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
         with open('6seeds.json', 'r') as f:
             seeds = json.loads(f.read())
+
+    liste = []
+    [liste.append(s) for s in seeds if s[0] == "NTM"]
+    seeds = liste
 
     # ----- Running on multi processor
     TIK = time.time()    
