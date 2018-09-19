@@ -75,8 +75,8 @@ class DLC(object):
     def move(self):
         source = self.inputPath+'{}{}_{}mps_{}.out'.format(self.prefix, self.seed[0],
                                                            self.seed[1], self.seed[2])
-        destination = self.outputPath+self.outputFolder+'{}{}_{}mps_{}.out'.format(
-                                    self.prefix, self.seed[0], self.seed[1], self.seed[2])
+        destination = self.outputPath+self.outputFolder+'{}_{}mps_{}.out'.format(
+                                                 self.seed[0], self.seed[1], self.seed[2])
         shutil.move(source, destination)
 
     def change_wind_profil(self):
