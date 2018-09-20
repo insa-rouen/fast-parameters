@@ -52,7 +52,7 @@ Format for crosstalk info is: OutCol #1, OutCol #2, XT(1,1), XT(1,2), XT(2,1), X
 0
 -----  Peak and Valley Listing  ------------------------------------------------
 1      - channels will have their peaks and/or valleys listed to a file.  Next three lines ignored if zero.
-2	   - Method of identifying peaks (1: slope change, 2: thresholds)
+1	   - Method of identifying peaks (1: slope change, 2: thresholds)
 True  - Include the time in the peak-list file(s)?
 Format for peak-list info is: Channel, WriteTroughs?, Trough Thresh., WritePeaks?, Peak Thresh.
 92, True, "mean", True, "mean"
