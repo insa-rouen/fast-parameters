@@ -1,0 +1,153 @@
+-----  Crunch v3.01 Input File  -----------------------------------------------
+Generate Maximum output.  Autodetecting format.
+-----  Job Options  ------------------------------------------------------------
+False       Echo   - The flag for echoing input to <root>.ech.
+False		- Output statistics?
+False		- Output modified data?
+False		- Tab-delimited output?  (best for spreadsheets)
+"ES11.3"	- Numerical-output format specifier.  See manual for limitations.
+False       - Output aggregate analysis files?  False for separate analysis files for each input file.
+"Aggregate" - is the root name of the aggregate files, if aggregates were specified above.
+-----  Input-Data Layout  ------------------------------------------------------
+False       FASTbin        - The flag that indicates if the input files are in FAST binary form.  Considered traditionally formatted if FALSE.  All records will be processed.
+7           CTRow          - The row with the channel titles on it (zero if no titles are available of if titles are specified below, ignored if FASTbin is true).
+8           CURow          - The row with the channel units on it (zero if no units are available of if units are specified below, ignored if FASTbin is true).
+9           FDRow          - The first row of data (ignored if FASTbin is true).
+0           NumRecs        - The number of data records to read from each file (0 to automatically determine which rows to read and if TEnd>0, ignored if FASTbin is true).
+60.0, 660.0    TStart , TEnd  - The start and end times (enter zeros if you want to use all the data records in the file).
+-----  Channel Information  ----------------------------------------------------
+0      - columns in each input file.
+0      - columns will be used.
+Format for column info is: Col_Title(10 char max), Units(10 char max), Orig_Col_#, Scale, Offset
+-----  Filtering  --------------------------------------------------------------
+0      - of the output columns are to be modified by the IIR filter.  Next four lines ignored if zero.
+4 5 6 7 8 9
+1      - is the type of filter (1-LowPass, 2-HighPass, 3-BandPass)
+0.0    - is the low cutoff frequency (ignored for low-pass filters)
+10.0   - is the high cutoff frequency (ignored for high-pass filters)
+-----  Calculated Channels  ----------------------------------------------------
+0           - new calculated channels will be generated.
+1234567890  - is the integer seed for the random number generator (-2,147,483,648 to 2,147,483,647)
+Format for column info is: Col_Title(10 char max), [opt]Units(10 char max), Equation.  Put each field in double quotes.
+-----  Moving Averages  --------------------------------------------------------
+0      - channels will have moving averages generated for them.
+Format for moving-average info is: "Title" (10 char max), channel #, averaging period
+-----  Time and Wind Speed  ----------------------------------------------------
+1      - is the Time column.
+2      - is the primary wind-speed column (used for mean wind speed and turbulence intensity, 0 for none)
+-----  Load Roses  -------------------------------------------------------------
+0      - pair(s) of channels will have load roses generated for them.
+Format for column info is: Rose_Title(8 char max), 0 degree load, 90 degree load, # sectors
+-----  Azimuth Averages  -------------------------------------------------------
+0      - columns are to be azimuth averaged.  Next four lines ignored if 0.
+0
+0      - is the number of azimuth bins.
+0      - is the azimuth column.
+True   - Output azimuth averages to a file?
+-----  Crosstalk  --------------------------------------------------------------
+0      - pairs of columns will have their crosstalk removed.
+Format for crosstalk info is: OutCol #1, OutCol #2, XT(1,1), XT(1,2), XT(2,1), XT(2,2).
+-----  Peak Finding  -----------------------------------------------------------
+0      - of the output columns are to be modified by the peak finder.  Next line ignored if zero.
+0
+-----  Peak and Valley Listing  ------------------------------------------------
+1      - channels will have their peaks and/or valleys listed to a file.  Next three lines ignored if zero.
+1	   - Method of identifying peaks (1: slope change, 2: thresholds)
+True  - Include the time in the peak-list file(s)?
+Format for peak-list info is: Channel, WriteTroughs?, Trough Thresh., WritePeaks?, Peak Thresh.
+92, True, "mean", True, "mean"
+-----  Probablity Mass  --------------------------------------------------------
+0      - of the output columns will have PDFs generated for them.  Next two lines ignored if zero.
+0      - is the number of bins.
+Format for column info is: Column #, Minimum, Maximum.  If Min=Max=0, autocalculate them.
+-----  Rainflow Cycles  --------------------------------------------------------
+0      - of the output columns will have rainflow cycle counts generated for them.  Next six lines ignored if zero.
+0      - seconds is the rainflow counting period.
+False  - Normalize rainflow cycle counts by bin width?
+True   - For bins with zero counts, output a space if we are using tab-delimited output?
+0      - is the number of rainflow range bins.  Use "0" to output the actual cycles instead of binned cycles.
+0      - is the number of rainflow means bins.  Use "1" to output ranges only.
+Format for column info is: Column #, Half-Cycle Multiplier, Max Range, Min Mean, Max Mean.
+-----  Extreme Events  ---------------------------------------------------------
+0     NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
+Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols long), #InfCols(may be 0), ColList(#InfCols long)
+-----  Summary Files  ----------------------------------------------------------
+0      - of the output columns will have statistics put in separate summary files.  Next line ignored if zero.
+0
+-----  Statistical Extrapolation  ----------------------------------------------
+0      - of the output columns will have their statistics extrapolated.
+Format for statistics info is: Col_#,  Hours_to_extrapolate_to, Quantile desired
+-----  Input Files  ------------------------------------------------------------
+72 input files to read:
+NTM_11mps_-1142801236.out
+NTM_11mps_-1151616455.out
+NTM_11mps_-662083514.out
+NTM_11mps_1138184021.out
+NTM_11mps_1809784475.out
+NTM_11mps_2007818475.out
+NTM_13mps_-1491944232.out
+NTM_13mps_-507557892.out
+NTM_13mps_1239768956.out
+NTM_13mps_239100321.out
+NTM_13mps_481013534.out
+NTM_13mps_9665142.out
+NTM_15mps_-1059849579.out
+NTM_15mps_-1579925023.out
+NTM_15mps_-1648477773.out
+NTM_15mps_-2140115894.out
+NTM_15mps_-524961401.out
+NTM_15mps_544184497.out
+NTM_17mps_-1809560481.out
+NTM_17mps_-22462609.out
+NTM_17mps_-746980301.out
+NTM_17mps_1021468918.out
+NTM_17mps_569454875.out
+NTM_17mps_980129578.out
+NTM_19mps_-1737616726.out
+NTM_19mps_-2092241301.out
+NTM_19mps_-297632988.out
+NTM_19mps_189129648.out
+NTM_19mps_2041389196.out
+NTM_19mps_940973702.out
+NTM_21mps_-800757005.out
+NTM_21mps_-80234845.out
+NTM_21mps_-81844797.out
+NTM_21mps_1715153134.out
+NTM_21mps_1721102115.out
+NTM_21mps_42349259.out
+NTM_23mps_-1028919489.out
+NTM_23mps_-1573008127.out
+NTM_23mps_-75781047.out
+NTM_23mps_155693048.out
+NTM_23mps_1875588265.out
+NTM_23mps_272772546.out
+NTM_25mps_-1268148618.out
+NTM_25mps_1014085195.out
+NTM_25mps_1156929694.out
+NTM_25mps_1511769001.out
+NTM_25mps_1995327069.out
+NTM_25mps_570040216.out
+NTM_3mps_-1325143789.out
+NTM_3mps_-1431633139.out
+NTM_3mps_-1543230986.out
+NTM_3mps_-2067656626.out
+NTM_3mps_2092717846.out
+NTM_3mps_231855854.out
+NTM_5mps_-83415674.out
+NTM_5mps_1015888075.out
+NTM_5mps_131017828.out
+NTM_5mps_1423691660.out
+NTM_5mps_1703826303.out
+NTM_5mps_505444902.out
+NTM_7mps_-856885819.out
+NTM_7mps_1103312561.out
+NTM_7mps_1733084170.out
+NTM_7mps_672135059.out
+NTM_7mps_813356009.out
+NTM_7mps_970401165.out
+NTM_9mps_-1365946105.out
+NTM_9mps_-271427299.out
+NTM_9mps_1134645532.out
+NTM_9mps_1430752855.out
+NTM_9mps_2094327339.out
+NTM_9mps_516851445.out
