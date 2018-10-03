@@ -148,7 +148,7 @@ def frange(start, stop=None, step=1, precision=None):
 
 def run_multiprocess(seed):
     simulation = DLC(seed)
-    simulation.run()
+    simulation.run(True)
 
 
 
