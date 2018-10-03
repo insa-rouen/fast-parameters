@@ -1,0 +1,44 @@
+------- TRD V1.03.* INPUT FILE --------------------------------------------
+Input file for twin rotor damper
+-------------------- TRD GEOMETRICAL CONFIGURATION ------------------------
+2000.0      TRD_MC     - TRD mass (kg)
+1.0         TRD_RC     - TRD radius (m)
+0.0         TRD_P(1)   - x position of the TRD w.r.t. nacelle	(m)
+0.0         TRD_P(2)   - y position of the TRD w.r.t. nacelle	(m)
+0.0         TRD_P(3)   - z position of the TRD w.r.t. nacelle	(m)
+----------------------- TRD INITIAL CONDITIONS ----------------------------
+0.0         TRD_PHI_DSP  - TRD initial position (radians)
+------------------ TRD CONTROL PARAMETERS - COMMON ------------------------
+1           TRD_CMODE  - control mode {1:damping of one mode; 2:damping of all vibrations} (-)
+120.0        TRD_TIMEON - Time before activation of TRD (s)
+0.0         TRD_AON    - TRD activation threshold (-)
+0.0         TRD_AOFF   - TRD deactivation threshold (-)
+3.20301E-01 TRD_F0     - TRD frequency of the mode to be damped (Hz)
+------------------ TRD CONTROL PARAMETERS - MODE 1 ------------------------
+277.8       TRD_K(1)   - TRD K vector first coefficient (-)
+26.7        TRD_K(2)   - TRD K vector second coefficient (-)
+-86.712     TRD_L(1)   - TRD L vector first coefficient (-)
+-17.0222    TRD_L(2)   - TRD L vector second coefficient (-)
+4.78920E+05 TRD_M  	   - TRD modal mass of the mode to be damped (kg)
+------------------ TRD CONTROL PARAMETERS - MODE 2 ------------------------
+------------- A matrix (4x4) for input signal filtering -------------------
+-2.8284     -2.0        1.3109      0.0
+2.0         0.0         0.0         1.3109
+-1.3109     0.0         0.0         0.0
+0.0         -1.3109     0.0         0.0
+-------------- B vector (4) for input signal filtering --------------------
+2.0         2.0         0.0         0.0
+-------------- C vector (4) for input signal filtering --------------------
+0.0         1.0         0.0         0.0
+-------------- D parameter for input signal filtering ---------------------
+0.0
+----------------------- A matrix (2x2) for PID ----------------------------
+-2.8        0.0
+1.0         0.0
+------------------------ B vector (2) for PID -----------------------------
+1.0         0.0
+------------------------ C vector (2) for PID -----------------------------
+-10.9744    0.0046
+------------------------ D parameter for PID ------------------------------
+4.0790
+---------------------------------------------------------------------------
