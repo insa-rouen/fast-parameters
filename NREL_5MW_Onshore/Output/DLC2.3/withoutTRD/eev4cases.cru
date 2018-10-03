@@ -5,7 +5,7 @@ False       Echo   - The flag for echoing input to <root>.ech.
 False		- Output statistics?
 False		- Output modified data?
 False		- Tab-delimited output?  (best for spreadsheets)
-"ES11.4"	- Numerical-output format specifier.  See manual for limitations.
+"ES11.3"	- Numerical-output format specifier.  See manual for limitations.
 False       - Output aggregate analysis files?  False for separate analysis files for each input file.
 "Aggregate" - is the root name of the aggregate files, if aggregates were specified above.
 -----  Input-Data Layout  ------------------------------------------------------

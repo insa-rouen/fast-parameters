@@ -205,17 +205,17 @@ def run_multiprocess(wind, gridloss):
 def main():
     # ----- Running on multi processor
     TIK = time.time()    
-    timerange = frange(110, 140.5+0.01, 30)
+    timerange = frange(60, 90.5+0.01, 0.01)
 
-    wind = 'EOGR'
-    print("========== {} ==========".format(wind))
-    pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    pool.join() # join: wait for the worker processes to terminate
+    for wind in ['EOGR', 'EOGO', 'EOGR-2.0', 'EOGR+2.0']:
+        print("========== {} ==========".format(wind))
+        pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
+        [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+        pool.close() # close: call .close only when never going to submit more work to the Pool instance
+        pool.join() # join: wait for the worker processes to terminate
 
-    TOK = time.time()
-    print("|- Total time :", TOK-TIK, "s")
+        TOK = time.time()
+        print("|- Total time :", TOK-TIK, "s")
 
 
     # ----- Running on single processor
