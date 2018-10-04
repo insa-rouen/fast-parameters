@@ -15,7 +15,7 @@ B          WIND TURBULENCE CATEGORY (A, B or C)
 25.0       Cut-out wind speed, m/s or ft/s
 !List of Conditions to generate (one per line)
 EOGr-2.0
-EOGr+0.0
+EOGr
 EOGr+2.0
 EOGo
 
