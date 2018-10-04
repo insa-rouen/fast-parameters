@@ -205,7 +205,7 @@ def run_multiprocess(wind, gridloss):
 def main():
     # ----- Running on multi processor
     TIK = time.time()    
-    timerange = frange(60, 90.5+0.01, 0.01)
+    timerange = frange(60, 90.5+0.01, 0.1)
 
     for wind in ['EOGR', 'EOGO', 'EOGR-2.0', 'EOGR+2.0']:
         print("========== {} ==========".format(wind))
