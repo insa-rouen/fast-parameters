@@ -64,6 +64,7 @@ class DLC(object):
         self.inflowFile = '{}{}_{}mps_IW.dat'.format(self.prefix, self.seed[0],
                                                      self.seed[1])
         self.fastFile = '{}{}_{}mps.fst'.format(self.prefix, self.seed[0], self.seed[1])
+        self.debug = ""
 
     def run(self, silence=False):
         print("|- Calculating {} at {} m/s with seed ID {} ...".format(self.seed[0],
@@ -118,14 +119,30 @@ class DLC(object):
     def _fast(self, silence=False):            
         with cd('~/Eolien/FAST'):
             command = './{0} {1}{2}'.format(self._fastName, self.inputPath, self.fastFile)
-            if silence:
-                subprocess.check_output([command], shell=True)
+            try:
+                if silence:
+                    output = subprocess.check_output([command], shell=True)
+                else:
+                    output = subprocess.check_call([command], shell=True)
+                    # Note:
+                    # When shell=False, args[:] is a command line to execute
+                    # When shell=True, args[0] is a command line to execute and args[1:] 
+                    # is arguments to sh
+            except subprocess.CalledProcessError as error:
+                errorMessage = error.output
+                debug = True
+            except Exception as e:
+                raise e
             else:
-                subprocess.call([command], shell=True)
-                # Note:
-                # When shell=False, args[:] is a command line to execute
-                # When shell=True, args[0] is a command line to execute and args[1:] is 
-                # arguments to sh
+                debug = False
+
+        if debug:
+            directory = self.inputPath + '/log'
+            if not os.path.exists(directory): # create new folder is non-exist
+                os.makedirs(directory)
+            with open(directory+'/'+self.seed[2]+'.bug', 'wb') as f:
+                f.write(errorMessage)
+            print("[Error] FAST has an error for simulation {}.".format(self.seed))
 
 
 
@@ -160,32 +177,34 @@ def main():
     with cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
         with open('12seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-
-    liste = []
-    [liste.append(s) for s in seeds if s[0] == "NTM"]
-    seeds = liste
-
-    # ----- Running on multi processor
+    seeds = [s for s in seeds if s[0] == "NTM"]
     TIK = time.time()
 
-    pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    # [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    pool.map(run_multiprocess, seeds)
-    pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    pool.join() # join: wait for the worker processes to terminate
 
-    TOK = time.time()
-    print("|- Total time :", TOK-TIK, "s")
+    # ----- Testing
+    # seed = ["NTM", "5", "-1494309489"]
+    # seed = ["NTM", "3", "-615392578"]
+    # seed = [s for s in seeds if s[-1] == "-615392578"][0]
+    # seeds = [["NTM", "5", "-1494309489"], ["NTM", "3", "-615392578"], liste[-1]]
+    # run_multiprocess(seed)
+
+
+    # ----- Running on multi processor
+    # define number of worker (= numbers of processor by default)
+    pool = multiprocessing.Pool()
+    pool.map(run_multiprocess, seeds)
+    pool.close() # close: call .close only when never going to submit more work to the
+                 # Pool instance
+    pool.join() # join: wait for the worker processes to terminate
 
 
     # ----- Running on single processor
-    # TIK = time.time()
-
     # simu2 = DLC(seed=seeds[0])
     # simu2.run(silence=False)
 
-    # TOK = time.time()
-    # print("|- Total time :", TOK-TIK, "s")
+
+    TOK = time.time()
+    print("|- Total time :", TOK-TIK, "s")
 
 
 
