@@ -66,10 +66,12 @@ class DLC(object):
         self.fastFile = '{}{}_{}mps.fst'.format(self.prefix, self.seed[0], self.seed[1])
         self.debug = ""
 
-    def run(self, silence=False):
+    def run(self, silence=False, reuse=False):
         print("|- Calculating {} at {} m/s with seed ID {} ...".format(self.seed[0],
                                                               self.seed[1], self.seed[2]))
-        self.change_wind_profil()
+        if reuse is False:
+            self.change_wind_profil()
+        
         self._fast(silence)
         self.move()
 
@@ -165,7 +167,7 @@ def frange(start, stop=None, step=1, precision=None):
 
 def run_multiprocess(seed):
     simulation = DLC(seed)
-    simulation.run(True)
+    simulation.run(silence=True, reuse=True)
 
 
 
@@ -184,9 +186,19 @@ def main():
     # ----- Testing
     # seed = ["NTM", "5", "-1494309489"]
     # seed = ["NTM", "3", "-615392578"]
-    # seed = [s for s in seeds if s[-1] == "-615392578"][0]
+    # seed = ["NTM", "17", "537417508"]
     # seeds = [["NTM", "5", "-1494309489"], ["NTM", "3", "-615392578"], liste[-1]]
     # run_multiprocess(seed)
+    
+    # Recalculate cases that have been stopped by error on aster1
+    bugseeds = []
+    bugs = [-1735756529, -188411971, -2114264661, 36387814, 52346169, 537417508, 
+            -615392578, 741781101, 888802706, ]
+    for s in seeds:
+        for b in bugs:
+            if s[2] == str(b):
+                bugseeds.append(s)
+    seeds = bugseeds
 
 
     # ----- Running on multi processor
