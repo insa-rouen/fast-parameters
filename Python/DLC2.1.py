@@ -69,8 +69,7 @@ class DLC(object):
     def run(self, silence=False, reuse=False):
         print("|- Calculating {} at {} m/s with seed ID {} ...".format(self.seed[0],
                                                               self.seed[1], self.seed[2]))
-        if reuse is False:
-            self.change_wind_profil()
+        self.change_wind_profil(reuse)
         
         self._fast(silence)
         self.move()
@@ -82,28 +81,34 @@ class DLC(object):
                                                  self.seed[0], self.seed[1], self.seed[2])
         shutil.move(source, destination)
 
-    def change_wind_profil(self):
-        # InflowWind file
-        with open(self.inputPath+self.inflowFile, 'r') as f:
-            data = f.read()
-            data = self._change_string(data, 'Filename')
-
+    def change_wind_profil(self, reuse):
+        # InflowWind input file
         filename = '{}{}_{}mps_IW_{}.dat'.format(self.prefix, self.seed[0], self.seed[1], 
                                                  self.seed[2])
-        with open(self.inputPath+filename, 'w') as f:
-            f.write(data)
-        self.inflowFile = filename # update Inflow .dat file
+        if reuse is False:
+            # load template and change parameter
+            with open(self.inputPath+self.inflowFile, 'r') as f:
+                data = f.read()
+                data = self._change_string(data, 'Filename')
+            # write to new file
+            with open(self.inputPath+filename, 'w') as f:
+                f.write(data)
+        else:
+            self.inflowFile = filename # update Inflow .dat file
 
         # Fast file
-        with open(self.inputPath+self.fastFile, 'r') as f:
-            data = f.read()
-            data = self._change_string(data, 'InflowFile')
-        
         filename = '{}{}_{}mps_{}.fst'.format(self.prefix, self.seed[0], self.seed[1],
                                               self.seed[2])
-        with open(self.inputPath+filename, 'w') as f:
-            f.write(data)
-        self.fastFile = filename # update .fst file
+        if reuse is False:
+            # load template and change parameter
+            with open(self.inputPath+self.fastFile, 'r') as f:
+                data = f.read()
+                data = self._change_string(data, 'InflowFile')
+            # write to new file
+            with open(self.inputPath+filename, 'w') as f:
+                f.write(data)
+        else:
+            self.fastFile = filename # update .fst file
 
     def _change_string(self, text, keyword=''):
         if keyword == 'Filename':
