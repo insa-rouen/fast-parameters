@@ -5,12 +5,12 @@
 # DLC2.1
 #
 # Authors: Hao BAI (hao.bai@insa-rouen.fr)
-# Version: 0.0
+# Version: 0.1
 # Date: 21/09/2018
 #
 # Comments:
 #     - 0.0: Init version
-#
+#     - 0.1: add reuse mode
 # Description:
 # 
 # 
@@ -82,7 +82,7 @@ class DLC(object):
         shutil.move(source, destination)
 
     def change_wind_profil(self, reuse):
-        # InflowWind input file
+        # InflowWind input file ----------------------------------------------------------
         filename = '{}{}_{}mps_IW_{}.dat'.format(self.prefix, self.seed[0], self.seed[1], 
                                                  self.seed[2])
         if reuse is False:
@@ -93,10 +93,10 @@ class DLC(object):
             # write to new file
             with open(self.inputPath+filename, 'w') as f:
                 f.write(data)
-        else:
-            self.inflowFile = filename # update Inflow .dat file
+        
+        self.inflowFile = filename # update Inflow .dat file
 
-        # Fast file
+        # Fast input file ----------------------------------------------------------------
         filename = '{}{}_{}mps_{}.fst'.format(self.prefix, self.seed[0], self.seed[1],
                                               self.seed[2])
         if reuse is False:
@@ -107,8 +107,8 @@ class DLC(object):
             # write to new file
             with open(self.inputPath+filename, 'w') as f:
                 f.write(data)
-        else:
-            self.fastFile = filename # update .fst file
+        
+        self.fastFile = filename # update .fst file
 
     def _change_string(self, text, keyword=''):
         if keyword == 'Filename':
@@ -172,7 +172,7 @@ def frange(start, stop=None, step=1, precision=None):
 
 def run_multiprocess(seed):
     simulation = DLC(seed)
-    simulation.run(silence=True, reuse=True)
+    simulation.run(silence=True, reuse=False)
 
 
 
@@ -196,14 +196,14 @@ def main():
     # run_multiprocess(seed)
     
     # Recalculate cases that have been stopped by error on aster1
-    bugseeds = []
-    bugs = [-1735756529, -188411971, -2114264661, 36387814, 52346169, 537417508, 
-            -615392578, 741781101, 888802706, ]
-    for s in seeds:
-        for b in bugs:
-            if s[2] == str(b):
-                bugseeds.append(s)
-    seeds = bugseeds
+    # bugseeds = []
+    # bugs = [-1735756529, -188411971, -2114264661, 36387814, 52346169, 537417508, 
+    #         -615392578, 741781101, 888802706, ]
+    # for s in seeds:
+    #     for b in bugs:
+    #         if s[2] == str(b):
+    #             bugseeds.append(s)
+    # seeds = bugseeds
 
 
     # ----- Running on multi processor
