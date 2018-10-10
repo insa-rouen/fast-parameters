@@ -229,14 +229,22 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 
 
 
+"RootMxc1"   - Blade 1 in-plane moment at the blade root (kN.m)
+"RootMyc1"   - ...     out-of-plane moment at the blade root (kN.m)
+
 "TipDxc1"    - Blade 1 out-of-plane tip deflection (relative to the pitch axis) (m) = OoPDefl1
 "TipDyc1"    - ...     in-plane tip deflection (relative to the pitch axis) (m) = IPDefl1
 "TipDzc1"    - ...     axial tip deflection (relative to the pitch axis) (m)
+"TipDxb1"    - Blade 1 flapwise tip deflection (relative to the pitch axis) (m)
+"TipDyb1"    - ...     edgewise tip deflection (relative to the pitch axis) (m)
+"TipRDzc1"   - Blade 1 torsional tip deflection (relative to the undeflected position) (°) = TwstDefl1
 "TipClrnc1"  - ...     tip-to-tower clearance estimate (m): distance between yaw AXIS and tip of blade 1
+
 "TipDxc2"    - Blade 2 
 "TipDyc2"    - ...    
 "TipDzc2"    - ...    
 "TipClrnc2"  - ...
+
 "TipDxc3"    - Blade 3
 "TipDyc3"    - ...    
 "TipDzc3"    - ...    

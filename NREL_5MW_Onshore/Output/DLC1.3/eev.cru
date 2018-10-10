@@ -68,7 +68,7 @@ True   - For bins with zero counts, output a space if we are using tab-delimited
 0      - is the number of rainflow means bins.  Use "1" to output ranges only.
 Format for column info is: Column #, Half-Cycle Multiplier, Max Range, Min Mean, Max Mean.
 -----  Extreme Events  ---------------------------------------------------------
-48     NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
+49     NumSFCols  - groups of parameters will have their extreme events recorded.  Next line ignored if zero.
 Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols long), #InfCols(may be 0), ColList(#InfCols long)
 "[Tower-base] Force(kN)",        3, 5,6,7       2, 1,2
 "[Tower-base] Moment(kN.m)",     3, 8,9,10       2, 1,2
@@ -118,15 +118,17 @@ Format for column info is: Group_Title(100 char max), #ExtCols, ColList(#ExtCols
 "[ALL TOWER] X Moment(kN.m)",    11, 8,17,26,35,44,53,62,71,80,89,98     2, 1,2
 "[ALL TOWER] Y Moment(kN.m)",    11, 9,18,27,36,45,54,63,72,81,90,99     2, 1,2
 "[ALL TOWER] Z Moment(kN.m)",    11, 10,19,28,37,46,55,64,73,82,91,100     2, 1,2
+
+"[Blade 1] Moment(kN.m)",        2, 101,102    2, 1,2
+
+"[Blade 1] Deflection(m)",       3, 103,104,105    2, 1,2
+"[Blade 2] Deflection(m)",       3, 110,111,112    2, 1,2
+"[Blade 3] Deflection(m)",       3, 114,115,116    2, 1,2
   
-"[Blade 1] Deflection(m)",       3, 101,102,103    2, 1,2
-"[Blade 2] Deflection(m)",       3, 105,106,107    2, 1,2
-"[Blade 3] Deflection(m)",       3, 109,110,111    2, 1,2
-  
-"[Rotor] Speed(rpm)",            1, 118            2, 1,2
-"[Generator] Speed (rpm)",       1, 119            2, 1,2
-"[Generator] Power (kW)",        1, 120            2, 1,2
-"[Generator] Torque (kN.m)",     1, 121            2, 1,2
+"[Rotor] Speed(rpm)",            1, 123            2, 1,2
+"[Generator] Speed (rpm)",       1, 124            2, 1,2
+"[Generator] Power (kW)",        1, 125            2, 1,2
+"[Generator] Torque (kN.m)",     1, 126            2, 1,2
 -----  Summary Files  ----------------------------------------------------------
 0      - of the output columns will have statistics put in separate summary files.  Next line ignored if zero.
 0
