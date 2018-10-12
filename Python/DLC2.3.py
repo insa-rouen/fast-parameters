@@ -88,6 +88,8 @@ class DLC(object):
                     print(self._replace(line, "TPitManS", time+0.2), end="")
                 elif "TimGenOf" in line:
                     print(self._replace(line, "TimGenOf", time), end="")
+                elif 'THSSBrDp' in line:
+                    print(self._replace(line, "THSSBrDp", time+0.2+11.25), end="")
                 else:
                     print(line, end="")
 
@@ -143,7 +145,9 @@ class DLC_para(DLC):
                 if 'TPitManS' in line:
                     data[index] = self._replace(line, 'TPitManS', self.time+0.2)
                 elif 'TimGenOf' in line:
-                    data[index] = self._replace(line, 'TPitManS', self.time)
+                    data[index] = self._replace(line, 'TimGenOf', self.time)
+                elif 'THSSBrDp' in line:
+                    data[index] = self._replace(line, 'THSSBrDp', self.time+0.2+11.25)
         
         filename = self.__servodyn.rstrip('.dat')
         filename = filename+'_'+str(self.time)+'.dat'
@@ -205,8 +209,9 @@ def run_multiprocess(wind, gridloss):
 def main():
     # ----- Running on multi processor
     TIK = time.time()    
-    timerange = frange(60, 90.5+0.01, 0.1)
+    timerange = frange(60, 90.5+0.01, 30)
 
+    wind = 'EOGO'
     for wind in ['EOGR', 'EOGO', 'EOGR-2.0', 'EOGR+2.0']:
         print("========== {} ==========".format(wind))
         pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
@@ -214,8 +219,8 @@ def main():
         pool.close() # close: call .close only when never going to submit more work to the Pool instance
         pool.join() # join: wait for the worker processes to terminate
 
-        TOK = time.time()
-        print("|- Total time :", TOK-TIK, "s")
+    TOK = time.time()
+    print("|- Total time :", TOK-TIK, "s")
 
 
     # ----- Running on single processor
