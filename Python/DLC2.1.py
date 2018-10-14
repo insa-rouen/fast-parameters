@@ -145,7 +145,7 @@ class DLC(object):
 
         if debug:
             directory = self.inputPath + '/log'
-            if not os.path.exists(directory): # create new folder is non-exist
+            if not os.path.exists(directory): # create new folder if non-exist
                 os.makedirs(directory)
             with open(directory+'/'+self.seed[2]+'.bug', 'wb') as f:
                 f.write(errorMessage)
