@@ -196,14 +196,15 @@ def main():
     # run_multiprocess(seed)
     
     # Recalculate cases that have been stopped by error on aster1
-    # bugseeds = []
+    bugseeds = []
     # bugs = [-1735756529, -188411971, -2114264661, 36387814, 52346169, 537417508, 
-    #         -615392578, 741781101, 888802706, ]
-    # for s in seeds:
-    #     for b in bugs:
-    #         if s[2] == str(b):
-    #             bugseeds.append(s)
-    # seeds = bugseeds
+    #         -615392578, 741781101, 888802706, ] #* IF GRID LOSS at 60.0 s
+    bugs = [-1895365015, -340277597, 36387814, -407950422] #* IF GRID LOSS at 70.0 s
+    for s in seeds:
+        for b in bugs:
+            if s[2] == str(b):
+                bugseeds.append(s)
+    seeds = bugseeds
 
 
     # ----- Running on multi processor
