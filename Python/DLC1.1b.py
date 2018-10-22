@@ -24,13 +24,14 @@
 #============================== Modules Personnels ==============================
 import DLC1_1
 from tools import utils
+from pyturbsim import turb
 #============================== Modules Communs ==============================
 import json
 import time
 # import fileinput # iterate over lines from multiple input files
 # import shutil # high-level file operations
 # import subprocess # call a bash command e.g. 'ls'
-# import multiprocessing # enable multiprocessing
+import multiprocessing # enable multiprocessing
 # from contextlib import contextmanager # utilities for with-statement contexts
 
 
@@ -46,14 +47,21 @@ import time
 #-----------------------------------------------------------------------------------------
 #                                  FUNCTION DEFINITION
 #-----------------------------------------------------------------------------------------
-
-
-
+def run_multiprocess(seed):
+    # change workdirectory to DLC wind profiles and run TurbSim
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC/1.1/'):
+        temp = turb.Turbulence_para(seed=seed)
+        temp.run(silence=True)
+    # run FAST
+    temp = DLC1_1.DLC(seed=seed)
+    temp.run(silence=True)
 
 #-----------------------------------------------------------------------------------------
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
+    TIK = time.time()
+
     # Load seeds
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
         with open('100seeds.json', 'r') as f:
@@ -61,29 +69,27 @@ def main():
 
     liste = []
     [liste.append(s) for s in seeds if s[0] == "NTM"]
-    seeds = liste
+    seeds = [liste[100], liste[200], liste[300]]
 
     # ----- Running on multi processor
-    # TIK = time.time()    
+    pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
+    # [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+    pool.map(run_multiprocess, seeds)
+    pool.close() # close: call .close only when never going to submit more work to the Pool instance
+    pool.join() # join: wait for the worker processes to terminate
 
-    # pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    # # [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    # pool.map(run_multiprocess, seeds)
-    # pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    # pool.join() # join: wait for the worker processes to terminate
-
-    # TOK = time.time()
-    # print("|- Total time :", TOK-TIK, "s")
+    TOK = time.time()
+    print("|- Total time :", TOK-TIK, "s")
 
 
     # ----- Running on single processor
-    TIK = time.time()
+    # TIK = time.time()
 
-    simu2 = DLC1_1.DLC(seed=seeds[0])
-    simu2.run(silence=False)
+    # simu2 = DLC1_1.DLC(seed=seeds[0])
+    # simu2.run(silence=False)
 
-    TOK = time.time()
-    print("|- Total time :", str(TOK-TIK), "s")
+    # TOK = time.time()
+    # print("|- Total time :", str(TOK-TIK), "s")
 
 
 
