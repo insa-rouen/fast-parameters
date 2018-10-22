@@ -104,7 +104,8 @@ class Turbulence_para(Turbulence):
             f.writelines(data)
 
     def run(self, silence=False):
-        print("|- Generating wind profil for {} {}m/s ...".format(self.seed[0], self.seed[1]))
+        print("|- Generating wind profil for {} {}m/s with seed ID {} ...".format(
+                                                self.seed[0], self.seed[1], self.seed[2]))
         self._turbsim(silence)
 
 
@@ -138,7 +139,7 @@ def run_multiprocess(seed):
 def main():
     TIK = time.time()
     
-    with open('../6seeds.json','r') as f:
+    with open('../100seeds.json','r') as f:
         seeds = json.loads(f.read())
 
     liste = []
