@@ -136,7 +136,6 @@ def run_multiprocess(seed):
 #                                     MAIN FUNCTION
 #-----------------------------------------------------------------------------------------
 def main():
-    # ----- Running on multi processor
     TIK = time.time()
     
     with open('../6seeds.json','r') as f:
@@ -146,26 +145,23 @@ def main():
     [liste.append(s) for s in seeds if s[0] == "NTM"]
     seeds = liste
 
-    pool = multiprocessing.Pool(4) # define number of worker (= numbers of processor by default)
-    # [pool.apply_async(run_multiprocess, args=s) for s in seeds] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    pool.map(run_multiprocess, seeds)
-    pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    pool.join() # join: wait for the worker processes to terminate
+    # ----- Running on multi processor
+    # pool = multiprocessing.Pool(4) # define number of worker (= numbers of processor by default)
+    # # [pool.apply_async(run_multiprocess, args=s) for s in seeds] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
+    # pool.map(run_multiprocess, seeds)
+    # pool.close() # close: call .close only when never going to submit more work to the Pool instance
+    # pool.join() # join: wait for the worker processes to terminate
     
-    TOK = time.time()
-    print("|- Total time :", TOK-TIK, "s")
+    # TOK = time.time()
+    # print("|- Total time :", TOK-TIK, "s")
 
 
     # ----- Running on single processor
-    # TIK = time.time()
-    # with open('../6seeds.json','r') as f:
-    #     seeds = json.loads(f.read())
+    test = Turbulence_para(seeds[0])
+    test.run()
 
-    # test = Turbulence_para(seeds[1])
-    # test.run()
-
-    # TOK = time.time()
-    # print("|- Total time :", TOK-TIK, "s")
+    TOK = time.time()
+    print("|- Total time :", str(TOK-TIK), "s")
 
 
 
