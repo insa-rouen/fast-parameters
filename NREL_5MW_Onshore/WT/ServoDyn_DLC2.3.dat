@@ -6,9 +6,9 @@ False         Echo         - Echo input data to <RootName>.ech (flag)
 ---------------------- PITCH CONTROL -------------------------------------------
           5   PCMode       - Pitch control mode {0: none, 3: user-defined from routine PitchCntrl, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
           0   TPCOn        - Time to enable active pitch control (s) [unused when PCMode=0]
-      140.2   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
-      140.2   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
-      140.2   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
+       75.1   TPitManS(1)  - Time to start override pitch maneuver for blade 1 and end standard pitch control (s)
+       75.1   TPitManS(2)  - Time to start override pitch maneuver for blade 2 and end standard pitch control (s)
+       75.1   TPitManS(3)  - Time to start override pitch maneuver for blade 3 and end standard pitch control (s) [unused for 2 blades]
           8   PitManRat(1) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 1 (deg/s)
           8   PitManRat(2) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 2 (deg/s)
           8   PitManRat(3) - Pitch rate at which override pitch maneuver heads toward final pitch angle for blade 3 (deg/s) [unused for 2 blades]
@@ -23,7 +23,7 @@ True          GenTiStr     - Method to start the generator {T: timed using TimGe
 True          GenTiStp     - Method to stop the generator {T: timed using TimGenOf, F: when generator power = 0} (flag)
      9999.9   SpdGenOn     - Generator speed to turn on the generator for a startup (HSS speed) (rpm) [used only when GenTiStr=False]
           0   TimGenOn     - Time to turn on the generator for a startup (s) [used only when GenTiStr=True]
-      140.0   TimGenOf     - Time to turn off the generator (s) [used only when GenTiStp=True]
+       74.9   TimGenOf     - Time to turn off the generator (s) [used only when GenTiStp=True]
 ---------------------- SIMPLE VARIABLE-SPEED TORQUE CONTROL --------------------
      9999.9   VS_RtGnSp    - Rated generator speed for simple variable-speed generator control (HSS side) (rpm) [used only when VSContrl=1]
      9999.9   VS_RtTq      - Rated generator torque/constant generator torque in Region 3 for simple variable-speed generator control (HSS side) (N-m) [used only when VSContrl=1]
@@ -45,7 +45,7 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
      9999.9   TEC_MR       - Magnetizing reactance (ohms) [used only when VSContrl=0 and GenModel=2]
 ---------------------- HIGH-SPEED SHAFT BRAKE ----------------------------------
           1   HSSBrMode    - HSS brake model {0: none, 1: simple, 3: user-defined from routine UserHSSBr, 4: user-defined from Simulink/Labview, 5: user-defined from Bladed-style DLL} (switch)
-     151.45   THSSBrDp     - Time to initiate deployment of the HSS brake (s)
+      86.35   THSSBrDp     - Time to initiate deployment of the HSS brake (s)
         0.6   HSSBrDT      - Time for HSS-brake to reach full deployment once initiated (sec) [used only when HSSBrMode=1]
     28116.2   HSSBrTqF     - Fully deployed HSS-brake torque (N-m)
 ---------------------- NACELLE-YAW CONTROL -------------------------------------
@@ -63,7 +63,7 @@ False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (fla
 False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
 "unused"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
-False         CompNTRD     - Compute nacelle tuned mass damper {true/false} (flag)
+True          CompNTRD     - Compute nacelle tuned mass damper {true/false} (flag)
 "ServoDyn_TRD.dat"    NTRDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
 ---------------------- BLADED INTERFACE ----------------------------------------
 "DISCON_dar64.so"    DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
