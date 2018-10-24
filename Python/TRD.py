@@ -32,7 +32,8 @@ import DLC23
 #============================== Modules Communs ==============================
 import time
 import os
-# import os, platform, re
+# import os, platform, 
+import re
 # import fileinput # iterate over lines from multiple input files
 # import shutil # high-level file operations
 # import subprocess # call a bash command e.g. 'ls'
@@ -47,10 +48,9 @@ import os
 #-----------------------------------------------------------------------------------------
 class TRD(DLC23.DLC_para):
     """DLC class reserved for multiprocessing use"""
-    def __init__(self, TRD_mass, TRD_radius, wind='', gridLoss=0.0, outputFolder='/', toLog=False):
-        super(TRD, self).__init__(wind=wind, gridLoss=gridloss, outputFolder=outputFolder, toLog=toLog)
-        self.TRD_mass = TRD_mass
-        self.TRD_radius = TRD_radius
+    def __init__(self, TRD_mode1, wind='', gridLoss=0.0, outputFolder='/', toLog=False):
+        super(TRD, self).__init__(wind=wind, gridLoss=gridLoss, outputFolder=outputFolder, toLog=toLog)
+        self.TRD_mode1 = TRD_mode1
         self.time = gridLoss
         # some fixed path
         self.__outputPath = os.path.expanduser(
@@ -65,21 +65,25 @@ class TRD(DLC23.DLC_para):
         self.__fst_copy = ''
         self.__servodyn_copy = ''
 
-        self.make_copy()
+        self.make_copy2()
 
-    def make_copy(self):
+    def make_copy2(self):
         # ServoDyn_TRD.dat ---------------------------------------------------------------
         filename = self.__servodyn_trd
         with open(filename, 'r') as f:
-            data = f.readlines
+            data = f.readlines()
             for index, line in enumerate(data):
-                if 'TRD_MC' in line:
-                    data[index] = self._replace(line, 'TRD_MC', self.TRD_mass)
-                if 'TRD_RC' in line:
-                    data[index] = self._replace(line, 'TRD_RC', self.TRD_radius)
+                if 'TRD_K(1)' in line:
+                    data[index] = self._replace(line, 'TRD_K(1)', self.TRD_mode1[0])
+                if 'TRD_K(2)' in line:
+                    data[index] = self._replace(line, 'TRD_K(2)', self.TRD_mode1[1])
+                if 'TRD_L(1)' in line:
+                    data[index] = self._replace(line, 'TRD_L(1)', self.TRD_mode1[2])
+                if 'TRD_L(2)' in line:
+                    data[index] = self._replace(line, 'TRD_L(2)', self.TRD_mode1[3])
 
         filename = self.__servodyn_trd.rstrip('.dat')
-        filename = '{}_{}_{}.dat'.format(filename, self.TRD_mass, self.TRD_radius)
+        filename = '{}_{}{}{}{}.dat'.format(filename, self.TRD_mode1[0], self.TRD_mode1[1], self.TRD_mode1[2], self.TRD_mode1[3])
         with open(filename, 'w') as f:
             f.writelines(data)
         self.__servodyn_trd = filename
@@ -165,9 +169,9 @@ def main():
     # ----- Running on single processor
     # timerange = frange(110, 140.5+0.01, 30)
 
-    simu2 = TRD(TRD_mass=5000, TRD_radius=1.0, wind='EOGO', gridLoss=74.9, outputFolder='/withTRD/EOGO_74.9')
+    simu2 = TRD(TRD_mode1=[290, 30, -90, -20], wind='EOGO', gridLoss=74.9, outputFolder='/withTRD/EOGO_74.9')
     print("========== {} ==========".format(simu2.wind))
-    simu2.run(loop=False, silence=False)
+    simu2.run(silence=False)
 
     TOK = time.time()
     print("|- Total time :", TOK-TIK, "s")
