@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# DLC1.1 - run certain times simulation over all wind speed
+# DLC1.1 - run 12*100 times simulation over all wind speed
 #
 # Authors: Hao BAI (hao.bai@insa-rouen.fr)
 # Version: 0.0
@@ -48,6 +48,8 @@ import multiprocessing # enable multiprocessing
 #                                  FUNCTION DEFINITION
 #-----------------------------------------------------------------------------------------
 def run_multiprocess(seed):
+    ''' Run TurbSim + FAST
+    '''
     # change workdirectory to DLC wind profiles and run TurbSim
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC/1.1/'):
         temp = turb.Turbulence_para(seed=seed)
@@ -55,6 +57,12 @@ def run_multiprocess(seed):
     # run FAST
     temp = DLC1_1.DLC(seed=seed)
     temp.run(silence=True)
+
+def runFAST_multiprocess(seed):
+    # run FAST
+    temp = DLC1_1.DLC(seed=seed)
+    temp.run(silence=True)
+
 
 #-----------------------------------------------------------------------------------------
 #                                     MAIN FUNCTION
@@ -69,12 +77,12 @@ def main():
 
     liste = []
     [liste.append(s) for s in seeds if s[0] == "NTM"]
-    seeds = [liste[100], liste[200], liste[300]]
+    seeds = [:600]
 
     # ----- Running on multi processor
     pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
     # [pool.apply_async(run_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    pool.map(run_multiprocess, seeds)
+    pool.map(runFAST_multiprocess, seeds)
     pool.close() # close: call .close only when never going to submit more work to the Pool instance
     pool.join() # join: wait for the worker processes to terminate
 
