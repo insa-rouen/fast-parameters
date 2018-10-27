@@ -134,8 +134,6 @@ class DLC_para(DLC):
         self.__fst_copy = ''
         self.__servodyn_copy = ''
 
-        self.make_copy()
-
     def make_copy(self):
         # ServoDyn.dat
         filename = self.__servodyn
@@ -200,6 +198,7 @@ def frange(start, stop=None, step=1, precision=None):
 
 def run_multiprocess(wind, gridloss):
     simulation = DLC_para(wind=wind, gridLoss=gridloss, outputFolder='/withoutTRD')
+    simulation.make_copy()
     simulation.run(True)
     simulation.move_and_rename(simulation.time)
 

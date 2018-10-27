@@ -54,18 +54,16 @@ class TRD(DLC23.DLC_para):
         self.time = gridLoss
         # some fixed path
         self.__outputPath = os.path.expanduser(
-                                        '~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3')
-        self._fstPath = os.path.expanduser('~/Eolien/Parameters/Python/DLC2.3')
+                                        '~/Eolien/Parameters/Python/TRD/Output/DLC2.3')
+        self._fstPath = os.path.expanduser('~/Eolien/Parameters/Python/TRD')
         self._prefix = '/DLC2.3_'
         self.__servodyn = os.path.expanduser(
-                               '~/Eolien/Parameters/Python/DLC2.3/WT/ServoDyn_DLC2.3.dat')
+                               '~/Eolien/Parameters/Python/TRD/WT/ServoDyn_DLC2.3.dat')
         self.__servodyn_trd = os.path.expanduser(
-                               '~/Eolien/Parameters/Python/DLC2.3/WT/ServoDyn_TRD.dat')
+                               '~/Eolien/Parameters/Python/TRD/WT/ServoDyn_TRD.dat')
         self._suffix = '_'+str(gridLoss)
         self.__fst_copy = ''
         self.__servodyn_copy = ''
-
-        self.make_copy2()
 
     def make_copy2(self):
         # ServoDyn_TRD.dat ---------------------------------------------------------------
@@ -117,6 +115,7 @@ class TRD(DLC23.DLC_para):
             data = self._change_string(data, 'ServoFile')
         
         filename = self._fstPath+self._prefix+self.wind+'_'+str(self.time)+'.fst'
+
         with open(filename, 'w') as f:
             f.write(data)
         self.__fst_copy = filename # update .fst file
@@ -143,6 +142,7 @@ class TRD(DLC23.DLC_para):
 #-----------------------------------------------------------------------------------------
 def run_multiprocess(wind, gridloss):
     simulation = TRD(wind=wind, gridLoss=gridloss, outputFolder='/withTRD/EOGO_74.9')
+    simulation.make_copy2()
     simulation.run(True)
     simulation.move_and_rename(simulation.time)
 
@@ -170,6 +170,7 @@ def main():
     # timerange = frange(110, 140.5+0.01, 30)
 
     simu2 = TRD(TRD_mode1=[290, 30, -90, -20], wind='EOGO', gridLoss=74.9, outputFolder='/withTRD/EOGO_74.9')
+    simu2.make_copy2()
     print("========== {} ==========".format(simu2.wind))
     simu2.run(silence=False)
 
