@@ -3,7 +3,7 @@ DLC 1.1 NTM @ 3 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
-        660   TMax            - Total run time (s) at least 10min
+         70   TMax            - Total run time (s) at least 10min
        0.01   DT              - Recommended module time step (s)
           2   InterpOrder     - Interpolation order for input/output time history (-) {1=linear, 2=quadratic}
           0   NumCrctn        - Number of correction iterations (-) {0=explicit calculation, i.e., no corrections}
@@ -23,7 +23,7 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
 "unused"      BDBldFile(1)    - Name of file containing BeamDyn input parameters for blade 1 (quoted string)
 "unused"      BDBldFile(2)    - Name of file containing BeamDyn input parameters for blade 2 (quoted string)
 "unused"      BDBldFile(3)    - Name of file containing BeamDyn input parameters for blade 3 (quoted string)
-"DLC1.1_NTM_3mps_IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
+"DLC1.1_NTM_3mps.IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
 "WT/AeroDyn.dat"    AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
 "WT/ServoDyn.dat"    ServoFile       - Name of file containing control and electrical-drive input parameters (quoted string)
 "unused"      HydroFile       - Name of file containing hydrodynamic input parameters (quoted string)
