@@ -17,7 +17,7 @@ False         Echo           - Echo input data to <RootName>.ech (flag)
          90   RefHt          - Reference height for horizontal wind speed                (m)
      125.88   RefLength      - Reference length for linear horizontal and vertical sheer (-)
 ================== Parameters for Binary TurbSim Full-Field files   [used only for WindType = 3] ==============
-"DLC/2.4/NTM_15mps.bts"      Filename       - Name of the Full field wind file to use (.bts)
+"Wind/DLC2.4/NTM_15mps.bts"      Filename       - Name of the Full field wind file to use (.bts)
 ================== Parameters for Binary Bladed-style Full-Field files   [used only for WindType = 4] =========
 "unused"      FilenameRoot   - Rootname of the full-field wind file to use (.wnd, .sum)
 False         TowerFile      - Have tower file (.twr) (flag)
