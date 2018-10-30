@@ -25,6 +25,7 @@
 from tools import utils
 from pyturbsim import turb
 from pylife import meca, life
+from pycrunch import sensibility
 #============================== Modules Communs ==============================
 import json
 import time
@@ -150,7 +151,7 @@ class Life(object):
                     Y.append(value['Dlife'])
 
         plt.plot(X, Y, '.')
-        plt.title('Fatigue assessment during lifetime (20 yeas)')
+        plt.title('Fatigue assessment during lifetime (20 years)')
         plt.grid()
         plt.xticks(range(3,27,2))
         plt.ylabel("Cumulative damage")
@@ -235,8 +236,16 @@ def main():
     [liste.append(s) for s in seeds if s[0] == "NTM"]
     seeds = liste
 
-    temp = Life(seeds, range(3,27,2), 'Uniform')
-    temp.plotALL()
+    test = sensibility.Analysis(seeds, False)
+    test.selectSpot()
+    # test.meanDamageOnGage('3')
+    test.meanDamageForAllSpeeds()
+    # test.plotMeanDamageOnGage('3','1')
+    test.plotMeanDamageForAllSpeeds()
+    # test.plotDamageOnSpot('3','TwHt1@0')
+    # test.plotDamageForAllSpeeds()
+    # temp = Life(seeds, range(3,27,2), 'Uniform')
+    # temp.plotALL()
 
 
     # ----- Running on multi processor
