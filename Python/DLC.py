@@ -47,7 +47,7 @@ class DLC(object):
         self.outputFolder = outputFolder
         self.toLog = toLog
         # Get OS platform name
-        self._system = {'Linux':'FAST_glin64', 'Darwin':'fast.sh'}
+        self._system = {'Linux':'FAST_glin64', 'Darwin':'FAST_gdar64'}
         self._fastName = self._system.get(platform.system())
         # some fixed path
         self.outputPath = os.path.expanduser(

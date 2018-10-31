@@ -10,7 +10,7 @@
 #
 # Comments:
 #     - 0.0: Init version
-#     
+#     - 0.1: apply to distributed computers
 # Description:
 # 
 # 
@@ -22,17 +22,17 @@
 #                                        MODULES
 #-----------------------------------------------------------------------------------------
 #============================== Modules Personnels ==============================
-import DLC1_1
-from tools import utils
+import DLC11
+from tools import utils, distribute
 from pyturbsim import turb
 from pylife import meca, life
 #============================== Modules Communs ==============================
 import json
-import time
+# import time
 # import fileinput # iterate over lines from multiple input files
 # import shutil # high-level file operations
 # import subprocess # call a bash command e.g. 'ls'
-import multiprocessing # enable multiprocessing
+# import multiprocessing # enable multiprocessing
 # from contextlib import contextmanager # utilities for with-statement contexts
 
 
@@ -59,9 +59,13 @@ def runTurbSimFAST_multiprocess(seed):
     temp = DLC1_1.DLC(seed=seed)
     temp.run(silence=True)
 
+def runTurbSim_multiprocess(seeds):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
+        turb.get_turbulence_multiprocess(seeds, False)
+#TODO
 def runFAST_multiprocess(seed):
     # run FAST
-    temp = DLC1_1.DLC(seed=seed)
+    temp = DLC11.DLC(seed=seed)
     temp.run(silence=True)
 
 def runStress_multiprocess(seeds):
@@ -83,30 +87,18 @@ def runFatigue_multiprocess(seeds):
 @utils.timer
 def main():
     # Load seeds
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
-        with open('100seeds.json', 'r') as f:
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+        with open('1000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
+    liste = [s for s in seeds if s[0] == "NTM"]
+    
+    seeds = liste[:56]
+    
 
-    liste = []
-    [liste.append(s) for s in seeds if s[0] == "NTM"]
-    seeds = liste[:600]
+    computers = distribute.LMN(runTurbSim_multiprocess)
+    computers.setEqually(seeds)
+    computers.run()
 
-    # ----- Running on multi processor
-    # pool = multiprocessing.Pool() # define number of worker (= numbers of processor by default)
-    # # [pool.apply_async(runTurbSimFAST_multiprocess, args=(wind, t)) for t in timerange] # map/apply_async: submit all processes at once and retrieve the results as soon as they are finished
-    # pool.map(runFAST_multiprocess, seeds)
-    # pool.close() # close: call .close only when never going to submit more work to the Pool instance
-    # pool.join() # join: wait for the worker processes to terminate
-
-
-    # ----- Running on single processor
-    # simu2 = DLC1_1.DLC(seed=seeds[0])
-    # simu2.run(silence=False)
-
-
-    #* POST-PROCESSING
-    # runStress_multiprocess(seeds)
-    runFatigue_multiprocess(seeds)
 
 
 
