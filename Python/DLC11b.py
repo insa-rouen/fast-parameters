@@ -28,20 +28,12 @@ from pyturbsim import turb
 from pylife import meca, life
 #============================== Modules Communs ==============================
 import json
-# import time
-# import fileinput # iterate over lines from multiple input files
-# import shutil # high-level file operations
-# import subprocess # call a bash command e.g. 'ls'
-# import multiprocessing # enable multiprocessing
-# from contextlib import contextmanager # utilities for with-statement contexts
-
 
 
 
 #-----------------------------------------------------------------------------------------
 #                                    CLASS DEFINITION
 #-----------------------------------------------------------------------------------------
-
 
 
 
@@ -79,7 +71,8 @@ def runFatigue_multiprocess(seeds):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6)
-    
+
+
 
 #-----------------------------------------------------------------------------------------
 #                                     MAIN FUNCTION
@@ -92,14 +85,11 @@ def main():
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste[:56]
-    
+    seeds = liste[56:168]    
 
     computers = distribute.LMN(runTurbSim_multiprocess)
     computers.setEqually(seeds)
-    # computers.show()
     computers.run()
-
 
 
 
