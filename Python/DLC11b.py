@@ -85,10 +85,45 @@ def main():
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste[56:168]    
+    seeds = liste[168:]    
 
     computers = distribute.LMN(runTurbSim_multiprocess)
-    computers.setEqually(seeds)
+    # computers.setEqually(seeds)
+
+    # Distribute tasks -------------------------------------------------------------------
+    part = [s for s in seeds if s[1] == "5" or s[1] == "7"]
+    # print(len(part))
+    computers.setIndividually('PC-LMR-O7010B', part)
+
+    part = [s for s in seeds if s[1] == "9" or s[1] == "11"]
+    # print(len(part))
+    computers.setIndividually('PC-LMN-7050', part)
+
+    part = [s for s in seeds if s[1] == "13" or s[1] == "15"]
+    # print(len(part))
+    computers.setIndividually('PC-LMN-7040', part)
+
+    part = [s for s in seeds if s[1] == "17" or s[1] == "19"]
+    # print(len(part))
+    computers.setIndividually('PC-LMN-1600A', part)
+
+    part = [s for s in seeds if s[1] == "21" or s[1] == "23"]
+    # print(len(part))
+    computers.setIndividually('PC-LMN-1600B', part)
+
+    part = [s for s in seeds if s[1] == "25"]
+    reste = [s for s in seeds if s[1] == "3"]
+    addition = reste[:500]
+    part.extend(addition)
+    # print(len(part))
+    computers.setIndividually('PC-LMN-9010', part)
+
+    residu = reste[500:]
+    # print(len(residu))
+    computers.setIndividually('PC-LMN-9020', residu)    
+
+
+    # computers.show()
     computers.run()
 
 
