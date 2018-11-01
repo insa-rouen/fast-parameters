@@ -89,7 +89,8 @@ def main():
 
     computers = distribute.LMN(runTurbSim_multiprocess)
     # computers.setEqually(seeds)
-
+    # computers.setAutomatically(seeds)
+    
     # Distribute tasks -------------------------------------------------------------------
     part = [s for s in seeds if s[1] == "5" or s[1] == "7"]
     # print(len(part))
