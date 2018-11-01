@@ -97,6 +97,7 @@ def main():
 
     computers = distribute.LMN(runTurbSim_multiprocess)
     computers.setEqually(seeds)
+    # computers.show()
     computers.run()
 
 
