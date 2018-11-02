@@ -26,6 +26,7 @@ import DLC11
 from tools import utils, distribute
 from pyturbsim import turb
 from pylife import meca, life
+from iffast import DLC
 #============================== Modules Communs ==============================
 import json
 
@@ -44,28 +45,26 @@ def runTurbSimFAST_multiprocess(seed):
     ''' Run TurbSim + FAST
     '''
     # change workdirectory to DLC wind profiles and run TurbSim
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC/1.1/'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/1.1/'):
         temp = turb.Turbulence_para(seed=seed)
         temp.run(silence=True)
     # run FAST
-    temp = DLC1_1.DLC(seed=seed)
+    temp = DLC11.DLC(seed=seed)
     temp.run(silence=True)
 
 def runTurbSim_multiprocess(seeds):
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
         turb.get_turbulence_multiprocess(seeds, False)
-#TODO
-def runFAST_multiprocess(seed):
-    # run FAST
-    temp = DLC11.DLC(seed=seed)
-    temp.run(silence=True)
+
+def runFAST_multiprocess(seeds):
+    DLC.get_DLC11_multiprocess(seeds, outputFolder='/', silence=False, echo=True)
 
 def runStress_multiprocess(seeds):
     # generate file names
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     # run stress calculation
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=30)
+        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=10)
 
 def runFatigue_multiprocess(seeds):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
@@ -87,7 +86,7 @@ def main():
     
     seeds = liste[168:]    
 
-    computers = distribute.LMN(runTurbSim_multiprocess)
+    computers = distribute.LMN()
     # computers.setEqually(seeds)
     # computers.setAutomatically(seeds)
     
@@ -125,7 +124,16 @@ def main():
 
 
     # computers.show()
-    computers.run()
+    # computers.run(runTurbSim_multiprocess)
+
+    # FAST -------------------------------------------------------------------------------
+    computers.run(runFAST_multiprocess)
+
+    # Stress -----------------------------------------------------------------------------
+    computers.run(runStress_multiprocess)
+
+    # Fatigue ----------------------------------------------------------------------------
+    computers.run(runFatigue_multiprocess)
 
 
 
