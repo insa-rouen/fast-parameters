@@ -45,7 +45,7 @@ def runTurbSimFAST_multiprocess(seed):
     ''' Run TurbSim + FAST
     '''
     # change workdirectory to DLC wind profiles and run TurbSim
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/1.1/'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
         temp = turb.Turbulence_para(seed=seed)
         temp.run(silence=True)
     # run FAST
@@ -56,20 +56,20 @@ def runTurbSim_multiprocess(seeds):
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
         turb.get_turbulence_multiprocess(seeds, False)
 
-def runFAST_multiprocess(seeds):
-    DLC.get_DLC11_multiprocess(seeds, outputFolder='/', silence=False, echo=True)
+def runFAST_multiprocess(seeds, moveSource=False, silence=False, echo=True):
+    DLC.get_DLC11_multiprocess(seeds, outputFolder='/', moveSource=moveSource, silence=silence, echo=echo)
 
-def runStress_multiprocess(seeds):
+def runStress_multiprocess(seeds, thetaStep=10, echo=True):
     # generate file names
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     # run stress calculation
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=10, echo=True)
+        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep, echo=echo)
 
-def runFatigue_multiprocess(seeds):
+def runFatigue_multiprocess(seeds, echo=True):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=True)
+        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
 
 
 
@@ -84,7 +84,7 @@ def main():
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste[168:]    
+    seeds = liste[168:]
 
     computers = distribute.LMN()
     # computers.setEqually(seeds)
