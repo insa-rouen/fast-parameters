@@ -49,9 +49,9 @@ from DLC11b import runFAST_multiprocess, runStress_multiprocess, runFatigue_mult
 @utils.timer
 def main():
     aster1 = server.Aster1('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/', False)
-    aster1.run(runFAST_multiprocess, True) # moveSource=True
-    aster1.run(runStress_multiprocess, 90) # thetaStep=90
-    aster1.run(runFatigue_multiprocess)
+    aster1.run(runFAST_multiprocess, True, False, False) # moveSource=True
+    aster1.run(runStress_multiprocess, 10, True) # thetaStep=90
+    aster1.run(runFatigue_multiprocess, False)
 
 
 
