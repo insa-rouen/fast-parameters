@@ -64,12 +64,12 @@ def runStress_multiprocess(seeds):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     # run stress calculation
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=10)
+        meca.get_stress_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=10, echo=True)
 
 def runFatigue_multiprocess(seeds):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6)
+        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=True)
 
 
 
@@ -120,7 +120,7 @@ def main():
 
     residu = reste[500:]
     # print(len(residu))
-    computers.setIndividually('PC-LMN-9020', residu)    
+    computers.setIndividually('PC-LMN-9020', residu[:3])    
 
 
     # computers.show()
