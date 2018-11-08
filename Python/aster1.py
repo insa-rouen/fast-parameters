@@ -26,7 +26,7 @@
 #-----------------------------------------------------------------------------------------
 #============================== Modules Personnels ==============================
 from tools import utils, server
-from DLC11b import runFAST_multiprocess, runStress_multiprocess, runFatigue_multiprocess
+from DLC11b import runFAST_multiprocess, runStress_multiprocess, runFatigue_multiprocess, runStressFatigue_multiprocess
 #============================== Modules Communs ==============================
 import time
 
@@ -57,15 +57,15 @@ def main():
     aster1.resume('TurbSim', outputFileSize=70*1024**2)
 
     # aster1.resume('FAST', inputFileSize=70*1024**2, outputFileSize=90*1024**2)
-    # aster1.run(runFAST_multiprocess, True, True, True) # moveSource=True
+    # aster1.run(runFAST_multiprocess, True, True, False) # moveSource=True
     # time.sleep(5)
 
-    # test.resume('Stress', inputFileSize=90*1024**2, outputFileSize=204*1024**2)
-    # aster1.run(runStress_multiprocess, 10, True) # thetaStep=90
+    # aster1.resume('Stress', inputFileSize=90*1024**2, outputFileSize=204*1024**2)
+    # aster1.run(runStress_multiprocess, 10, False) # thetaStep=90
     # time.sleep(5)
     
-    # test.resume('Fatigue', inputFileSize=204*1024**2, outputFileSize=20*1024)
-    # aster1.run(runFatigue_multiprocess, False)
+    aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024)
+    aster1.run(runStressFatigue_multiprocess, 10, False)
 
 
 

@@ -59,7 +59,7 @@ def runTurbSim_multiprocess(seeds):
 def runFAST_multiprocess(seeds, moveSource=False, silence=False, echo=True):
     DLC.get_DLC11_multiprocess(seeds, outputFolder='/', moveSource=moveSource, silence=silence, echo=echo)
 
-def runStress_multiprocess(seeds, thetaStep=10, echo=True):
+def runStress_multiprocess(seeds, thetaStep=30, echo=True):
     # generate file names
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     # run stress calculation
@@ -70,6 +70,13 @@ def runFatigue_multiprocess(seeds, echo=True):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
+
+def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
+    ''' Run Stress and Fatigue in same time
+    '''
+    list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
+        life.get_stress_fatigue_multiprocess(list_filebase, datarow=6009, gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep, lifetime=20*365*24*6, echo=echo)
 
 
 
@@ -84,8 +91,14 @@ def main():
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste[168:]
-
+    seeds = liste[:10]
+    # runTurbSim_multiprocess(seeds)
+    # runFAST_multiprocess(seeds, silence=1)
+    # runStress_multiprocess(seeds, echo=0)
+    # runFatigue_multiprocess(seeds, echo=0)
+    runStressFatigue_multiprocess(seeds, 30, echo=0)
+    return
+    
     computers = distribute.LMN()
     # computers.setEqually(seeds)
     # computers.setAutomatically(seeds)
