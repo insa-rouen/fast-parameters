@@ -1,4 +1,5 @@
-export PYTHONPATH=$PYTHONPATH:"${HOME}/Eolien/Parameters/Python/site-packages"
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"${HOME}/Eolien/FAST"
+#export PYTHONPATH=$PYTHONPATH:"${HOME}/Eolien/Parameters/Python/site-packages"
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:"${HOME}/Eolien/FAST"
+source ${HOME}/.bash_profile
 cd $HOME/Eolien/Parameters/Python
-python3 ./aster1.py
+python ./aster1.py
