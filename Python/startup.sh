@@ -1,4 +1,3 @@
-sudo apt install sshfs
 # creat folder if it is not existant
 mkdir -p ~/aster1
 # mount aster1 disk
