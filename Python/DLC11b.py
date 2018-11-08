@@ -87,67 +87,40 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def main():
     # Load seeds
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
-        with open('1000seeds.json', 'r') as f:
+        with open('recomputedSeeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste[:10]
+    seeds = liste
+    # Some testing ...
     # runTurbSim_multiprocess(seeds)
     # runFAST_multiprocess(seeds, silence=1)
     # runStress_multiprocess(seeds, echo=0)
     # runFatigue_multiprocess(seeds, echo=0)
-    runStressFatigue_multiprocess(seeds, 30, echo=0)
-    return
+    # runStressFatigue_multiprocess(seeds, 30, echo=0)
+    
     
     computers = distribute.LMN()
-    # computers.setEqually(seeds)
-    # computers.setAutomatically(seeds)
     
     # Distribute tasks -------------------------------------------------------------------
-    part = [s for s in seeds if s[1] == "5" or s[1] == "7"]
-    # print(len(part))
-    computers.setIndividually('PC-LMR-O7010B', part)
-
-    part = [s for s in seeds if s[1] == "9" or s[1] == "11"]
-    # print(len(part))
-    computers.setIndividually('PC-LMN-7050', part)
-
-    part = [s for s in seeds if s[1] == "13" or s[1] == "15"]
-    # print(len(part))
-    computers.setIndividually('PC-LMN-7040', part)
-
-    part = [s for s in seeds if s[1] == "17" or s[1] == "19"]
-    # print(len(part))
-    computers.setIndividually('PC-LMN-1600A', part)
-
-    part = [s for s in seeds if s[1] == "21" or s[1] == "23"]
-    # print(len(part))
-    computers.setIndividually('PC-LMN-1600B', part)
-
-    part = [s for s in seeds if s[1] == "25"]
-    reste = [s for s in seeds if s[1] == "3"]
-    addition = reste[:500]
-    part.extend(addition)
-    # print(len(part))
-    computers.setIndividually('PC-LMN-9010', part)
-
-    residu = reste[500:]
-    # print(len(residu))
-    computers.setIndividually('PC-LMN-9020', residu[:3])    
-
-
+    # computers.setEqually(seeds)
+    computers.setAutomatically(seeds)
     # computers.show()
-    # computers.run(runTurbSim_multiprocess)
+    
+    # TurbSim ----------------------------------------------------------------------------
+    computers.run(runTurbSim_multiprocess)
 
     # FAST -------------------------------------------------------------------------------
-    computers.run(runFAST_multiprocess)
+#     computers.run(runFAST_multiprocess)
 
     # Stress -----------------------------------------------------------------------------
-    computers.run(runStress_multiprocess)
+#     computers.run(runStress_multiprocess)
 
     # Fatigue ----------------------------------------------------------------------------
-    computers.run(runFatigue_multiprocess)
+#     computers.run(runFatigue_multiprocess)
 
+    # Stress + Fatigue -------------------------------------------------------------------
+#     computers.run(runStressFatigue_multiprocess)
 
 
 #-----------------------------------------------------------------------------------------
