@@ -95,7 +95,7 @@ def main():
     
     # Resume Tasks -----------------------------------------------------------------
     # Load seeds
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+    with utils.cd('~/aster1/Wind'):
         with open('recomputedSeeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
