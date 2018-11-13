@@ -57,7 +57,7 @@ def main():
     aster1.resume('TurbSim', outputFileSize=70*1024**2)
     
     # aster1.resume('FAST', inputFileSize=70*1024**2, outputFileSize=90*1024**2)
-    # aster1.run(runFAST_multiprocess, True, True, False) # moveSource, silence, echo
+    # aster1.run(runFAST_multiprocess, True, False) #silence, echo
     # time.sleep(5)
     
     # aster1.resume('Stress', inputFileSize=90*1024**2, outputFileSize=204*1024**2)
