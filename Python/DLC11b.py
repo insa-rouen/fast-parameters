@@ -57,7 +57,7 @@ def runTurbSim_multiprocess(seeds):
         turb.get_turbulence_multiprocess(seeds, False)
 
 def runFAST_multiprocess(seeds, moveSource=False, silence=False, echo=True):
-    DLC.get_DLC11_multiprocess(seeds, outputFolder='/', moveSource=moveSource, silence=silence, echo=echo)
+    DLC.get_DLC11_multiprocess(seeds, outputFolder='', moveSource=moveSource, silence=silence, echo=echo)
 
 def runStress_multiprocess(seeds, thetaStep=30, echo=True):
     # generate file names
@@ -71,6 +71,7 @@ def runFatigue_multiprocess(seeds, echo=True):
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
 
+@utils.timer
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
     '''
@@ -87,19 +88,22 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def main():
     # Load seeds
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
-        with open('recomputedSeeds.json', 'r') as f:
+        with open('6Seeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     
-    seeds = liste
+    seeds = liste[:2]
+    seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
     # Some testing ...
     # runTurbSim_multiprocess(seeds)
-    # runFAST_multiprocess(seeds, silence=1)
-    # runStress_multiprocess(seeds, echo=0)
+    # runFAST_multiprocess(seeds, silence=0)
+    runStress_multiprocess(seeds, echo=1)
     # runFatigue_multiprocess(seeds, echo=0)
+    # runStressFatigue_multiprocess([['NTM', '11', '-1500121613'], ['NTM', '9', '324541780']], 30, echo=0)
+
     # runStressFatigue_multiprocess(seeds, 30, echo=0)
     
-    
+    return
     computers = distribute.LMN()
     
     # Distribute tasks -------------------------------------------------------------------
