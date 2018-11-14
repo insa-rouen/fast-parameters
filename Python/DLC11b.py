@@ -93,16 +93,27 @@ def main():
 
     # runStressFatigue_multiprocess(seeds, 30, echo=0)
     
-    # Resume Tasks -----------------------------------------------------------------
-    # Load seeds
+    # Resume Tasks =======================================================================
+    # Load seeds: Rerun TrubSim
     with utils.cd('~/aster1/Wind'):
         with open('recomputedSeeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     seeds = liste
-    computers = distribute.LMN()
+
+    # Load seeds: Rerun FAST + Stress
+    # with utils.cd('~/aster1/Wind'):
+    #     with open('failedRunsFAST.json', 'r') as f:
+    #         seeds1 = json.loads(f.read())
+    #     with open('failedRunsStress.json', 'r') as f:
+    #         seeds2 = json.loads(f.read())
+    # seeds = seeds1.extend(seeds2)
+    # seeds = list(set(seeds))
+
+
     
     # Distribute tasks -------------------------------------------------------------------
+    computers = distribute.LMN()
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
@@ -111,16 +122,16 @@ def main():
     computers.run(runTurbSim_multiprocess, True, False) # silence=True, echo=False
 
     # FAST -------------------------------------------------------------------------------
-#     computers.run(runFAST_multiprocess)
+    # computers.run(runFAST_multiprocess, True, False) # silence=True, echo=False
 
     # Stress -----------------------------------------------------------------------------
-#     computers.run(runStress_multiprocess)
+    # computers.run(runStress_multiprocess)
 
     # Fatigue ----------------------------------------------------------------------------
-#     computers.run(runFatigue_multiprocess)
+    # computers.run(runFatigue_multiprocess)
 
     # Stress + Fatigue -------------------------------------------------------------------
-#     computers.run(runStressFatigue_multiprocess)
+    # computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
 #-----------------------------------------------------------------------------------------
