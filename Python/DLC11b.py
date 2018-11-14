@@ -117,7 +117,7 @@ def main():
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
-    
+    exit()
     # TurbSim ----------------------------------------------------------------------------
     computers.run(runTurbSim_multiprocess, True, False) # silence=True, echo=False
 
