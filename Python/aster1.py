@@ -64,9 +64,10 @@ def main():
     # aster1.run(runStress_multiprocess, 10, False) # thetaStep=90, echo
     # time.sleep(5)
     
-    aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=False)
+    # aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=False)
     #aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
+    aster1.resume('ALL', outputFileSize=20*1024)
 
 
 #-----------------------------------------------------------------------------------------

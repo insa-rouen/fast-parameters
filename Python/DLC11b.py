@@ -74,13 +74,23 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 #-----------------------------------------------------------------------------------------
 @utils.timer
 def main():
-    # Load seeds
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
-        with open('6seeds.json', 'r') as f:
-            seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM"]
-    
-    seeds = liste[:2]
+    # Load Seeds =======================================================================
+    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+    #     with open('6seeds.json', 'r') as f:
+    #         seeds = json.loads(f.read())
+    # liste = [s for s in seeds if s[0] == "NTM"]
+    # seeds = liste[:2]
+
+    # Load seeds: Rerun FAST + Stress
+    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+    #     with open('failedRunsFAST.json', 'r') as f:
+    #         seeds1 = json.loads(f.read())
+    #     with open('failedRunsStress.json', 'r') as f:
+    #         seeds2 = json.loads(f.read())
+    # seeds = seeds1.extend(seeds2)
+    # seeds = seeds1
+
+
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
     # Some testing ...
     # runTurbSim_multiprocess(seeds, silence=1, echo=0)
@@ -91,7 +101,7 @@ def main():
     #     life.get_stress_fatigue('NTM_3mps_-544599383', 6009, [1,2,3,4,5,6,7,8,9], 30)
     # runStressFatigue_multiprocess([['NTM', '11', '-1500121613'], ['NTM', '9', '324541780']], 30, echo=0)
 
-    # runStressFatigue_multiprocess(seeds, 30, echo=0)
+    # runStressFatigue_multiprocess(seeds, 10, echo=0)
     
     # Resume Tasks =======================================================================
     # Load seeds: Rerun TrubSim
@@ -100,15 +110,6 @@ def main():
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     seeds = liste
-
-    # Load seeds: Rerun FAST + Stress
-    # with utils.cd('~/aster1/Wind'):
-    #     with open('failedRunsFAST.json', 'r') as f:
-    #         seeds1 = json.loads(f.read())
-    #     with open('failedRunsStress.json', 'r') as f:
-    #         seeds2 = json.loads(f.read())
-    # seeds = seeds1.extend(seeds2)
-    # seeds = list(set(seeds))
 
 
     
@@ -122,7 +123,7 @@ def main():
     computers.run(runTurbSim_multiprocess, True, False) # silence=True, echo=False
 
     # FAST -------------------------------------------------------------------------------
-    # computers.run(runFAST_multiprocess, True, False) # silence=True, echo=False
+    computers.run(runFAST_multiprocess, True, False) # silence=True, echo=False
 
     # Stress -----------------------------------------------------------------------------
     # computers.run(runStress_multiprocess)
@@ -131,7 +132,7 @@ def main():
     # computers.run(runFatigue_multiprocess)
 
     # Stress + Fatigue -------------------------------------------------------------------
-    # computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+    computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
 #-----------------------------------------------------------------------------------------
