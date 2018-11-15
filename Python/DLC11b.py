@@ -90,26 +90,26 @@ def main():
     # seeds = seeds1.extend(seeds2)
     # seeds = seeds1
 
-
-    # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
-    # Some testing ...
-    # runTurbSim_multiprocess(seeds, silence=1, echo=0)
-    # runFAST_multiprocess(seeds, silence=1, echo=0)
-    # runStress_multiprocess(seeds, echo=0)
-    # runFatigue_multiprocess(seeds, echo=0)
-    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1'):
-    #     life.get_stress_fatigue('NTM_3mps_-544599383', 6009, [1,2,3,4,5,6,7,8,9], 30)
-    # runStressFatigue_multiprocess([['NTM', '11', '-1500121613'], ['NTM', '9', '324541780']], 30, echo=0)
-
-    # runStressFatigue_multiprocess(seeds, 10, echo=0)
-    
-    # Resume Tasks =======================================================================
     # Load seeds: Rerun TrubSim
     with utils.cd('~/aster1/Wind'):
         with open('recomputedSeeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
     seeds = liste
+
+    # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
+    # Some testing ...
+    runTurbSim_multiprocess(seeds, silence=1, echo=0)
+    runFAST_multiprocess(seeds, silence=1, echo=0)
+    # runStress_multiprocess(seeds, echo=0)
+    # runFatigue_multiprocess(seeds, echo=0)
+    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1'):
+    #     life.get_stress_fatigue('NTM_3mps_-544599383', 6009, [1,2,3,4,5,6,7,8,9], 30)
+    # runStressFatigue_multiprocess([['NTM', '11', '-1500121613'], ['NTM', '9', '324541780']], 30, echo=0)
+
+    runStressFatigue_multiprocess(seeds, 10, echo=0)
+    return
+    # Resume Tasks =======================================================================
 
 
     
