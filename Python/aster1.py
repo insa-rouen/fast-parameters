@@ -54,18 +54,18 @@ def main():
                            '~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
                            False)
     # aster1.initiate()
-    aster1.resume('TurbSim', outputFileSize=70*1024**2)
+    # aster1.resume('TurbSim', outputFileSize=70*1024**2)
     
-    # aster1.resume('FAST', inputFileSize=70*1024**2)
-    # aster1.run(runFAST_multiprocess, True, False) #silence, echo
+    #aster1.resume('FAST', inputFileSize=70*1024**2)
+    #aster1.run(runFAST_multiprocess, True, False) #silence, echo
     # time.sleep(5)
     
     # aster1.resume('Stress', inputFileSize=90*1024**2, outputFileSize=204*1024**2)
     # aster1.run(runStress_multiprocess, 10, False) # thetaStep=90, echo
     # time.sleep(5)
     
-    # aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=True)
-    # aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+    aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=False)
+    #aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
 
