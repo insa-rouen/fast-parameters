@@ -154,7 +154,7 @@ def run_multiprocess(wind, gridloss):
 #!------------------------------------------------------------------------------
 def main():
     # ----- Running on multi processor
-    TIK = time.time()    
+    TIK = time.time()
     # timerange = frange(60, 90.5+0.01, 0.1)
 
     # wind = 'EOGO'
