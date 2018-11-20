@@ -1,5 +1,5 @@
 ------- FAST v8.16.* INPUT FILE ------------------------------------------------
-DLC 2.3 EOG @ 3 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
+DLC 2.3 EOG @ 25 m/s for NREL 5.0 MW Baseline Wind Turbine (Onshore)
 ---------------------- SIMULATION CONTROL --------------------------------------
 False         Echo            - Echo input data to <RootName>.ech (flag)
 "FATAL"       AbortLevel      - Error level when simulation should abort (string) {"WARNING", "SEVERE", "FATAL"}
@@ -19,11 +19,11 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
           0   CompMooring     - Compute mooring system (switch) {0=None; 1=MAP++; 2=FEAMooring; 3=MoorDyn}
           0   CompIce         - Compute ice loads (switch) {0=None; 1=IceFloe; 2=IceDyn}
 ---------------------- INPUT FILES ---------------------------------------------
-"WT/InitCond/ElastoDyn_I.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
+"WT/InitCond/ElastoDyn_O.dat"    EDFile          - Name of file containing ElastoDyn input parameters (quoted string)
 "unused"      BDBldFile(1)    - Name of file containing BeamDyn input parameters for blade 1 (quoted string)
 "unused"      BDBldFile(2)    - Name of file containing BeamDyn input parameters for blade 2 (quoted string)
 "unused"      BDBldFile(3)    - Name of file containing BeamDyn input parameters for blade 3 (quoted string)
-"DLC2.3_EOGI.IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
+"DLC2.3_EOG_O.IW.dat"      InflowFile      - Name of file containing inflow wind input parameters (quoted string)
 "WT/AeroDyn.dat"     AeroFile        - Name of file containing aerodynamic input parameters (quoted string)
 "WT/ServoDyn_DLC2.3.dat"    ServoFile       - Name of file containing control and electrical-drive input parameters (quoted string)
 "unused"      HydroFile       - Name of file containing hydrodynamic input parameters (quoted string)
@@ -32,7 +32,7 @@ False         Echo            - Echo input data to <RootName>.ech (flag)
 "unused"      IceFile         - Name of file containing ice input parameters (quoted string)
 ---------------------- OUTPUT --------------------------------------------------
 False         SumPrint        - Print summary data to "<RootName>.sum" (flag)
-          5   SttsTime        - Amount of time between screen status messages (s)
+         10   SttsTime        - Amount of time between screen status messages (s)
       99999   ChkptTime       - Amount of time between creating checkpoint files for potential restart (s)
   "default"   DT_Out          - Time step for tabular output (s)
           0   TStart          - Time to begin tabular output (s)

@@ -12,6 +12,7 @@
 # Comments:
 #     - 0.0: Init version
 #     - 1.0: Enable multiprocessing
+#     - 2.0: [20/11/2018] Adapt to new modules
 # Description:
 # Combine wind condition EOG with loss of grid at different moment
 # 
