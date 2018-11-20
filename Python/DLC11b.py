@@ -26,7 +26,7 @@ import DLC11
 from tools import utils, distribute
 from pyturbsim import turb
 from pylife import meca, life
-from iffast import DLC
+from pyfast import DLC
 #============================== Modules Communs ==============================
 import json
 

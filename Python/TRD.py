@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # TRD testing codes
 # 
 #
@@ -13,23 +13,23 @@
 #     - 0.0: Mean wind speed fixed at cut-out and grid loss time fixed at 74.9s
 #     
 # Description:
-#     - Combine wind condition EOG with loss of grid and induce Pitch-to-Feather and HSS
-#       brake shutdown
+#     - Combine wind condition EOG with loss of grid and induce Pitch-to-Feather 
+#       and HSS brake shutdown
 # 
 # 
 # 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                        MODULES
-#-----------------------------------------------------------------------------------------
-#============================== Modules Personnels ==============================
+#!------------------------------------------------------------------------------
+#!                                       MODULES
+#!------------------------------------------------------------------------------
+#*============================= Modules Personnels =============================
 import sys, IPython # to colorize traceback errors in terminal
 sys.excepthook = IPython.core.ultratb.ColorTB()
 import DLC23
-#============================== Modules Communs ==============================
+#*============================= Modules Communs ==============================
 import time
 import os
 # import os, platform, 
@@ -42,12 +42,12 @@ import re
 
 
 
-
-#-----------------------------------------------------------------------------------------
-#                                    CLASS DEFINITION
-#-----------------------------------------------------------------------------------------
+#!------------------------------------------------------------------------------
+#!                                   CLASS DEFINITION
+#!------------------------------------------------------------------------------
 class TRD(DLC23.DLC_para):
-    """DLC class reserved for multiprocessing use"""
+    """
+    """
     def __init__(self, TRD_mode1, wind='', gridLoss=0.0, outputFolder='/', toLog=False):
         super(TRD, self).__init__(wind=wind, gridLoss=gridLoss, outputFolder=outputFolder, toLog=toLog)
         self.TRD_mode1 = TRD_mode1
@@ -66,7 +66,7 @@ class TRD(DLC23.DLC_para):
         self.__servodyn_copy = ''
 
     def make_copy2(self):
-        # ServoDyn_TRD.dat ---------------------------------------------------------------
+        # ServoDyn_TRD.dat -----------------------------------------------------
         filename = self.__servodyn_trd
         with open(filename, 'r') as f:
             data = f.readlines()
@@ -87,7 +87,7 @@ class TRD(DLC23.DLC_para):
         self.__servodyn_trd = filename
 
 
-        # ServoDyn.dat -------------------------------------------------------------------
+        # ServoDyn.dat ---------------------------------------------------------
         filename = self.__servodyn
         with open(filename, 'r') as f:
             data = f.readlines()            
@@ -108,7 +108,7 @@ class TRD(DLC23.DLC_para):
         self.__servodyn_copy = filename # update .dat file
 
 
-        # .fst ---------------------------------------------------------------------------
+        # .fst  ----------------------------------------------------------------
         filename = self._fstPath+self._prefix+self.wind+'.fst'
         with open(filename, 'r') as f:
             data = f.read()
@@ -137,18 +137,21 @@ class TRD(DLC23.DLC_para):
         pass
 
 
-#-----------------------------------------------------------------------------------------
-#                                  FUNCTION DEFINITION
-#-----------------------------------------------------------------------------------------
+
+#!------------------------------------------------------------------------------
+#!                                 FUNCTION DEFINITION
+#!------------------------------------------------------------------------------
 def run_multiprocess(wind, gridloss):
     simulation = TRD(wind=wind, gridLoss=gridloss, outputFolder='/withTRD/EOGO_74.9')
     simulation.make_copy2()
     simulation.run(True)
     simulation.move_and_rename(simulation.time)
 
-#-----------------------------------------------------------------------------------------
-#                                     MAIN FUNCTION
-#-----------------------------------------------------------------------------------------
+
+
+#!------------------------------------------------------------------------------
+#!                                    MAIN FUNCTION
+#!------------------------------------------------------------------------------
 def main():
     # ----- Running on multi processor
     TIK = time.time()    
@@ -179,8 +182,8 @@ def main():
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                      RUNNING TEST
-#-----------------------------------------------------------------------------------------
+#!------------------------------------------------------------------------------
+#!                                     RUNNING TEST
+#!------------------------------------------------------------------------------
 if __name__ == '__main__':
         main()

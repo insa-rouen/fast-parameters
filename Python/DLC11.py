@@ -22,7 +22,7 @@
 #                                        MODULES
 #-----------------------------------------------------------------------------------------
 #============================== Modules Personnels ==============================
-from iffast import DLC
+from pyfast import DLC
 from tools import utils
 #============================== Modules Communs ==============================
 import json
