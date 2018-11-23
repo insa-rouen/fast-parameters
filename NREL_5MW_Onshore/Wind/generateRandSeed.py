@@ -31,8 +31,8 @@ from pyturbsim import seed
 #                                     PROGRAMME PRINCIPALE
 #-----------------------------------------------------------------------------------------
 def main():
-    seed.auto(1000, allowDuplicate=False) # give the number of seeds per speed
-
+    # seed.auto(1000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
+    seed.auto(10000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
 
 
 #-----------------------------------------------------------------------------------------
