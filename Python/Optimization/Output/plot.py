@@ -19,6 +19,7 @@
 #============================== Modules Personnels ==============================
 import sys, IPython # to colorize traceback errors in terminal
 sys.excepthook = IPython.core.ultratb.ColorTB()
+from pycrunch import amplitude as amp
 from pygraph import chart
 from tools import utils
 #============================== Modules Communs ==============================
@@ -50,7 +51,7 @@ def plot_Wind1Vel(columns=['Wind1VelX','Wind1VelY','Wind1VelZ'], xlim=[60, 90, 1
     chart.draw(fig, toPDF)
 
 
-def compare_YawBrTDx(columns=['YawBrTDxt'], minor=[True, True, True, True], xlim=[60, 90, 10], ylim=[-0.9, 0.7, 0.1], file='', residu=False, toPDF=[]):
+def compare_YawBrTDx(columns=['YawBrTDxt'], minor=[True, True, True, True], xlim=[60, 90, 10], ylim=[-0.9, 0.7, 0.1], file='', residu=False, withPV=False, toPDF=[]):
     # reference data
     X1 = DATA_REF.get('Time')['Records']
     Y1 = DATA_REF.get(columns[0])['Records']
@@ -69,6 +70,12 @@ def compare_YawBrTDx(columns=['YawBrTDxt'], minor=[True, True, True, True], xlim
     axeLeft.tick_params(axis='y', labelcolor=color)
     axeLeft.set_yticks(numpy.arange(ylim[0], ylim[1]+ylim[2], ylim[2]))
     plt.ylim(ylim[0], ylim[1])
+
+    if withPV: # mark peak and valley
+        filename = "reference_"+columns[0]+".ext"
+        plot_peak_and_valley(filename, axeLeft)
+        filename = file.rstrip(".out")+"_"+columns[0]+".ext"
+        plot_peak_and_valley(filename, axeLeft)
 
     # --- Right axis
     if residu:
@@ -139,30 +146,10 @@ def plot_trd_AON_AOFF(TRD_AON, TRD_AOFF, columns=('NTRD_FC', 'NTRD_A', 'NTRD_VA'
         indices = [i for (i,y) in enumerate(Y) if y <= TRD_AOFF]
         axes[2].plot([X[i] for i in indices], [Y[i] for i in indices],'.', markersize=1, color='tab:red', label="AOFF="+str(TRD_AOFF))
 
-        # 
+        # Set axes properties
         chart.adjust(axes[0], xlim=xlim, ylim=[-30e3, 30e3], ylabel="Force (kN)", xVisible=False)
         chart.adjust(axes[1], xlim=xlim, ylim=[-0.2, 1.2], ylabel="TRD Status", xVisible=False, seperator=False)
         chart.adjust(axes[2], xlim=xlim, ylim=[-0.1, 2.0], ylabel="Amplitude of vibration (m/s)", seperator=False)
-        # [axis.legend() for axis in axes]
-        # axes[0].yaxis.set_major_formatter( ticker.FuncFormatter(lambda x,pos: format(int(x),",").replace(",", " ")) ) # use " " as thousand seperator
-        # axes[0].yaxis.set_minor_locator(ticker.AutoMinorLocator())
-        # axes[2].yaxis.set_minor_locator(ticker.MultipleLocator(0.1))
-        # axes[1].yaxis.set_major_locator(ticker.FixedLocator([0,1]))
-        # [axis.grid(which='major') for axis in axes]
-        # axes[0].grid(which='minor', color='tab:gray', linestyle=':')
-        # axes[2].grid(which='minor', color='tab:gray', linestyle=':')
-        # [axis.set_xticks(numpy.arange(xlim[0], xlim[1]+xlim[2], xlim[2])) for axis in axes]
-        # plt.setp(axes[0].get_xticklabels(), visible=False)
-        # plt.setp(axes[1].get_xticklabels(), visible=False)
-        # axes[0].set_yticks(numpy.arange(-250e3, 300e3, 50e3))
-        # [axis.set_xlim(xlim[0], xlim[1]) for axis in axes]
-        # axes[0].set_ylim(-300e3, 300e3)
-        # axes[1].set_ylim(-0.3, 1.3)
-        # axes[2].set_ylim(-0.1, 2.0)
-        # axes[2].set_xlabel("Time (s)")
-        # axes[0].set_ylabel("Force (kN)")
-        # axes[1].set_ylabel("TRD Status")
-        # axes[2].set_ylabel("")
 
         chart.draw(fig, toPDF, left=0.08, bottom=0.06, right=0.92, top=0.94, wspace=0.14, hspace=0.14)
 
@@ -171,37 +158,38 @@ def plot_trd_AON_AOFF(TRD_AON, TRD_AOFF, columns=('NTRD_FC', 'NTRD_A', 'NTRD_VA'
 #-----------------------------------------------------------------------------------------
 #                                          FONCTIONS UTILES
 #-----------------------------------------------------------------------------------------
+def plot_peak_and_valley(filename, axis):
+    data = utils.readfwf(filename)
+    X = data.get(1)['Records']
+    Y = data.get(2)['Records']
+    legendString = axis.plot(X, Y, '.', label="Peak/Valley")
+    return legendString
 
 
 
 #-----------------------------------------------------------------------------------------
 #                                          PROGRAMME PRINCIPALE
 #-----------------------------------------------------------------------------------------
-
 def main():
     # get reference data
+    filebase = 'reference'
     global DATA_REF
-    DATA_REF = utils.readcsv('/Users/hbai/Eolien/Parameters/Python/Optimization/Output/reference.out')
-
-
+    DATA_REF = utils.readcsv(filebase+".out")
+    
     graphNum = 1
 
+    if graphNum == 0: # get peak/valley and its time
+        amp.find_peak_valley(filebase, header=7, datarow=6009, startline=12,
+                             channels=["YawBrTDxt",])
 
     if graphNum == 1:
-        plot_Wind1Vel(file='EOG_O_277.826.7-86.712-17.0222.out')
-        compare_YawBrTDx(file='EOG_O_277.826.7-86.712-17.0222.out')
+        # plot_Wind1Vel(file='EOG_O_277.826.7-86.712-17.0222.out')
+        compare_YawBrTDx(file='EOG_O_277.826.7-86.712-17.0222.out', withPV=True)
         # compare_YawBrTDx(file='EOG_O_277.826.7-86.712-17.0222.out', residu=True)
-        """
-        # compare_YawBrTDx(columns=[92], folder1='/withoutTRD/EOGO', folder2='/withTRD/EOGO_74.9', file1='/74.9.out', file2='/5000_1.0.out', toPDF=[1, '77_YawBrTDx@out_5000_1.pdf'])
-        # compare_YawBrTDx(columns=[92], folder1='/withoutTRD/EOGO', folder2='/withoutTRD', file1='/74.9.out', file2='/EOGO.out', toPDF=[0, '77_YawBrTDx(residu)@out.pdf'])
-        """
-        plot_trd_AON_AOFF(TRD_AON=0.4, TRD_AOFF=0.05, velocities=('O',), file='EOG_O_277.826.7-86.712-17.0222.out')
-        """
-        # plot_trd_AON_AOFF(velocities=('O',), folder='/withTRD/EOGO_74.9', file='/5000_1.0.out', toPDF=[1, '77_NTRD_A@out_5000_1.pdf'])
 
-        # compare_YawBrTDx(columns=[92], folder1='/withoutTRD/EOGO', folder2='/withTRD/EOGO_74.9', file1='/74.9.out', file2='/DLC2.3_EOGO.out', toPDF=[0, '77_YawBrTDx@out.pdf'])
-        # plot_trd_AON_AOFF(velocities=('O',), folder='/withTRD/EOGO_74.9', file='/DLC2.3_EOGO.out', toPDF=[0, '77_NTRD_A@out.pdf'])
-        """
+        # plot_trd_AON_AOFF(TRD_AON=0.4, TRD_AOFF=0.05, velocities=('O',), file='EOG_O_277.826.7-86.712-17.0222.out')
+
+
     
 #-----------------------------------------------------------------------------------------
 #                                               EXÉCUTION
