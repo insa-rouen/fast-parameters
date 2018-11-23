@@ -123,8 +123,8 @@ def main():
     computers = distribute.LMN()
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
-    computers.show()
-    exit()
+    # computers.show()
+    
     # TurbSim ------------------------------------------------------------------
     computers.run(runTurbSim_multiprocess, True, False) #silence=True,echo=False
 
