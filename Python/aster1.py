@@ -27,6 +27,7 @@
 from tools import utils, server
 from DLC11b import runFAST_multiprocess, runStress_multiprocess, runFatigue_multiprocess, runStressFatigue_multiprocess
 #*============================= Modules Communs ================================
+import os
 import time
 import json
 
@@ -55,38 +56,58 @@ def main():
     liste = [s for s in seeds if s[0] == "NTM" and s[1] == "25"]
     seeds = liste
 
-
+    
     # Run ======================================================================
-    aster1 = server.Aster1(seeds,
-                           '~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
-                           '~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
-                           echo=False)
+    flag = True
+    wait = None
+    sleepTime = 30 * 60 # in secondes
+    while flag:
+        aster1 = server.Aster1(seeds,
+                            '~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
+                            '~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
+                            echo=False)
 
+        # TurbSim ------------------------------------------------------------------
+        # [ATTENTION] This will only overwrite recomputedSeeds.json
+        # aster1.resume('TurbSim', outputFileSize=70*1024**2)
 
-    # TurbSim ------------------------------------------------------------------
-    # [ATTENTION] This will only overwrite recomputedSeeds.json
-    # aster1.resume('TurbSim', outputFileSize=70*1024**2)
+        # FAST ---------------------------------------------------------------------
+        aster1.resume('FAST', inputFileSize=70*1024**2)
+        # a way to exit based on unchanged files during a fixed time
+        if len(aster1.seeds) < os.cpu_count():
+            if wait is None:
+                wait = len(aster1.seeds)
+                time.sleep(sleepTime)
+                continue
+            else:
+                now = len(aster1.seeds)
+                if now == wait:
+                    flag = False
+                else:
+                    wait = now
+                    time.sleep(sleepTime)
+                    continue
+        
+        aster1.run(runFAST_multiprocess, True, False) #silence, echo
+        time.sleep(5)
+        
+        # Stress -------------------------------------------------------------------
+        # aster1.resume('Stress',inputFileSize=90*1024**2,outputFileSize=204*1024**2)
+        # aster1.run(runStress_multiprocess, 10, False) # thetaStep=90, echo
+        # time.sleep(5)
+        
+        # Stress + Fatigue ---------------------------------------------------------
+        aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=True)
+        aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+        time.sleep(5)
 
-    # FAST ---------------------------------------------------------------------
-    aster1.resume('FAST', inputFileSize=70*1024**2)
-    aster1.run(runFAST_multiprocess, True, False) #silence, echo
-    time.sleep(5)
-    
-    # Stress -------------------------------------------------------------------
-    # aster1.resume('Stress',inputFileSize=90*1024**2,outputFileSize=204*1024**2)
-    # aster1.run(runStress_multiprocess, 10, False) # thetaStep=90, echo
-    # time.sleep(5)
-    
-    # Stress + Fatigue ---------------------------------------------------------
-    aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=True)
-    aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+        # TurbSim + FAST + Stress + Fatigue ----------------------------------------
+        # [ATTENTION] This will only overwrite recomputedSeeds.json
+        # aster1.resume('ALL', outputFileSize=20*1024)
 
-    # TurbSim + FAST + Stress + Fatigue ----------------------------------------
-    # [ATTENTION] This will only overwrite recomputedSeeds.json
-    # aster1.resume('ALL', outputFileSize=20*1024)
+        # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
 
-
-    # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
+        del aster1
 
 
 #!------------------------------------------------------------------------------
