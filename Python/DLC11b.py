@@ -120,12 +120,13 @@ def main():
     # Initiate/Resume Tasks ====================================================
     
     # Distribute tasks ---------------------------------------------------------
-    computers = distribute.LMN()
+    computers=distribute.LMN('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1')
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
     
     # TurbSim ------------------------------------------------------------------
+    computers.resume('TurbSim')
     computers.run(runTurbSim_multiprocess, True, False) #silence=True,echo=False
 
     # FAST ---------------------------------------------------------------------
