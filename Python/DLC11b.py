@@ -24,7 +24,7 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, distribute
-from pyturbsim import turb
+from pywind import turb
 from pylife import meca, life
 from pyfast import DLC
 #*============================= Modules Communs ==============================
