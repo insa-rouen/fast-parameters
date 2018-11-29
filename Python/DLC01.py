@@ -25,6 +25,7 @@
 from pyfast import DLC
 from pywind import iec
 from tools import utils
+from pywt import elasto
 #* ============================= Modules Communs ==============================
 
 
@@ -36,10 +37,13 @@ from tools import utils
 def main():
     # Generate wind profile ====================================================
     windSpeedRange = utils.frange(3.0, 25.1, 0.1)
-    iec.get_uniform(speedRange=windSpeedRange)
+    # iec.get_uniform(speedRange=windSpeedRange)
     
     # Run FAST =================================================================
-    DLC.get_DLC01_multiprocess(list_speed=windSpeedRange, silence=True)
+    # DLC.get_DLC01_multiprocess(list_speed=windSpeedRange, silence=True)
+    
+    # Generate ElastoDyn script ================================================
+    elasto.generate_script(speedRange=windSpeedRange)
 
 
 
