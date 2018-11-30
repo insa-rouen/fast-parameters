@@ -51,7 +51,7 @@ import psutil
 @utils.timer
 def main():
     # Check CPU usage ==========================================================
-    if psutil.cpu_percent() >= 90: exit()
+    if psutil.cpu_percent() >= 90: return
 
     # Load Seeds ===============================================================
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
