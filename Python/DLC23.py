@@ -48,7 +48,8 @@ def runIECWind(cutin, cutout, speedstep=0.1, silence=False):
     speedRange = utils.frange(0.0, 1.0, speedstep)
     condition = ["EOGR+{}".format(s) for s in speedRange]
     for v in range(cutin, cutout, 1):
-        iec.get_DLC23(cutin=float(cutin-1), rated=float(v),cutout=float(cutout), condition=condition, silence=silence, rename=True)
+        iec.get_DLC23(cutin=float(cutin-1), rated=float(v),cutout=float(cutout),
+                      condition=condition, silence=silence, rename=True)
     # the last case: wind speed = cut-out
     iec.get_DLC23(cutin=float(cutin), rated=float(v+1), cutout=float(cutout+1),
                   condition=["EOGR+0.0"], silence=silence, rename=True)
