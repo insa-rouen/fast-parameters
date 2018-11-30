@@ -6,14 +6,13 @@
 # 
 #
 # Authors: Hao BAI (hao.bai@insa-rouen.fr)
-# Version: 0.0
 # Date: 25/07/2018
 #
 # Comments:
 #     - 0.0: Init version
 #     - 1.0: Enable multiprocessing
 #     - 2.0: [20/11/2018] Adapt to new modules
-#     - 2.1: [30/11/2018] Add reliability study
+#     - 2.1: [30/11/2018] Add reliability study for time of grid loss
 # Description:
 # Combine wind condition EOG with loss of grid at different moment
 # 
@@ -33,6 +32,7 @@ import  re
 import json
 import copy
 from pathlib import Path
+
 
 
 #!------------------------------------------------------------------------------
@@ -71,7 +71,6 @@ def _change_number(string, keyword, value):
     newline = new_substring + string[position:]
     return newline
 
-
 def runFAST_multiprocess(list_gridloss, silence=False, echo=True):
     DLC.get_DLC23_multiprocess(list_gridloss, outputFolder='', silence=silence,
                                echo=echo)
@@ -87,22 +86,18 @@ def main():
     speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]
     timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
     
-    
     # Generate wind profile ====================================================
-    # runIECWind(cutin=3, cutout=25, speedstep=0.1, silence=True)
-    # generateInflowWind(speedRange)
+    runIECWind(cutin=3, cutout=25, speedstep=0.1, silence=True)
+    generateInflowWind(speedRange)
     
-
     # Generate gridloss time ===================================================
     list_gridloss = []
     for speed in speedRange:
         for time in timeRange:
             list_gridloss.append([wind, speed, time])
-    
 
     # Run ======================================================================
-    # testing
-    list_gridloss = [["EOG", 25.0, 60.0], ["EOG", 11.4, 72.2]]
+    # list_gridloss = [["EOG", 25.0, 75.7], ["EOG", 11.4, 74.9]] # testing
     runFAST_multiprocess(list_gridloss, silence=1, echo=0)
 
 
