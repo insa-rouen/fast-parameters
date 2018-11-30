@@ -37,10 +37,10 @@ from pywt import elasto
 def main():
     # Generate wind profile ====================================================
     windSpeedRange = utils.frange(3.0, 25.1, 0.1)
-    # iec.get_uniform(speedRange=windSpeedRange)
+    iec.get_uniform(speedRange=windSpeedRange)
     
     # Run FAST =================================================================
-    # DLC.get_DLC01_multiprocess(list_speed=windSpeedRange, silence=True)
+    DLC.get_DLC01_multiprocess(list_speed=windSpeedRange, silence=True)
     
     # Generate ElastoDyn script ================================================
     elasto.generate_script(speedRange=windSpeedRange)
