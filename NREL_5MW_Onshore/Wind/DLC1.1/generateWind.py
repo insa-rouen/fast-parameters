@@ -22,7 +22,7 @@
 #                                        MODULES
 #-----------------------------------------------------------------------------------------
 #============================== Modules Personnels ==============================
-from pyturbsim import turb
+from pywind import turb
 #============================== Modules Communs ==============================
 import time
 import json
