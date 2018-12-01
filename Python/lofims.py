@@ -69,10 +69,10 @@ def main():
                            "~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1",
                            echo=False)
     print(len(seeds))
-    lofims.seeds = seeds[:2] # set list of seeds manually
+    lofims.seeds = seeds[:1] # set list of seeds manually
 
     # TurbSim ------------------------------------------------------------------
-    lofims.run(runTurbSim_multiprocess, True, False) #silence, echo
+    lofims.run(runTurbSim_multiprocess) #silence, echo
     time.sleep(5)
 
     # FAST ---------------------------------------------------------------------
