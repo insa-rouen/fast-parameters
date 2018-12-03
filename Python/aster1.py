@@ -25,7 +25,8 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-from DLC11b import runFAST_multiprocess, runStress_multiprocess, runFatigue_multiprocess, runStressFatigue_multiprocess
+from DLC11b import runFAST_multiprocess, runStress_multiprocess
+from DLC11b import runFatigue_multiprocess, runStressFatigue_multiprocess
 #*============================= Modules Communs ================================
 import os
 import time
@@ -51,24 +52,24 @@ import psutil
 @utils.timer
 def main():
     # Check CPU usage ==========================================================
-    if psutil.cpu_percent() >= 90: return
+    if psutil.cpu_percent() >= 60: return
 
     # Load Seeds ===============================================================
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "25"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "23"]
     seeds = liste
 
     
     # Run ======================================================================
-    aster1 = server.Aster1(seeds,
-                        '~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
-                        '~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
-                        echo=False)
+    aster1 = server.Aster1(inputSeeds=seeds,
+                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
+                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
+                           echo=False)
 
     # TurbSim ------------------------------------------------------------------
-    # [ATTENTION] This will only overwrite recomputedSeeds.json
+    # [ATTENTION] This will only overwrite recomputeTurbSim.json
     # aster1.resume('TurbSim', outputFileSize=70*1024**2)
 
     # FAST ---------------------------------------------------------------------
@@ -87,7 +88,7 @@ def main():
     time.sleep(5)
 
     # TurbSim + FAST + Stress + Fatigue ----------------------------------------
-    # [ATTENTION] This will only overwrite recomputedSeeds.json
+    # [ATTENTION] This will only overwrite recomputeALL.json
     # aster1.resume('ALL', outputFileSize=20*1024)
 
     # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
