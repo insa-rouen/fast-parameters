@@ -66,6 +66,7 @@ def main():
                     windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
                 outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
                            echo=False)
+    lmn_cs.seeds = seeds # set list of seeds manually
 
     # TurbSim ------------------------------------------------------------------
     lmn_cs.run(runTurbSim_multiprocess, True, False) #silence, echo
