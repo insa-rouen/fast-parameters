@@ -56,13 +56,15 @@ def main():
     # Load Seeds ===============================================================
     # Recalculate TurbSim + FAST + Stress
     with utils.cd("~/aster1/Wind"):
-        with open("failedRunsFAST.json", "r") as f:
-            seeds1 = json.loads(f.read())
-        with open("failedRunsStress.json", "r") as f:
-            seeds2 = json.loads(f.read())
-    seeds1.extend(seeds2)
-    seeds = seeds1
-    
+        #with open("failedRunsFAST.json", "r") as f:
+        #    seeds1 = json.loads(f.read())
+        #with open("failedRunsStress.json", "r") as f:
+        #    seeds2 = json.loads(f.read())
+        with open("recomputedSeeds.json", "r") as f:
+            seeds3 = json.loads(f.read())
+    #seeds1.extend(seeds2)
+    seeds = seeds3
+ 
     # Run ======================================================================
     lofims = server.Aster1(seeds,
                            "~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1",
