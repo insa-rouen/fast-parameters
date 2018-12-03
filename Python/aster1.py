@@ -83,7 +83,7 @@ def main():
     # time.sleep(5)
     
     # Stress + Fatigue ---------------------------------------------------------
-    aster1.resume('Fatigue', inputFileSize=90*1024**2, outputFileSize=20*1024, compress=True)
+    aster1.resume('Fatigue', inputFileSize=85*1024**2, outputFileSize=20*1024, compress=True)
     aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
     time.sleep(5)
 
