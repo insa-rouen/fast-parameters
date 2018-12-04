@@ -64,17 +64,47 @@ def main():
         # ----- Running on multi processor
         amp.find_peak_valley_multiprocess(filelist, 7, 6009, 12, channels)
 
-
+    wind = 'EOG'
+    speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]   
+    timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
+    channels = ['YawBrTDxt',]
     if testCase == 2: # complex case
         with utils.cd("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3"):
-            wind = 'EOG'
-            speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]
-            timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
-            filelist = ["{}_{}_{}".format(wind, s, t) for s in speedRange
+            # find peak and valley
+            filelist = ["{}_{}_{}".format(wind, v, t) for v in speedRange
                         for t in timeRange]
-            channels = ['YawBrTDxt',]
             amp.find_peak_valley_multiprocess(list_filebase=filelist,
                         header=7, datarow=6009, startline=12, channels=channels)
+            # find maximum amplitude
+            all_files = []
+            for v in speedRange:
+                temp = ["{}_{}_{}".format(wind, v, t) for t in timeRange]
+                all_files.append(temp)
+            
+            all_results = []
+            for f in all_files:
+                resu = amp.Amplitude.max_p2p_amplitude(f,channels,'.ext',True)
+                all_results.extend(resu)
+            # save to file/print to screen
+            amp.Amplitude.print(all_results, channels, 'max_amplitude.amp')
+    
+    # For testing ...
+    if testCase == 3:
+        with utils.cd("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3"):
+            # find peak and valley
+            filelist = ["{}_O_{}".format(wind, t) for t in timeRange]
+            amp.find_peak_valley_multiprocess(list_filebase=filelist,
+                        header=7, datarow=6009, startline=12, channels=channels)
+            # find maximum amplitude
+            all_files = []
+            all_files.append(filelist)
+            
+            all_results = []
+            for f in all_files:
+                resu = amp.Amplitude.max_p2p_amplitude(f,channels,'.ext',False)
+                all_results.extend(resu)
+            # save to file/print to screen
+            amp.Amplitude.print(all_results, channels, 'max_amplitudeO.amp')
 
 
 

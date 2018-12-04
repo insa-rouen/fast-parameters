@@ -96,9 +96,15 @@ def main():
     for speed in speedRange:
         for time in timeRange:
             list_gridloss.append([wind, speed, time])
-
+    
+    # For testing ...
+    # list_gridloss = []
+    # wind = 'EOG'
+    # for speed in ['O',]:
+    #    for time in timeRange:
+    #        list_gridloss.append([wind, speed, str(time)])
     # Run ======================================================================
-    # list_gridloss = [["EOG", 25.0, 75.7], ["EOG", 11.4, 74.9]] # testing
+    # list_gridloss = [["EOG", 25.0, 75.7], ["EOG", "O", 75.7]] # testing
     runFAST_multiprocess(list_gridloss, silence=1, echo=0)
 
 
