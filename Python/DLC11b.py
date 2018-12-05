@@ -120,7 +120,7 @@ def main():
     # Initiate/Resume Tasks ====================================================
     
     # Distribute tasks ---------------------------------------------------------
-    computers=distribute.LMN('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1')
+    computers=distribute.LMN('~/aster1/Wind/DLC1.1')
     # computers.deactivate("PC-LMN-1600A")
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
