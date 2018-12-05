@@ -28,7 +28,7 @@ from tools import utils
 from pycrunch import amplitude as amp
 #* ============================= Modules Communs ==============================
 import time
-
+import multiprocessing
 
 
 #!------------------------------------------------------------------------------
@@ -50,19 +50,20 @@ import time
 def main():
     testCase = 2
     if testCase == 1: # simple case
-        # bande of grid loss
-        filelist = [str(t) for t in utils.frange(74.0, 76.1, 0.1)]
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3/withoutTRD/EOGO"):
+            # bande of grid loss
+            filelist = [str(t) for t in utils.frange(74.0, 76.1, 0.1)]
 
-        channels = ['YawBrTDxt','YawBrTDyt', 'YawBrFxp','YawBrFyp', 'TwHt4FLxt',
-                    'TwHt4FLyt', 'TwrBsFxt', 'TwrBsFyt', 'TwrBsMxt', 'TwrBsMyt']
+            channels = ['YawBrTDxt','YawBrTDyt', 'YawBrFxp','YawBrFyp', 'TwHt4FLxt',
+                        'TwHt4FLyt', 'TwrBsFxt', 'TwrBsFyt', 'TwrBsMxt', 'TwrBsMyt']
 
-        # # ----- Running on single processor
-        # for file in filelist:
-        #     amplitude.find_peak_valley(file, header=7, datarow=6009, startline=12,
-        #                                channels=channels)
+            # # ----- Running on single processor
+            # for file in filelist:
+            #     amplitude.find_peak_valley(file, header=7, datarow=6009, startline=12,
+            #                                channels=channels)
 
-        # ----- Running on multi processor
-        amp.find_peak_valley_multiprocess(filelist, 7, 6009, 12, channels)
+            # ----- Running on multi processor
+            amp.find_peak_valley_multiprocess(filelist, 7, 6009, 12, channels)
 
     wind = 'EOG'
     speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]   
@@ -104,8 +105,15 @@ def main():
                 resu = amp.Amplitude.max_p2p_amplitude(f,channels,'.ext',False)
                 all_results.extend(resu)
             # save to file/print to screen
-            amp.Amplitude.print(all_results, channels, 'max_amplitudeO.amp')
-
+            output = amp.Amplitude.print(all_results, channels,
+                                         'max_amplitudeO.amp')
+            # compress files
+            output_files = [elem["File"]+".out" for elem in output[channels[0]]]
+            pool = multiprocessing.Pool()
+            [pool.apply_async(utils.compress, args=(filename, True), 
+             error_callback=utils.handle_error) for filename in output_files]
+            pool.close()
+            pool.join()
 
 
 #!------------------------------------------------------------------------------
