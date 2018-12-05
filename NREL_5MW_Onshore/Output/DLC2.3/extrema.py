@@ -87,8 +87,15 @@ def main():
                 resu = amp.Amplitude.max_p2p_amplitude(f,channels,'.ext',True)
                 all_results.extend(resu)
             # save to file/print to screen
-            amp.Amplitude.print(all_results, channels, 'max_amplitude.amp')
-    
+            output = amp.Amplitude.print(all_results, channels, 'max_amplitude.amp')
+            # compress files
+            output_files = [elem["File"]+".out" for elem in output[channels[0]]]
+            pool = multiprocessing.Pool()
+            [pool.apply_async(utils.compress, args=(filename, True),
+             error_callback=utils.handle_error) for filename in output_files]
+            pool.close()
+            pool.join()
+
     # For testing ...
     if testCase == 3:
         with utils.cd("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3"):
@@ -107,13 +114,7 @@ def main():
             # save to file/print to screen
             output = amp.Amplitude.print(all_results, channels,
                                          'max_amplitudeO.amp')
-            # compress files
-            output_files = [elem["File"]+".out" for elem in output[channels[0]]]
-            pool = multiprocessing.Pool()
-            [pool.apply_async(utils.compress, args=(filename, True), 
-             error_callback=utils.handle_error) for filename in output_files]
-            pool.close()
-            pool.join()
+
 
 
 #!------------------------------------------------------------------------------
