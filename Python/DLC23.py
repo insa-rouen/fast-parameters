@@ -77,6 +77,26 @@ def runFAST_multiprocess(list_gridloss, silence=False, echo=True):
                                echo=echo)
 
 
+def _find(path, pattern, size):
+    ''' size: minimum size in bytes (1 GB = 1024 MB = 1024^2 KB = 1024^3 Bytes) [num]
+    '''
+    with utils.cd(path):
+        p = Path().expanduser()
+        matched = sorted(p.glob(pattern))
+        if size is None:
+            result = [x.stem.split('.')[0] for x in matched]
+        else:
+            result = [x.stem for x in matched if x.stat().st_size >= size]
+    return result
+
+def _convertToSeed(list_filebase):
+    seeds = []
+    for filebase in list_filebase:
+        seed = filebase.split('_')
+        seed[1] = float(seed[1])
+        seed[2] = float(seed[2])
+        seeds.append(seed)
+    return seeds
 
 #!------------------------------------------------------------------------------
 #!                                    MAIN FUNCTION
@@ -87,6 +107,14 @@ def main():
     speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]
     timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
     
+    # Restart unfinished tasks
+    outputList =_find("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3", '*.out', 25*1024**2)
+    # find out wind profiles that are planned to be generated
+    inputList = ["{}_{}_{}".format(wind, v, t) for v in speedRange
+                        for t in timeRange]
+    recompute = list(set(inputList).difference(set(outputList)))
+    list_recompute = _convertToSeed(recompute)
+
     # Generate wind profile ====================================================
     runIECWind(cutin=3, cutout=25, speedstep=0.1, silence=True)
     generateInflowWind(speedRange)
@@ -105,7 +133,7 @@ def main():
     #        list_gridloss.append([wind, speed, str(time)])
     # Run ======================================================================
     # list_gridloss = [["EOG", 25.0, 75.7], ["EOG", "O", 75.7]] # testing
-    runFAST_multiprocess(list_gridloss, silence=1, echo=0)
+    runFAST_multiprocess(list_recompute, silence=1, echo=0)
 
 
 
