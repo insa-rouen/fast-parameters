@@ -63,7 +63,7 @@ False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (fla
 False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
 "unused"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
-True          CompNTRD     - Compute nacelle twin rotor damper {true/false} (flag)
+False         CompNTRD     - Compute nacelle twin rotor damper {true/false} (flag)
 "ServoDyn_TRD.dat"    NTRDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
 ---------------------- BLADED INTERFACE ----------------------------------------
 "DISCON_dar64.so"    DLL_FileName - Name/location of the dynamic library {.dll [Windows] or .so [Linux]} in the Bladed-DLL format (-) [used only with Bladed Interface]
@@ -90,7 +90,7 @@ false         DLL_Ramp     - Whether a linear ramp should be used between DLL_DT
  GenSpd_TLU   GenTrq_TLU
  (rpm)          (Nm)
 ---------------------- OUTPUT --------------------------------------------------
-True          SumPrint     - Print summary data to <RootName>.sum (flag) (currently unused)
+False         SumPrint     - Print summary data to <RootName>.sum (flag) (currently unused)
           1   OutFile      - Switch to determine where output will be placed: {1: in module output file only; 2: in glue code output file only; 3: both} (currently unused)
 True          TabDelim     - Use tab delimiters in text tabular output file? (flag) (currently unused)
 "ES10.3E2"    OutFmt       - Format used for text tabular output (except time).  Resulting field should be 10 characters. (quoted string) (currently unused)
@@ -98,11 +98,6 @@ True          TabDelim     - Use tab delimiters in text tabular output file? (fl
               OutList      - The next line(s) contains a list of output parameters.  See OutListParameters.xlsx for a listing of available output channels, (-)
 "GenPwr"                   - Electrical generator power and torque
 "GenTq"                    - Electrical generator power and torque
-
-"NTRD_FC"    - The force that TRD applys on structure (kN)
-"NTRD_A"     - Status of TRD [0: inactive | 1:active]
-"NTRD_VA"    - Amplitude of vibration (m/s)
-"NTRD_XS"
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
