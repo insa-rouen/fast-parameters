@@ -10,7 +10,7 @@
 #
 # Comments:
 #     - 0.2: [24/11/18] Run DLC1.1b for 10 000 simulations at 25 m/s
-#     
+#     - 0.4: [10/12/18] Run DLC1.1b for 10 000 simulations at 17 m/s
 # Description:
 #     
 # 
@@ -58,7 +58,7 @@ def main():
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "23"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "17"]
     seeds = liste
 
     
@@ -83,7 +83,8 @@ def main():
     # time.sleep(5)
     
     # Stress + Fatigue ---------------------------------------------------------
-    aster1.resume('Fatigue', inputFileSize=85*1024**2, outputFileSize=20*1024, compress=True)
+    aster1.resume('Fatigue', inputFileSize=85*1024**2, outputFileSize=20*1024,
+                  compress=True)
     aster1.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
     time.sleep(5)
 
@@ -91,7 +92,8 @@ def main():
     # [ATTENTION] This will only overwrite recomputeALL.json
     # aster1.resume('ALL', outputFileSize=20*1024)
 
-    # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
+    # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2,
+    #                   tgzFileSize=20*1024**2, damFileSize=20*1024)
 
 
 
