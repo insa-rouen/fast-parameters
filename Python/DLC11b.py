@@ -13,6 +13,7 @@
 #     - 0.1: Apply to distributed computers
 #     - 0.2: Run 10 000 simulation at wind speed 25 m/s
 #     - 0.3: Run 10 000 simulation at wind speed 23 m/s
+#     - 0.4: [09/12/18] Run 10 000 simulation at wind speed 17 m/s
 # Description:
 # 
 # 
@@ -28,7 +29,7 @@ from tools import utils, distribute
 from pywind import turb
 from pylife import meca, life
 from pyfast import DLC
-#*============================= Modules Communs ==============================
+#* ============================= Modules Communs ==============================
 import json
 
 
@@ -85,36 +86,31 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "23"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "17"]
     seeds = liste
-    
+
     # Re-run
     # with utils.cd('~/aster1/Wind'):
-    #     with open('failedRunsFAST.json', 'r') as f:
-    #         seeds1 = json.loads(f.read())
-    #     with open('failedRunsStress.json', 'r') as f:
-    #         seeds2 = json.loads(f.read())
-    #     with open('recomputedSeeds.json', 'r') as f:
+    #     #     with open('failedRunsFAST.json', 'r') as f:
+    #     #         seeds1 = json.loads(f.read())
+    #     #     with open('failedRunsStress.json', 'r') as f:
+    #     #         seeds2 = json.loads(f.read())
+    #     with open('recomputeALL.json', 'r') as f:
     #         seeds3 = json.loads(f.read())
     # ----- Rerun failed cases
     # seeds1.extend(seeds2)
     # seeds = seeds1
     # ----- Rerun recomputed cases
     # seeds = seeds3
-
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
 
     # Some Tests ===============================================================
-    # runTurbSim_multiprocess(seeds, silence=1, echo=0)
-    # runFAST_multiprocess(seeds, silence=1, echo=0)
-    # runStress_multiprocess(seeds, echo=0)
-    # runFatigue_multiprocess(seeds, echo=0)
-    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1'):
-    #     life.get_stress_fatigue('NTM_3mps_-544599383', 6009,
-    #                             [1,2,3,4,5,6,7,8,9], 30)
-    # runStressFatigue_multiprocess([['NTM', '11', '-1500121613'], ['NTM', '9', '324541780']], 30, echo=0)
-
+    # runTurbSim_multiprocess(seeds, silence=1, echo=1)
+    # runFAST_multiprocess(seeds, silence=1, echo=1)
+    # # runStress_multiprocess(seeds, echo=0)
+    # # runFatigue_multiprocess(seeds, echo=0)
     # runStressFatigue_multiprocess(seeds, 10, echo=0)
+    # return
     
 
     # Initiate/Resume Tasks ====================================================
@@ -131,7 +127,7 @@ def main():
     computers.run(runTurbSim_multiprocess, True, False) #silence=True,echo=False
 
     # FAST ---------------------------------------------------------------------
-    # computers.run(runFAST_multiprocess, True, False) # silence=True, echo=False
+    # computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
 
     # Stress -------------------------------------------------------------------
     # computers.run(runStress_multiprocess)
