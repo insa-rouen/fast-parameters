@@ -11,6 +11,7 @@
 # Comments:
 #     - 0.1: [01/12/18] Complete DLC1.1b for 10 000 simulations at 25 m/s
 #     - 0.2: [09/12/18] Run 10 000 simulation at 19 m/s
+#
 # Description:
 #     
 # 
@@ -26,7 +27,7 @@
 #*============================= Modules Personnels =============================
 from tools import utils, server
 from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
-from DLC11b import runStressFatigue_multiprocess
+from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
 import time
 import json
@@ -79,21 +80,30 @@ def main():
                            echo=False)
     lofims.seeds = seeds # set list of seeds manually
 
-    # TurbSim ------------------------------------------------------------------
-    lofims.run(runTurbSim_multiprocess, True, False) #silence, echo
-    time.sleep(5)
+    runMode = 1
+    if runMode == 1:
+        # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
+        lofims.run(runALL_multiprocess, 10) # thetaStep, outputFolder, compress,
+                                            # silence, echo
 
-    # FAST ---------------------------------------------------------------------
-    lofims.run(runFAST_multiprocess, True, False) #silence, echo
-    time.sleep(5)
-    
-    # Stress + Fatigue ---------------------------------------------------------
-    lofims.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
-    time.sleep(5)
+    if runMode == 2:
+        # TurbSim --------------------------------------------------------------
+        lofims.run(runTurbSim_multiprocess, True, False) # silence, echo
+        time.sleep(5)
 
-    # TurbSim + FAST + Stress + Fatigue ----------------------------------------
-    # [ATTENTION] This will only overwrite recomputeALL.json
-    # lofims.resume("ALL", outputFileSize=20*1024)
+        # FAST -----------------------------------------------------------------
+        lofims.run(runFAST_multiprocess, True, False) # silence, echo
+        time.sleep(5)
+        
+        # Stress + Fatigue -----------------------------------------------------
+        lofims.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+        # lofims.resume('Fatigue', inputFileSize=85*1024**2,
+        #               outputFileSize=20*1024, compress=True)
+        time.sleep(5)
+
+        # TurbSim + FAST + Stress + Fatigue ------------------------------------
+        # [ATTENTION] This will only overwrite recomputeALL.json
+        # lofims.resume("ALL", outputFileSize=20*1024)
 
     lofims.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
 

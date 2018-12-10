@@ -31,6 +31,8 @@ from pylife import meca, life
 from pyfast import DLC
 #* ============================= Modules Communs ==============================
 import json
+import time
+import multiprocessing
 
 
 
@@ -74,6 +76,48 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
                                              gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep,
                                              lifetime=20*365*24*6,echo=echo)
 
+def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
+           echo=True):
+    try:
+        # with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
+        #     turb.get_turbulence(seed, silence, echo) # generate TurbSim
+        DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
+            filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])
+            life.get_stress_fatigue(filebase, datarow=6009,
+                                    gages=[1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                    thetaStep=thetaStep, lifetime=20*365*24*6,
+                                    echo=echo) # calculate Stress and Fatigue
+    except:
+        raise
+    else:
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
+            if compress:
+                utils.compress(filename=filebase+".out", removeSource=True)
+        return seed
+
+def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
+                        silence=True, echo=False):
+    print('All-In-One: TurbSim + FAST + Stress + Fatigue v0.1 (December 10 2018)')
+    print('========== Multiprocessing Mode ==========')
+    # prepare a callback function
+    length = len(seeds)
+    completed = []
+    def printer(seed):
+        pos = seeds.index(seed) + 1
+        completed.append(seed)
+        rest = length - len(completed)
+        hour, minute = time.strftime("%H,%M").split(',')
+        print('|- [{}/{}] {} at {} m/s with seed ID {} is finished at {}:{}. '
+              '{} tasks waiting to be completed ...'.format(pos, length,seed[0],
+              seed[1], seed[2], hour, minute, rest))
+    # begin multiprocessing
+    pool = multiprocessing.Pool()
+    [pool.apply_async(runALL, args=(seed, thetaStep, outputFolder, compress,
+     silence,  echo), callback=printer, error_callback=utils.handle_error) for
+     seed in seeds]
+    pool.close()
+    pool.join()
 
 
 #!------------------------------------------------------------------------------
