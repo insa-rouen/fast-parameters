@@ -79,8 +79,8 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
            echo=True):
     try:
-        # with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
-        #     turb.get_turbulence(seed, silence, echo) # generate TurbSim
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
+            turb.get_turbulence(seed, silence, echo) # generate TurbSim
         DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
             filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])

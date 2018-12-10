@@ -63,12 +63,12 @@ def main():
     seeds = liste
 
     # Recalculate TurbSim + FAST + Stress
-    # with utils.cd("~/aster1/Wind"):
+    # with utils.cd("~/lmn-cs/Wind"):
     #     #with open("failedRunsFAST.json", "r") as f:
     #     #    seeds1 = json.loads(f.read())
     #     #with open("failedRunsStress.json", "r") as f:
     #     #    seeds2 = json.loads(f.read())
-    #     with open("recomputedSeeds.json", "r") as f:
+    #     with open("recomputeALL.json", "r") as f:
     #         seeds3 = json.loads(f.read())
     # #seeds1.extend(seeds2)
     # seeds = seeds3
@@ -83,8 +83,8 @@ def main():
     runMode = 1
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
-        lofims.run(runALL_multiprocess, 10) # thetaStep, outputFolder, compress,
-                                            # silence, echo
+        lofims.run(runALL_multiprocess, 10, "", True) # thetaStep, outputFolder,
+                                                      # compress, silence, echo
 
     if runMode == 2:
         # TurbSim --------------------------------------------------------------
