@@ -12,6 +12,7 @@
 #     - 0.0: Init version
 #     - 0.1: Apply to distributed computers
 #     - 0.2: Run 10 000 simulation at wind speed 25 m/s
+#     - 0.3: Run 10 000 simulation at wind speed 23 m/s
 # Description:
 # 
 # 
@@ -80,27 +81,26 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 @utils.timer
 def main():
     # Load Seeds ===============================================================
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+    # Initiation
+    with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "25"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "23"]
     seeds = liste
     
-    # Load seeds: Rerun FAST + Stress
-    # with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
+    # Re-run
+    # with utils.cd('~/aster1/Wind'):
     #     with open('failedRunsFAST.json', 'r') as f:
     #         seeds1 = json.loads(f.read())
     #     with open('failedRunsStress.json', 'r') as f:
     #         seeds2 = json.loads(f.read())
-    # seeds = seeds1.extend(seeds2)
-    # seeds = seeds1
-
-    # Load seeds: Rerun TrubSim
-    # with utils.cd('~/aster1/Wind'):
     #     with open('recomputedSeeds.json', 'r') as f:
-    #         seeds = json.loads(f.read())
-    # liste = [s for s in seeds if s[0] == "NTM"]
-    # seeds = liste
+    #         seeds3 = json.loads(f.read())
+    # ----- Rerun failed cases
+    # seeds1.extend(seeds2)
+    # seeds = seeds1
+    # ----- Rerun recomputed cases
+    # seeds = seeds3
 
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
 
@@ -120,7 +120,8 @@ def main():
     # Initiate/Resume Tasks ====================================================
     
     # Distribute tasks ---------------------------------------------------------
-    computers=distribute.LMN('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1')
+    computers=distribute.LMN('~/aster1/Wind/DLC1.1')
+    # computers.deactivate("PC-LMN-1600A")
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
