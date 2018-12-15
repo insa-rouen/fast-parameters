@@ -48,7 +48,7 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 @utils.timer
 def main():
-    testCase = 3
+    testCase = 5
     if testCase == 1: # simple case
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3/withoutTRD/EOGO"):
             # bande of grid loss
@@ -129,7 +129,10 @@ def main():
             output = amp.Amplitude.print(all_results, channels,
                                          'max_amplitudeO.amp')
 
-
+    # To verifiy if .out file contains NaN
+    if testCase == 5:
+        files = utils.find(".", "*.out")
+        [utils.readcsv("./"+f+".out") for f in files]
 
 #!------------------------------------------------------------------------------
 #!                                              EXÉCUTION
