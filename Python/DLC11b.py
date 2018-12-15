@@ -13,7 +13,8 @@
 #     - 0.1: Apply to distributed computers
 #     - 0.2: Run 10 000 simulation at wind speed 25 m/s
 #     - 0.3: Run 10 000 simulation at wind speed 23 m/s
-#     - 0.4: [09/12/18] Run 10 000 simulation at wind speed 17 m/s
+#     - 0.4: [09/12/18] Run 10 000 simulations at wind speed 17 m/s
+#     - 0.5: [15/12/18] Run 10 000 simulations at wind speed 13 m/s
 # Description:
 # 
 # 
@@ -130,7 +131,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "17"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "13"]
     seeds = liste
 
     # Re-run
