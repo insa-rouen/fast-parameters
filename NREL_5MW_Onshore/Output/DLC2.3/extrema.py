@@ -48,7 +48,7 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 @utils.timer
 def main():
-    testCase = 5
+    testCase = 3
     if testCase == 1: # simple case
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3/withoutTRD/EOGO"):
             # bande of grid loss
@@ -71,7 +71,7 @@ def main():
     timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
     channels = ['YawBrTDxt',]
     if testCase == 2: # complex case
-        with utils.cd("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3"):
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3"):
             # find peak and valley
             filelist = ["{}_{}_{}".format(wind, v, t) for v in speedRange
                         for t in timeRange]
@@ -100,7 +100,7 @@ def main():
 
     # get maxi amplitude for all time range and all speed
     if testCase == 3:
-        with utils.cd("~/lofims/Output/DLC2.3"):
+         with utils.cd("."):
             all_files = ["{}_{}_{}".format(wind, v, t) for v in speedRange for t
                          in timeRange]
             all_results = []
