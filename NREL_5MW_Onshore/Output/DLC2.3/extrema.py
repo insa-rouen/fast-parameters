@@ -131,8 +131,27 @@ def main():
 
     # To verifiy if .out file contains NaN
     if testCase == 5:
-        files = utils.find(".", "*.out")
-        [utils.readcsv("./"+f+".out") for f in files]
+        with utils.cd("."):
+            list_filebase = utils.find(".", "*.out")
+            option = 1
+            # Option 1: through multiprocessing
+            if option == 1:
+                amp.find_peak_valley_multiprocess(list_filebase=list_filebase,
+                                                header=7, datarow=6009,
+                                                startline=12, channels=channels,
+                                                peak=False, valley=False,
+                                                saveToFile=False)
+            # Option 2: one by one
+            if option == 2:
+                for f in list_filebase:
+                    try:
+                        utils.readcsv("./"+f+".out")
+                    except:
+                        print("[ERROR] {} has an error during reading, please "
+                              "check this file".format(f))
+                        raise
+
+
 
 #!------------------------------------------------------------------------------
 #!                                              EXÉCUTION
