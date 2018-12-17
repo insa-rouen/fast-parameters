@@ -10,7 +10,8 @@
 #
 # Comments:
 #     - 0.1: [01/12/18] Complete DLC1.1b for 10 000 simulations at 25 m/s
-#     - 0.2: [09/12/18] Run 10 000 simulation at 19 m/s
+#     - 0.2: [09/12/18] Run 10 000 simulations at 19 m/s
+#     - 0.3: [17/12/18] Run 10 000 simulations at 11 m/s
 #
 # Description:
 #     
@@ -59,7 +60,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "19"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "11"]
     seeds = liste
 
     # Recalculate TurbSim + FAST + Stress
@@ -83,7 +84,7 @@ def main():
     runMode = 1
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
-        lofims.run(runALL_multiprocess, 10, "", True) # thetaStep, outputFolder,
+        lofims.run(runALL_multiprocess, 10, "", False) # thetaStep, outputFolder,
                                                       # compress, silence, echo
 
     if runMode == 2:
@@ -105,7 +106,8 @@ def main():
         # [ATTENTION] This will only overwrite recomputeALL.json
         # lofims.resume("ALL", outputFileSize=20*1024)
 
-    lofims.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2, tgzFileSize=20*1024**2, damFileSize=20*1024)
+    lofims.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2,
+                      tgzFileSize=20*1024**2, damFileSize=20*1024)
 
 
 
