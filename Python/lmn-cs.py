@@ -83,6 +83,7 @@ def main():
     runMode = 1
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
+        lmn_cs.resume("ALL", outputFileSize=20*1024)
         lmn_cs.run(runALL_multiprocess, 10, "", True) # thetaStep, outputFolder,
                                                       # compress, silence, echo
     
