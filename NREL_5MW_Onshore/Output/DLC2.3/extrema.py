@@ -71,7 +71,7 @@ def main():
     timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
     channels = ['YawBrTDxt',]
     if testCase == 2: # complex case
-        with utils.cd("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3"):
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3"):
             # find peak and valley
             filelist = ["{}_{}_{}".format(wind, v, t) for v in speedRange
                         for t in timeRange]
@@ -100,7 +100,7 @@ def main():
 
     # get maxi amplitude for all time range and all speed
     if testCase == 3:
-        with utils.cd("~/lofims/Output/DLC2.3"):
+         with utils.cd("."):
             all_files = ["{}_{}_{}".format(wind, v, t) for v in speedRange for t
                          in timeRange]
             all_results = []
@@ -128,6 +128,28 @@ def main():
             # save to file/print to screen
             output = amp.Amplitude.print(all_results, channels,
                                          'max_amplitudeO.amp')
+
+    # To verifiy if .out file contains NaN
+    if testCase == 5:
+        with utils.cd("."):
+            list_filebase = utils.find(".", "*.out")
+            option = 1
+            # Option 1: through multiprocessing
+            if option == 1:
+                amp.find_peak_valley_multiprocess(list_filebase=list_filebase,
+                                                header=7, datarow=6009,
+                                                startline=12, channels=channels,
+                                                peak=False, valley=False,
+                                                saveToFile=False)
+            # Option 2: one by one
+            if option == 2:
+                for f in list_filebase:
+                    try:
+                        utils.readcsv("./"+f+".out")
+                    except:
+                        print("[ERROR] {} has an error during reading, please "
+                              "check this file".format(f))
+                        raise
 
 
 
