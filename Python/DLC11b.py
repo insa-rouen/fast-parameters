@@ -15,6 +15,8 @@
 #     - 0.3: Run 10 000 simulation at wind speed 23 m/s
 #     - 0.4: [09/12/18] Run 10 000 simulations at wind speed 17 m/s
 #     - 0.5: [15/12/18] Run 10 000 simulations at wind speed 13 m/s
+#     - 0.6: [20/12/18] Run 10 000 simulations at wind speed 9 m/s
+#
 # Description:
 # 
 # 
@@ -121,6 +123,7 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
     pool.join()
 
 
+
 #!------------------------------------------------------------------------------
 #!                                    MAIN FUNCTION
 #!------------------------------------------------------------------------------
@@ -131,7 +134,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "13"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "9"]
     seeds = liste
 
     # Re-run
@@ -142,11 +145,14 @@ def main():
     #     #         seeds2 = json.loads(f.read())
     #     with open('recomputeALL.json', 'r') as f:
     #         seeds3 = json.loads(f.read())
+    #     with open('recomputeTurbSim.json', 'r') as f:
+    #         seeds4 = json.loads(f.read())
     # ----- Rerun failed cases
     # seeds1.extend(seeds2)
     # seeds = seeds1
     # ----- Rerun recomputed cases
     # seeds = seeds3
+    # seeds = seeds4
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
 
     # Some Tests ===============================================================
@@ -159,10 +165,9 @@ def main():
     
 
     # Initiate/Resume Tasks ====================================================
-    
     # Distribute tasks ---------------------------------------------------------
-    computers=distribute.LMN('~/aster1/Wind/DLC1.1')
-    # computers.deactivate("PC-LMN-1600A")
+    computers = distribute.LMN('~/aster1/Wind/DLC1.1')
+    computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()

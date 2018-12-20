@@ -12,6 +12,8 @@
 #     - 0.2: [24/11/18] Run DLC1.1b for 10 000 simulations at 25 m/s
 #     - 0.4: [10/12/18] Run DLC1.1b for 10 000 simulations at 17 m/s
 #     - 0.5: [15/12/18] Run DLC1.1b for 10 000 simulations at 13 m/s
+#     - 0.5: [20/12/18] Run DLC1.1b for 10 000 simulations at 9 m/s
+#
 # Description:
 #     
 # 
@@ -33,6 +35,7 @@ import os
 import time
 import json
 import psutil
+
 
 
 #!------------------------------------------------------------------------------
@@ -59,7 +62,7 @@ def main():
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "13"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "9"]
     seeds = liste
 
     
