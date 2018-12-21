@@ -11,6 +11,7 @@
 # Comments:
 #     - 0.1: [03/12/18] Run DLC1.1b for 10 000 simulations at 21 m/s
 #     - 0.2: [10/12/18] Run DLC1.1b for 10 000 simulations at 15 m/s
+#     - 0.3: [21/12/18] Run DLC1.1b for 10 000 simulations at 7 m/s 
 #
 # Description:
 #     
@@ -59,7 +60,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "15"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "7"]
     seeds = liste
     
     # Recalculate TurbSim + FAST + Stress
