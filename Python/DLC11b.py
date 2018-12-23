@@ -16,6 +16,7 @@
 #     - 0.4: [09/12/18] Run 10 000 simulations at wind speed 17 m/s
 #     - 0.5: [15/12/18] Run 10 000 simulations at wind speed 13 m/s
 #     - 0.6: [20/12/18] Run 10 000 simulations at wind speed 9 m/s
+#     - 0.7: [23/12/18] Run 10 000 simulations at wind speed 5 m/s
 #
 # Description:
 # 
@@ -134,15 +135,15 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "9"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "5"]
     seeds = liste
 
     # Re-run
     # with utils.cd('~/aster1/Wind'):
-    #     #     with open('failedRunsFAST.json', 'r') as f:
-    #     #         seeds1 = json.loads(f.read())
-    #     #     with open('failedRunsStress.json', 'r') as f:
-    #     #         seeds2 = json.loads(f.read())
+    #     with open('failedRunsFAST.json', 'r') as f:
+    #         seeds1 = json.loads(f.read())
+    #     with open('failedRunsStress.json', 'r') as f:
+    #         seeds2 = json.loads(f.read())
     #     with open('recomputeALL.json', 'r') as f:
     #         seeds3 = json.loads(f.read())
     #     with open('recomputeTurbSim.json', 'r') as f:
@@ -167,7 +168,7 @@ def main():
     # Initiate/Resume Tasks ====================================================
     # Distribute tasks ---------------------------------------------------------
     computers = distribute.LMN('~/aster1/Wind/DLC1.1')
-    computers.deactivate("PC-LMN-9020")  # Shubiao WANG
+    # computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
