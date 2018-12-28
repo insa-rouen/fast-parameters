@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # DLC1.3 ETM
 #
 # Authors: Hao BAI (hao.bai@insa-rouen.fr)
@@ -14,36 +14,28 @@
 # Description:
 # 
 # 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                        MODULES
-#-----------------------------------------------------------------------------------------
-#============================== Modules Communs ==============================
+#!------------------------------------------------------------------------------
+#!                                       MODULES
+#!------------------------------------------------------------------------------
+#* =========================== Modules Personnels =============================
+from tools import utils
+#* ============================= Modules Communs ==============================
 import json, os, platform, re, time
 import fileinput # iterate over lines from multiple input files
 import shutil # high-level file operations
 import subprocess # call a bash command e.g. 'ls'
 import multiprocessing # enable multiprocessing
 from contextlib import contextmanager # utilities for with-statement contexts
-#============================== Modules Personnels ==============================
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                    CLASS DEFINITION
-#-----------------------------------------------------------------------------------------
-@contextmanager
-def cd(newdir):
-    prevdir = os.getcwd() # save current working path
-    os.chdir(os.path.expanduser(newdir)) # change directory
-    try:
-        yield
-    finally:
-        os.chdir(prevdir) # revert to the origin workinng path
-
+#!------------------------------------------------------------------------------
+#!                                   CLASS DEFINITION
+#!------------------------------------------------------------------------------
 class DLC(object):
     """docstring for DLC"""
     def __init__(self, seed, outputFolder='/', toLog=False):
@@ -116,7 +108,7 @@ class DLC(object):
         return text
 
     def _fast(self, silence=False):            
-        with cd('~/Eolien/FAST'):
+        with utils.cd('~/Eolien/FAST'):
             command = './{0} {1}{2}'.format(self._fastName, self.inputPath, self.fastFile)
             if silence:
                 subprocess.check_output([command], shell=True)
@@ -129,35 +121,21 @@ class DLC(object):
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                  FUNCTION DEFINITION
-#-----------------------------------------------------------------------------------------
-def frange(start, stop=None, step=1, precision=None):
-    if precision is None:
-        fois = 1e7
-    else:
-        fois = 10**precision
-    
-    new_start = int(start * fois)
-    new_stop = int(stop * fois)
-    new_step = int(step * fois)
-    r = range(new_start, new_stop, new_step)
-    
-    l = [i/fois for i in r]
-    return l
-
+#!------------------------------------------------------------------------------
+#!                                 FUNCTION DEFINITION
+#!------------------------------------------------------------------------------
 def run_multiprocess(seed):
     simulation = DLC(seed)
     simulation.run()
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                     MAIN FUNCTION
-#-----------------------------------------------------------------------------------------
+#!------------------------------------------------------------------------------
+#!                                    MAIN FUNCTION
+#!------------------------------------------------------------------------------
 def main():
     # Load seeds
-    with cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/DLC'):
         with open('6seeds.json', 'r') as f:
             seeds = json.loads(f.read())
 
@@ -189,8 +167,8 @@ def main():
 
 
 
-#-----------------------------------------------------------------------------------------
-#                                      RUNNING TEST
-#-----------------------------------------------------------------------------------------
+#!------------------------------------------------------------------------------
+#!                                     RUNNING TEST
+#!------------------------------------------------------------------------------
 if __name__ == '__main__':
         main()

@@ -2,22 +2,15 @@
 # -*- coding: utf-8 -*-
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# DLC1.1 - run 12*100 times simulation over all wind speed
+# DLC1.3 - run 12*100 times simulation over all wind speed
 #
 # Authors: Hao BAI (hao.bai@insa-rouen.fr)
 # Version: 0.0
-# Date: 22/10/2018
+# Date: 28/12/2018
 #
 # Comments:
-#     - 0.0: Init version
-#     - 0.1: Apply to distributed computers
-#     - 0.2: Run 10 000 simulation at wind speed 25 m/s
-#     - 0.3: Run 10 000 simulation at wind speed 23 m/s
-#     - 0.4: [09/12/18] Run 10 000 simulations at wind speed 17 m/s
-#     - 0.5: [15/12/18] Run 10 000 simulations at wind speed 13 m/s
-#     - 0.6: [20/12/18] Run 10 000 simulations at wind speed 9 m/s
-#     - 0.7: [23/12/18] Run 10 000 simulations at wind speed 5 m/s
-#     - 0.8: [25/12/18] Run 10 000 simulations at wind speed 3 m/s
+#     - 0.0: Init version (duplicate from DLC11b.py)
+#
 #
 # Description:
 # 
@@ -50,10 +43,14 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 #!                                 FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def runTurbSim_multiprocess(seeds, silence=False, echo=True):
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
-        turb.get_turbulence_multiprocess(seeds, silence=silence, echo=echo)
+def runTurbSim_multiprocess(seeds,
+                            logpath='~/Eolien/Parameters/Python/DLC1.3/log',
+                            silence=False, echo=True):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/'):
+        turb.get_turbulence_multiprocess(seeds, logpath=logpath,
+                                         silence=silence, echo=echo)
 
+# TODO get_DLC13
 def runFAST_multiprocess(seeds, silence=False, echo=True):
     DLC.get_DLC11_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
 
@@ -61,7 +58,7 @@ def runStress_multiprocess(seeds, thetaStep=30, echo=True):
     # generate file names
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     # run stress calculation
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
         meca.get_stress_multiprocess(list_filebase, datarow=6009,
                                      gages=[1,2,3,4,5,6,7,8,9],
                                      thetaStep=thetaStep,
@@ -69,14 +66,14 @@ def runStress_multiprocess(seeds, thetaStep=30, echo=True):
 
 def runFatigue_multiprocess(seeds, echo=True):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
 
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
     '''
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
         life.get_stress_fatigue_multiprocess(list_filebase, datarow=6009,
                                              gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep,
                                              lifetime=20*365*24*6,echo=echo)
@@ -84,10 +81,10 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
            echo=True):
     try:
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/"):
             turb.get_turbulence(seed, silence, echo) # generate TurbSim
         DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/"):
             filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])
             life.get_stress_fatigue(filebase, datarow=6009,
                                     gages=[1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -96,7 +93,7 @@ def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
     except:
         raise
     else:
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
+        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/"):
             if compress:
                 utils.compress(filename=filebase+".out", removeSource=True)
         return seed
@@ -136,7 +133,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "3"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "25"]
     seeds = liste
 
     # Re-run
@@ -168,7 +165,7 @@ def main():
 
     # Initiate/Resume Tasks ====================================================
     # Distribute tasks ---------------------------------------------------------
-    computers = distribute.LMN('~/aster1/Wind/DLC1.1')
+    computers = distribute.LMN('~/aster1/Wind/DLC1.3')
     # computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
