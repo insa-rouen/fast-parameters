@@ -43,9 +43,7 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 #!                                 FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def runTurbSim_multiprocess(seeds,
-                            logpath='~/Eolien/Parameters/Python/DLC1.3/log',
-                            silence=False, echo=True):
+def runTurbSim_multiprocess(seeds, logpath='', silence=False, echo=True):
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/'):
         turb.get_turbulence_multiprocess(seeds, logpath=logpath,
                                          silence=silence, echo=echo)
@@ -165,7 +163,7 @@ def main():
 
     # Initiate/Resume Tasks ====================================================
     # Distribute tasks ---------------------------------------------------------
-    computers = distribute.LMN('~/aster1/Wind/DLC1.3')
+    computers = distribute.LMN("~/aster1/Wind/DLC1.3")
     # computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
@@ -173,7 +171,10 @@ def main():
     
     # TurbSim ------------------------------------------------------------------
     computers.resume('TurbSim')
-    computers.run(runTurbSim_multiprocess, True, False) #silence=True,echo=False
+    
+    computers.run(runTurbSim_multiprocess,
+                  "~/Eolien/Parameters/Python/DLC1.3/log",
+                  True, False) # logpath="...", silence=True, echo=False
 
     # FAST ---------------------------------------------------------------------
     # computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
