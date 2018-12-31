@@ -13,6 +13,7 @@
 #     - 0.2: [10/12/18] Run DLC1.1b for 10 000 simulations at 15 m/s
 #     - 0.3: [21/12/18] Run DLC1.1b for 10 000 simulations at 7 m/s 
 #     - 0.4: [25/12/18] Re-Run DLC1.1b for 10 000 simulations at 11 m/s
+#     - 0.5: [31/12/18] Run DLC1.3b for 10 000 simulations at 23 m/s
 #
 # Description:
 #     
@@ -28,8 +29,10 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
-from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
+# from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
+# from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
+from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
+from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
 import time
 import json
@@ -58,11 +61,12 @@ def main():
     if psutil.cpu_percent() >= 60: return
 
     # Load Seeds ===============================================================
-    with utils.cd('~/aster1/Wind'):
+    # with utils.cd('~/aster1/Wind'):
+    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "11"]
-    seeds = liste
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "23"]
+    seeds = liste[:2]
     
     # Recalculate TurbSim + FAST + Stress
     # with utils.cd("~/lmn-cs/Wind"):
@@ -77,15 +81,15 @@ def main():
     
     # Run ======================================================================
     lmn_cs = server.Aster1(inputSeeds=seeds,
-                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
-                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
+                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3',
+                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3',
                            echo=False)
     lmn_cs.seeds = seeds # set list of seeds manually
 
     runMode = 1
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
-        lmn_cs.resume("ALL", outputFileSize=20*1024)
+        # lmn_cs.resume("ALL", outputFileSize=20*1024)
         lmn_cs.run(runALL_multiprocess, 10, "", True) # thetaStep, outputFolder,
                                                       # compress, silence, echo
     

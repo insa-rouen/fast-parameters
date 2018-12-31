@@ -48,24 +48,23 @@ def runTurbSim_multiprocess(seeds, logpath='', silence=False, echo=True):
         turb.get_turbulence_multiprocess(seeds, logpath=logpath,
                                          silence=silence, echo=echo)
 
-# TODO get_DLC13
 def runFAST_multiprocess(seeds, silence=False, echo=True):
-    DLC.get_DLC11_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
+    DLC.get_DLC13_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
 
-def runStress_multiprocess(seeds, thetaStep=30, echo=True):
-    # generate file names
-    list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-    # run stress calculation
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
-        meca.get_stress_multiprocess(list_filebase, datarow=6009,
-                                     gages=[1,2,3,4,5,6,7,8,9],
-                                     thetaStep=thetaStep,
-                                     saveToDisk=True, echo=echo)
+# def runStress_multiprocess(seeds, thetaStep=30, echo=True):
+#     # generate file names
+#     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
+#     # run stress calculation
+#     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
+#         meca.get_stress_multiprocess(list_filebase, datarow=6009,
+#                                      gages=[1,2,3,4,5,6,7,8,9],
+#                                      thetaStep=thetaStep,
+#                                      saveToDisk=True, echo=echo)
 
-def runFatigue_multiprocess(seeds, echo=True):
-    list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
-        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
+# def runFatigue_multiprocess(seeds, echo=True):
+#     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
+#     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
+#         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
 
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
@@ -79,9 +78,10 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
            echo=True):
     try:
+        logpath = "~/Eolien/Parameters/Python/DLC1.3/log"
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/"):
-            turb.get_turbulence(seed, silence, echo) # generate TurbSim
-        DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
+            turb.get_turbulence(seed, logpath, silence, echo) # generate TurbSim
+        DLC.get_DLC13(seed, outputFolder, silence, echo) # run FAST
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/"):
             filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])
             life.get_stress_fatigue(filebase, datarow=6009,
@@ -114,7 +114,7 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
     # begin multiprocessing
     pool = multiprocessing.Pool()
     [pool.apply_async(runALL, args=(seed, thetaStep, outputFolder, compress,
-     silence,  echo), callback=printer, error_callback=utils.handle_error) for
+     silence, echo), callback=printer, error_callback=utils.handle_error) for
      seed in seeds]
     pool.close()
     pool.join()
