@@ -61,12 +61,12 @@ def main():
     if psutil.cpu_percent() >= 60: return
 
     # Load Seeds ===============================================================
-    # with utils.cd('~/aster1/Wind'):
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
+    with utils.cd('~/aster1/Wind'):
+    #with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "ETM" and s[1] == "23"]
-    seeds = liste[:2]
+    seeds = liste
     
     # Recalculate TurbSim + FAST + Stress
     # with utils.cd("~/lmn-cs/Wind"):
