@@ -14,6 +14,7 @@
 #     - 0.5: [15/12/18] Run DLC1.1b for 10 000 simulations at 13 m/s
 #     - 0.5: [20/12/18] Run DLC1.1b for 10 000 simulations at 9 m/s
 #     - 0.6: [23/12/18] Run DLC1.1b for 10 000 simulations at 5 m/s
+#     - 0.7: [31/12/18] Run DLC1.3b for 10 000 simulations at 25 m/s
 #
 # Description:
 #     
@@ -29,10 +30,11 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-from DLC11b import runFAST_multiprocess, runStress_multiprocess
-from DLC11b import runFatigue_multiprocess, runStressFatigue_multiprocess
+# from DLC11b import runFAST_multiprocess, runStress_multiprocess
+# from DLC11b import runFatigue_multiprocess, runStressFatigue_multiprocess
+from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
+from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
-import os
 import time
 import json
 import psutil
@@ -63,14 +65,14 @@ def main():
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "5"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "25"]
     seeds = liste
 
     
     # Run ======================================================================
     aster1 = server.Aster1(inputSeeds=seeds,
-                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
-                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
+                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3',
+                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3',
                            echo=False)
 
     # TurbSim ------------------------------------------------------------------
