@@ -50,9 +50,10 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 #!                                 FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def runTurbSim_multiprocess(seeds, silence=False, echo=True):
+def runTurbSim_multiprocess(seeds, logpath='', silence=False, echo=True):
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/'):
-        turb.get_turbulence_multiprocess(seeds, silence=silence, echo=echo)
+        turb.get_turbulence_multiprocess(seeds, logpath=logpath,
+                                         silence=silence, echo=echo)
 
 def runFAST_multiprocess(seeds, silence=False, echo=True):
     DLC.get_DLC11_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
@@ -84,8 +85,9 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
 def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
            echo=True):
     try:
+        logpath = "~/Eolien/Parameters/Python/DLC1.1/log"
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
-            turb.get_turbulence(seed, silence, echo) # generate TurbSim
+            turb.get_turbulence(seed, logpath, silence, echo) # generate TurbSim
         DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
             filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])
@@ -176,7 +178,9 @@ def main():
     
     # TurbSim ------------------------------------------------------------------
     computers.resume('TurbSim')
-    computers.run(runTurbSim_multiprocess, True, False) #silence=True,echo=False
+    computers.run(runTurbSim_multiprocess,
+                  "~/Eolien/Parameters/Python/DLC1.1/log",
+                  True, False)  # logpath="...", silence=True, echo=False
 
     # FAST ---------------------------------------------------------------------
     # computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
