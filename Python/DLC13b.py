@@ -10,7 +10,7 @@
 #
 # Comments:
 #     - 0.0: Init version (duplicate from DLC11b.py)
-#
+#     - 0.1: [03/01/19] Execute 10 000 runs at 3 m/s
 #
 # Description:
 # 
@@ -131,7 +131,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "25"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "3"]
     seeds = liste
 
     # Re-run
