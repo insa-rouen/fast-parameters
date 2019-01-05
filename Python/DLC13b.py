@@ -11,6 +11,7 @@
 # Comments:
 #     - 0.0: Init version (duplicate from DLC11b.py)
 #     - 0.1: [03/01/19] Execute 10 000 runs at 3 m/s
+#     - 0.2: [05/01/19] Execute 10 000 runs at 21 m/s
 #
 # Description:
 # 
@@ -131,7 +132,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "3"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "21"]
     seeds = liste
 
     # Re-run
@@ -164,14 +165,13 @@ def main():
     # Initiate/Resume Tasks ====================================================
     # Distribute tasks ---------------------------------------------------------
     computers = distribute.LMN("~/aster1/Wind/DLC1.3")
-    # computers.deactivate("PC-LMN-9020")  # Shubiao WANG
+    computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
     
     # TurbSim ------------------------------------------------------------------
-    computers.resume('TurbSim')
-    
+    computers.resume("TurbSim")
     computers.run(runTurbSim_multiprocess,
                   "~/Eolien/Parameters/Python/DLC1.3/log",
                   True, False) # logpath="...", silence=True, echo=False
@@ -187,6 +187,7 @@ def main():
 
     # Stress + Fatigue ---------------------------------------------------------
     # computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+
 
 
 #!------------------------------------------------------------------------------
