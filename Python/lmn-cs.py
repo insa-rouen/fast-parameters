@@ -14,6 +14,7 @@
 #     - 0.3: [21/12/18] Run DLC1.1b for 10 000 simulations at 7 m/s 
 #     - 0.4: [25/12/18] Re-Run DLC1.1b for 10 000 simulations at 11 m/s
 #     - 0.5: [31/12/18] Run DLC1.3b for 10 000 simulations at 23 m/s
+#     - 0.6: [07/01/19] Run DLC1.3b for 10 000 simulations at 19 m/s
 #
 # Description:
 #     
@@ -65,7 +66,7 @@ def main():
     #with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "23"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "19"]
     seeds = liste
     
     # Recalculate TurbSim + FAST + Stress
