@@ -12,6 +12,7 @@
 #     - 0.0: Init version (duplicate from DLC11b.py)
 #     - 0.1: [03/01/19] Execute 10 000 runs at 3 m/s
 #     - 0.2: [05/01/19] Execute 10 000 runs at 21 m/s
+#     - 0.3: [11/01/19] Execute 10 000 runs at 15 m/s
 #
 # Description:
 # 
@@ -51,21 +52,6 @@ def runTurbSim_multiprocess(seeds, logpath='', silence=False, echo=True):
 
 def runFAST_multiprocess(seeds, silence=False, echo=True):
     DLC.get_DLC13_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
-
-# def runStress_multiprocess(seeds, thetaStep=30, echo=True):
-#     # generate file names
-#     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-#     # run stress calculation
-#     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
-#         meca.get_stress_multiprocess(list_filebase, datarow=6009,
-#                                      gages=[1,2,3,4,5,6,7,8,9],
-#                                      thetaStep=thetaStep,
-#                                      saveToDisk=True, echo=echo)
-
-# def runFatigue_multiprocess(seeds, echo=True):
-#     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-#     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
-#         life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
 
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
@@ -132,7 +118,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "21"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "15"]
     seeds = liste
 
     # Re-run
