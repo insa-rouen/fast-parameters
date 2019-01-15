@@ -13,6 +13,7 @@
 #     - 0.1: [03/01/19] Execute 10 000 runs at 3 m/s
 #     - 0.2: [05/01/19] Execute 10 000 runs at 21 m/s
 #     - 0.3: [11/01/19] Execute 10 000 runs at 15 m/s
+#     - 0.4: [15/01/19] Execute 10 000 runs at 11 m/s
 #
 # Description:
 # 
@@ -87,8 +88,9 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
                         silence=True, echo=False):
     print('All-In-One: TurbSim + FAST + Stress + Fatigue v0.1 (December 10 2018)')
     print('========== Multiprocessing Mode ==========')
-    # prepare a callback function
     length = len(seeds)
+    print("{} tasks will be calculated".format(length))
+    # prepare a callback function
     completed = []
     def printer(seed):
         pos = seeds.index(seed) + 1
@@ -118,7 +120,7 @@ def main():
     with utils.cd('~/aster1/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "15"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "11"]
     seeds = liste
 
     # Re-run
