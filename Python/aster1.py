@@ -17,6 +17,8 @@
 #     - 0.7: [31/12/18] Run DLC1.3b for 10 000 simulations at 25 m/s
 #     - 0.8: [05/01/19] Run DLC1.3b for 10 000 simulations at 3 m/s
 #     - 0.9: [07/01/19] Run DLC1.3b for 10 000 simulations at 21 m/s
+#     - 1.0: [11/01/19] Run DLC1.3b for 10 000 simulations at 15 m/s
+#     - 1.1: [15/01/19] Run DLC1.3b for 10 000 simulations at 11 m/s
 #
 # Description:
 #     
@@ -67,7 +69,7 @@ def main():
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "21"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "11"]
     seeds = liste
 
     
@@ -76,6 +78,10 @@ def main():
                     windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3',
                 outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3',
                            echo=False)
+    
+    # TurbSim + FAST + Stress + Fatigue ----------------------------------------
+    # [ATTENTION] This will only overwrite recomputeALL.json
+    # aster1.resume('ALL', outputFileSize=20*1024)
 
     # TurbSim ------------------------------------------------------------------
     # [ATTENTION] This will only overwrite recomputeTurbSim.json
@@ -99,10 +105,7 @@ def main():
                   compress=True)
     time.sleep(5)
 
-    # TurbSim + FAST + Stress + Fatigue ----------------------------------------
-    # [ATTENTION] This will only overwrite recomputeALL.json
-    # aster1.resume('ALL', outputFileSize=20*1024)
-
+    # Final checking phase -----------------------------------------------------
     # aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=90*1024**2,
     #                   tgzFileSize=20*1024**2, damFileSize=20*1024)
 
