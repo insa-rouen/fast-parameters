@@ -72,6 +72,8 @@ def main():
     # with utils.cd("~/lmn-cs/Wind"):
     #     with open("recomputeALL.json", "r") as f:
     #         seeds4 = json.loads(f.read())
+    #     with open("failedRunsFAST.json", "r") as f:
+    #         seeds5 = json.loads(f.read())
     seeds = seeds1
  
     # seeds = [['NTM', '11', '-1296467363'], ]
