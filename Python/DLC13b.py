@@ -14,6 +14,7 @@
 #     - 0.2: [05/01/19] Execute 10 000 runs at 21 m/s
 #     - 0.3: [11/01/19] Execute 10 000 runs at 15 m/s
 #     - 0.4: [15/01/19] Execute 10 000 runs at 11 m/s
+#     - 0.5: [19/01/19] Execute 10 000 runs at 9 m/s
 #
 # Description:
 # 
@@ -46,21 +47,22 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 #!                                 FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def runTurbSim_multiprocess(seeds, logpath='', silence=False, echo=True):
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/'):
+def runTurbSim_multiprocess(seeds, logpath="", silence=False, echo=True):
+    with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3/"):
         turb.get_turbulence_multiprocess(seeds, logpath=logpath,
                                          silence=silence, echo=echo)
 
 def runFAST_multiprocess(seeds, silence=False, echo=True):
-    DLC.get_DLC13_multiprocess(seeds, outputFolder='',silence=silence,echo=echo)
+    DLC.get_DLC13_multiprocess(seeds, outputFolder="",silence=silence,echo=echo)
 
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
     '''
-    list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
-    with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/'):
+    list_filebase = ["{}_{}mps_{}".format(s[0], s[1], s[2]) for s in seeds]
+    with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3/"):
         life.get_stress_fatigue_multiprocess(list_filebase, datarow=6009,
-                                             gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep,
+                                             gages=[1,2,3,4,5,6,7,8,9], 
+                                             thetaStep=thetaStep,
                                              lifetime=20*365*24*6,echo=echo)
 
 def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
@@ -86,19 +88,20 @@ def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
 
 def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
                         silence=True, echo=False):
-    print('All-In-One: TurbSim + FAST + Stress + Fatigue v0.1 (December 10 2018)')
-    print('========== Multiprocessing Mode ==========')
+    print("All-In-One: TurbSim + FAST + Stress + Fatigue v0.1 "
+          "(December 10 2018)")
+    print("========== Multiprocessing Mode ==========")
     length = len(seeds)
-    print("{} tasks will be calculated".format(length))
+    print("Start calculating {} tasks ...".format(length))
     # prepare a callback function
     completed = []
     def printer(seed):
         pos = seeds.index(seed) + 1
         completed.append(seed)
         rest = length - len(completed)
-        hour, minute = time.strftime("%H,%M").split(',')
-        print('|- [{}/{}] {} at {} m/s with seed ID {} is finished at {}:{}. '
-              '{} tasks waiting to be completed ...'.format(pos, length,seed[0],
+        hour, minute = time.strftime("%H,%M").split(",")
+        print("|- [{}/{}] {} at {} m/s with seed ID {} is finished at {}:{}. "
+              "{} tasks waiting to be completed ...".format(pos, length,seed[0],
               seed[1], seed[2], hour, minute, rest))
     # begin multiprocessing
     pool = multiprocessing.Pool()
@@ -117,10 +120,10 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
 def main():
     # Load Seeds ===============================================================
     # Initiation
-    with utils.cd('~/aster1/Wind'):
-        with open('10000seeds.json', 'r') as f:
+    with utils.cd("~/aster1/Wind"):
+        with open("10000seeds.json", 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "11"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "9"]
     seeds = liste
 
     # Re-run
