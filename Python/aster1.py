@@ -20,6 +20,7 @@
 #     - 1.0: [11/01/19] Run DLC1.3b for 10 000 simulations at 15 m/s
 #     - 1.1: [15/01/19] Run DLC1.3b for 10 000 simulations at 11 m/s
 #     - 1.2: [19/01/19] Run DLC1.3b for 10 000 simulations at 9 m/s
+#     - 1.3: [22/01/19] Run DLC1.3b for 10 000 simulations at 7 m/s
 #
 # Description:
 #     
@@ -70,7 +71,7 @@ def main():
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "9"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "7"]
     seeds = liste
 
     
