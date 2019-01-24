@@ -16,6 +16,7 @@
 #     - 0.4: [15/01/19] Execute 10 000 runs at 11 m/s
 #     - 0.5: [19/01/19] Execute 10 000 runs at 9 m/s
 #     - 0.5: [21/01/19] Execute 10 000 runs at 7 m/s
+#     - 0.6: [24/01/19] Execute 10 000 runs at 5 m/s
 #
 # Description:
 # 
@@ -124,7 +125,7 @@ def main():
     with utils.cd("~/aster1/Wind"):
         with open("10000seeds.json", 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "7"]
+    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "5"]
     seeds = liste
 
     # Re-run
