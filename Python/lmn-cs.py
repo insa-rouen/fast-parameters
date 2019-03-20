@@ -16,6 +16,8 @@
 #     - 0.5: [31/12/18] Run DLC1.3b for 10 000 simulations at 23 m/s
 #     - 0.6: [07/01/19] Run DLC1.3b for 10 000 simulations at 19 m/s
 #     - 0.7: [14/01/19] Run DLC1.3b for 10 000 simulations at 13 m/s
+#     - 0.8: [20/03/19] Re-run DLC1.1b for 10 000 simulations for all wind speed
+#                       and send mail when task is finished
 #
 # Description:
 #     
@@ -31,10 +33,10 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-# from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
-# from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
-from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
-from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
+from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
+from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
+# from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
+# from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
 import time
 import json
@@ -67,7 +69,7 @@ def main():
     #with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
         with open('10000seeds.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "ETM" and s[1] == "13"]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "15"]
     seeds = liste
     
     # Recalculate TurbSim + FAST + Stress
@@ -83,8 +85,8 @@ def main():
     
     # Run ======================================================================
     lmn_cs = server.Aster1(inputSeeds=seeds,
-                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3',
-                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3',
+                    windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
+                outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
                            echo=False)
     lmn_cs.seeds = seeds # set list of seeds manually
 
@@ -117,6 +119,7 @@ def main():
     lmn_cs.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2,
                       tgzFileSize=20*1024**2, damFileSize=20*1024)
 
+    lmn_cs.sendmail('hao.bai@insa-rouen.fr')
 
 
 #!------------------------------------------------------------------------------
