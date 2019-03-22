@@ -61,21 +61,29 @@ def main():
     # seeds = liste
 
     # Recalculate TurbSim + FAST + Stress
+    #* aster1
     with utils.cd("~/aster1/Wind"):
         with open("recomputeALL.json", "r") as f:
-           seeds1 = json.loads(f.read())
+           seeds = json.loads(f.read())
     #     #with open("failedRunsStress.json", "r") as f:
     #     #    seeds2 = json.loads(f.read())
         # with open("failedRunsFAST.json", "r") as f:
         #     seeds3 = json.loads(f.read())
     # #seeds1.extend(seeds2)
+    
+    #* lmn-cs
     # with utils.cd("~/lmn-cs/Wind"):
     #     with open("recomputeALL.json", "r") as f:
-    #         seeds4 = json.loads(f.read())
+    #         seeds = json.loads(f.read())
     #     with open("failedRunsFAST.json", "r") as f:
     #         seeds5 = json.loads(f.read())
-    seeds = seeds1
+
+    #* lofims
+    # with utils.cd("~/lofims/Wind/"):
+    #     with open("recomputeALL.json", "r") as f:
+    #         seeds = json.loads(f.read())
  
+    # seeds = seeds1
     # seeds = [['NTM', '11', '-1296467363'], ]
 
     # Run ======================================================================
