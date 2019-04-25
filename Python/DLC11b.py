@@ -162,9 +162,9 @@ def main():
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
 
     # Some Tests ===============================================================
-    DLC.get_DLC11(['NTM', '4.0', '1879136045'], outputFolder='', silence=False, 
-                    echo=True)
-    exit()
+    # DLC.get_DLC11(['NTM', '4.0', '1879136045'], outputFolder='', silence=False, 
+    #                echo=True)
+    
     # runTurbSim_multiprocess(seeds, silence=1, echo=1)
     # runFAST_multiprocess(seeds, silence=1, echo=1)
     # # runStress_multiprocess(seeds, echo=0)
@@ -177,6 +177,7 @@ def main():
     # Distribute tasks ---------------------------------------------------------
     computers = distribute.LMN('~/aster1/Wind/DLC1.1')
     computers.deactivate("PC-LMN-9020")  # Shubiao WANG
+    computers.deactivate("PC-LMN-9020A")
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
