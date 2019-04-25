@@ -26,10 +26,10 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-# from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
-# from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
-from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
-from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
+from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
+from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
+# from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
+# from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
 import time
 import json
@@ -62,7 +62,7 @@ def main():
 
     # Recalculate TurbSim + FAST + Stress
     with utils.cd("~/aster1/Wind"):
-        with open("recomputeALL.json", "r") as f:
+        with open("10seeds.json", "r") as f:
            seeds1 = json.loads(f.read())
     #     #with open("failedRunsStress.json", "r") as f:
     #     #    seeds2 = json.loads(f.read())
@@ -74,16 +74,16 @@ def main():
     #         seeds4 = json.loads(f.read())
     #     with open("failedRunsFAST.json", "r") as f:
     #         seeds5 = json.loads(f.read())
-    seeds = seeds1
- 
-    # seeds = [['NTM', '11', '-1296467363'], ]
+    
+    # liste = [s for s in seeds1 if s[0] == "NTM"]
+    # seeds1 = [ liste[303], liste[1700], ]
 
     # Run ======================================================================
     mac = server.Aster1(inputSeeds=seeds,
-                    windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3",
-                outputPath="~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3",
+                    windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1",
+                outputPath="~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1",
                         echo=False)
-    mac.seeds = seeds # set list of seeds manually
+    mac.seeds = seeds1 # set list of seeds manually
 
     runMode = 1
     if runMode == 1:
@@ -97,8 +97,8 @@ def main():
         # time.sleep(5)
 
         # FAST -----------------------------------------------------------------
-        # mac.run(runFAST_multiprocess, True, False) # silence, echo
-        # time.sleep(5)
+        mac.run(runFAST_multiprocess, True, False) # silence, echo
+        time.sleep(5)
         
         # Stress + Fatigue -----------------------------------------------------
         mac.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
