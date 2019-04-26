@@ -178,6 +178,7 @@ def main():
     computers = distribute.LMN('~/aster1/Wind/DLC1.1')
     computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     computers.deactivate("PC-LMN-9020A")
+    computers.deactivate("PC-LMN-7040") # 1TB
     # computers.setEqually(seeds)
     computers.setAutomatically(seeds)
     # computers.show()
