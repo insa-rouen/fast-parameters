@@ -175,7 +175,9 @@ def main():
 
     # Initiate/Resume Tasks ====================================================
     # Distribute tasks ---------------------------------------------------------
-    computers = distribute.LMN('~/aster1/Wind/DLC1.1')
+    computers = distribute.LMN(
+        windPath='~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1',
+        outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1')
     computers.deactivate("PC-LMN-9020")  # Shubiao WANG
     computers.deactivate("PC-LMN-9020A")
     computers.deactivate("PC-LMN-7040") # 1TB
@@ -184,13 +186,13 @@ def main():
     # computers.show()
     
     # TurbSim ------------------------------------------------------------------
-    computers.resume('TurbSim')
-    computers.run(runTurbSim_multiprocess,
-                  "~/Eolien/Parameters/Python/DLC1.1/log",
-                  True, False)  # logpath="...", silence=True, echo=False
+    # computers.resume('TurbSim', outputFileSize=70*1024**2)
+    # computers.run(runTurbSim_multiprocess,
+    #               "~/Eolien/Parameters/Python/DLC1.1/log",
+    #               True, False)  # logpath="...", silence=True, echo=False
 
     # FAST ---------------------------------------------------------------------
-    computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
+    # computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
 
     # Stress -------------------------------------------------------------------
     # computers.run(runStress_multiprocess)
@@ -199,6 +201,7 @@ def main():
     # computers.run(runFatigue_multiprocess)
 
     # Stress + Fatigue ---------------------------------------------------------
+    computers.resume('Fatigue', outputFileSize=20*1024)
     computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
