@@ -144,20 +144,20 @@ def main():
     seeds = liste
 
     # Re-run
-    # with utils.cd('~/aster1/Wind'):
+    with utils.cd('~/aster1/Wind'):
     #     with open('failedRunsFAST.json', 'r') as f:
     #         seeds1 = json.loads(f.read())
     #     with open('failedRunsStress.json', 'r') as f:
     #         seeds2 = json.loads(f.read())
-    #     with open('recomputeALL.json', 'r') as f:
-    #         seeds3 = json.loads(f.read())
+        with open('recomputeALL.json', 'r') as f:
+            seeds3 = json.loads(f.read())
     #     with open('recomputeTurbSim.json', 'r') as f:
     #         seeds4 = json.loads(f.read())
     # ----- Rerun failed cases
     # seeds1.extend(seeds2)
     # seeds = seeds1
     # ----- Rerun recomputed cases
-    # seeds = seeds3
+    seeds = seeds3
     # seeds = seeds4
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
 
@@ -187,12 +187,12 @@ def main():
     
     # TurbSim ------------------------------------------------------------------
     # computers.resume('TurbSim', outputFileSize=70*1024**2)
-    # computers.run(runTurbSim_multiprocess,
-    #               "~/Eolien/Parameters/Python/DLC1.1/log",
-    #               True, False)  # logpath="...", silence=True, echo=False
+    computers.run(runTurbSim_multiprocess,
+                  "~/Eolien/Parameters/Python/DLC1.1/log",
+                  True, False)  # logpath="...", silence=True, echo=False
 
     # FAST ---------------------------------------------------------------------
-    # computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
+    computers.run(runFAST_multiprocess, True, False) #silence=True, echo=False
 
     # Stress -------------------------------------------------------------------
     # computers.run(runStress_multiprocess)
@@ -201,7 +201,7 @@ def main():
     # computers.run(runFatigue_multiprocess)
 
     # Stress + Fatigue ---------------------------------------------------------
-    computers.resume('Fatigue', outputFileSize=20*1024)
+    # computers.resume('Fatigue', outputFileSize=20*1024)
     computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
