@@ -35,7 +35,9 @@ def main():
     # seed.auto(1000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
     # seed.auto(10000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
 
-    seed.auto(10, speedRange=utils.frange(3.0, 25.1, 0.1), allowDuplicate=False)
+    seed.auto(100, speedRange=utils.frange(3.0, 25.1, 0.1),
+              allowDuplicate=False)
+
 
 
 #-------------------------------------------------------------------------------

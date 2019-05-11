@@ -136,41 +136,41 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
 def main():
     # Load Seeds ===============================================================
     # Initiation
-    with utils.cd('~/aster1/Wind'):
-        with open('10seeds.json', 'r') as f:
-            seeds = json.loads(f.read())
+    # with utils.cd('~/aster1/Wind'):
+    #     with open('10seeds.json', 'r') as f:
+    #         seeds = json.loads(f.read())
     # liste = [s for s in seeds if s[0] == "NTM" and s[1] == "3"]
-    liste = [s for s in seeds if s[0] == "NTM"]
-    seeds = liste
+    # liste = [s for s in seeds if s[0] == "NTM"]
+    # seeds = liste
 
     # Re-run
-    with utils.cd('~/aster1/Wind'):
+    # with utils.cd('~/aster1/Wind'):
     #     with open('failedRunsFAST.json', 'r') as f:
     #         seeds1 = json.loads(f.read())
     #     with open('failedRunsStress.json', 'r') as f:
     #         seeds2 = json.loads(f.read())
-        with open('recomputeALL.json', 'r') as f:
-            seeds3 = json.loads(f.read())
+        # with open('recomputeALL.json', 'r') as f:
+        #     seeds3 = json.loads(f.read())
     #     with open('recomputeTurbSim.json', 'r') as f:
     #         seeds4 = json.loads(f.read())
     # ----- Rerun failed cases
     # seeds1.extend(seeds2)
     # seeds = seeds1
     # ----- Rerun recomputed cases
-    seeds = seeds3
+    # seeds = seeds3
     # seeds = seeds4
     # seeds = [['NTM', '3', '-544599383'], ['NTM', '5', '1571779345']]
-
+    seeds = [["NTM", "21", "-800757005"], ]
     # Some Tests ===============================================================
     # DLC.get_DLC11(['NTM', '4.0', '1879136045'], outputFolder='', silence=False, 
     #                echo=True)
     
     # runTurbSim_multiprocess(seeds, silence=1, echo=1)
-    # runFAST_multiprocess(seeds, silence=1, echo=1)
+    runFAST_multiprocess(seeds, silence=0, echo=1)
     # # runStress_multiprocess(seeds, echo=0)
     # # runFatigue_multiprocess(seeds, echo=0)
     # runStressFatigue_multiprocess(seeds, 10, echo=0)
-    # return
+    return
     
 
     # Initiate/Resume Tasks ====================================================

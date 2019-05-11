@@ -61,9 +61,9 @@ def main():
     # seeds = liste
 
     # Recalculate TurbSim + FAST + Stress
-    with utils.cd("~/aster1/Wind"):
-        with open("10seeds.json", "r") as f:
-           seeds1 = json.loads(f.read())
+    # with utils.cd("~/aster1/Wind"):
+    #     with open("10seeds.json", "r") as f:
+    #        seeds1 = json.loads(f.read())
     #     #with open("failedRunsStress.json", "r") as f:
     #     #    seeds2 = json.loads(f.read())
         # with open("failedRunsFAST.json", "r") as f:
@@ -77,15 +77,15 @@ def main():
     
     # liste = [s for s in seeds1 if s[0] == "NTM"]
     # seeds1 = [ liste[303], liste[1700], ]
-
+    seeds = [["NTM", "21", "-800757005"], ]
     # Run ======================================================================
     mac = server.Aster1(inputSeeds=seeds,
                     windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1",
                 outputPath="~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1",
                         echo=False)
-    mac.seeds = seeds1 # set list of seeds manually
-
-    runMode = 1
+    mac.seeds = seeds # set list of seeds manually
+    
+    runMode = 2
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
         mac.run(runALL_multiprocess, 10, "", False) # thetaStep, outputFolder,
@@ -93,18 +93,18 @@ def main():
 
     if runMode == 2:
         # TurbSim --------------------------------------------------------------
-        # mac.run(runTurbSim_multiprocess, True, False) # silence, echo
+        mac.run(runTurbSim_multiprocess, False, True) # silence, echo
         # time.sleep(5)
 
         # FAST -----------------------------------------------------------------
-        mac.run(runFAST_multiprocess, True, False) # silence, echo
+        mac.run(runFAST_multiprocess, False, True) # silence, echo
         time.sleep(5)
         
         # Stress + Fatigue -----------------------------------------------------
-        mac.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+        # mac.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
         # mac.resume('Fatigue', inputFileSize=85*1024**2,
         #               outputFileSize=20*1024, compress=True)
-        time.sleep(5)
+        # time.sleep(5)
 
         # TurbSim + FAST + Stress + Fatigue ------------------------------------
         # [ATTENTION] This will only overwrite recomputeALL.json
