@@ -19,8 +19,8 @@ True           Clockwise       - Clockwise rotation looking downwind? (used only
  31            NumGrid_Z       - Vertical grid-point matrix dimension
  31            NumGrid_Y       - Horizontal grid-point matrix dimension
   0.05         TimeStep        - Time step [seconds] (Recommend 0.05)
-3690.0         AnalysisTime    - Length of analysis time series [seconds] (Recommend >= 600)
-3660.0         UsableTime      - Usable length of output time series [seconds] (program will add GridWidth/MeanHHWS seconds) [bjj: was 630]
+10890.0        AnalysisTime    - Length of analysis time series [seconds] (Recommend >= 600)
+10860.0        UsableTime      - Usable length of output time series [seconds] (program will add GridWidth/MeanHHWS seconds) [bjj: was 630]
  90.0          HubHt           - Hub height [m] (should be > 0.5*GridHeight)
 145.0          GridHeight      - Grid height [m]
 145.0          GridWidth       - Grid width [m] (should be >= 2*(RotorRadius+ShaftLength))

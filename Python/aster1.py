@@ -23,6 +23,7 @@
 #     - 1.3: [22/01/19] Run DLC1.3b for 10 000 simulations at 7 m/s
 #     - 1.4: [28/01/19] Run DLC1.3b for 10 000 simulations at 5 m/s
 #     - 2.0: [11/05/19] Change simulated time to 1 hour (60 min)
+#     - 2.1: [12/05/19] Try simulated time of 3 hours (180 min)
 #
 # Description:
 #     
@@ -123,7 +124,7 @@ def main():
         time.sleep(5)
 
     # Final checking phase -----------------------------------------------------
-    aster1.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2,
+    aster1.finalcheck(btsFileSize=70*1024**2,
                       tgzFileSize=20*1024**2, damFileSize=20*1024)
 
     aster1.sendmail('hao.bai@insa-rouen.fr')
