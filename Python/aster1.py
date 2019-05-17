@@ -41,7 +41,7 @@
 from tools import utils, server
 from DLC11b import runFAST_multiprocess, runStress_multiprocess
 from DLC11b import runFatigue_multiprocess, runStressFatigue_multiprocess
-from DLC11b import runALL_multiprocess
+from DLC11b import runALL_multiprocess, runTurbSim_multiprocess
 # from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
 # from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
@@ -79,16 +79,16 @@ def main():
     # seeds = liste
 
     seeds = [["NTM",  "3",  "3333"],
-             ["NTM",  "5", "-5555"],
-             ["NTM",  "7",  "7777"],
-             ["NTM",  "9", "-9999"],
+             #["NTM",  "5", "-5555"],
+             #["NTM",  "7",  "7777"],
+             #["NTM",  "9", "-9999"],
              ["NTM", "11",  "1111"],
-             ["NTM", "13", "-1313"],
-             ["NTM", "15",  "1515"],
-             ["NTM", "17", "-1717"],
-             ["NTM", "19",  "1919"],
-             ["NTM", "21", "-2121"],
-             ["NTM", "23",  "2323"],
+             #["NTM", "13", "-1313"],
+             #["NTM", "15",  "1515"],
+             #["NTM", "17", "-1717"],
+             #["NTM", "19",  "1919"],
+             #["NTM", "21", "-2121"],
+             #["NTM", "23",  "2323"],
              ["NTM", "25", "-2525"],
             ]
     # Run ======================================================================
@@ -97,7 +97,7 @@ def main():
                 outputPath='~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1',
                            echo=False)
     aster1.seeds = seeds 
-    runMode = 1
+    runMode = 2
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
         # [ATTENTION] This will only overwrite recomputeALL.json
@@ -109,12 +109,14 @@ def main():
         # TurbSim --------------------------------------------------------------
         # [ATTENTION] This will only overwrite recomputeTurbSim.json
         # aster1.resume('TurbSim', outputFileSize=70*1024**2)
+        aster1.run(runTurbSim_multiprocess, "", True, True)
 
         # FAST -----------------------------------------------------------------
-        aster1.resume('FAST', inputFileSize=70*1024**2)        
-        aster1.run(runFAST_multiprocess, True, False) #silence, echo
+        #aster1.resume('FAST', inputFileSize=70*1024**2)        
+        aster1.run(runFAST_multiprocess, True, True) #silence, echo
         time.sleep(5)
-        
+        return
+
         # Stress + Fatigue -----------------------------------------------------
         aster1.resume('Fatigue', inputFileSize=85*1024**2, 
             outputFileSize=20*1024, compress=True)
