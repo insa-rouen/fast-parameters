@@ -19,6 +19,7 @@
 #     - 0.8: [20/03/19] Re-run DLC1.1b for 10 000 simulations for all wind speed
 #                       and send mail when task is finished
 #     - 1.0: [13/05/19] Try same seeds for different wind speed
+#     - 1.1: [11/06/19] 1 000 simulations per 1 m/s
 #
 # Description:
 #     
@@ -68,10 +69,10 @@ def main():
     # Load Seeds ===============================================================
     with utils.cd('~/aster1/Wind'):
     #with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
-        with open('10seeds@0.1mps.json', 'r') as f:
+        with open('1000seeds@1.0mps.json', 'r') as f:
             seeds = json.loads(f.read())
     liste = [s for s in seeds if s[0] == "NTM"]
-    seeds = liste
+    seeds = liste[:7000]
     
     # Recalculate TurbSim + FAST + Stress
     # with utils.cd("~/lmn-cs/Wind"):
@@ -95,8 +96,8 @@ def main():
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
         # lmn_cs.resume("ALL", outputFileSize=20*1024)
-        lmn_cs.run(runALL_multiprocess, 10, "", False) # thetaStep, outputFolder,
-                                                      # compress, silence, echo
+        lmn_cs.run(runALL_multiprocess, 10, "", False) # thetaStep,
+            # outputFolder, compress, silence, echo
     
     if runMode == 2:
         # TurbSim --------------------------------------------------------------
@@ -115,7 +116,7 @@ def main():
 
     # Generate list of tasks that need to be recalculated
     # [ATTENTION] This will only overwrite recomputeALL.json
-    lmn_cs.resume('ALL', outputFileSize=20*1024)
+    # lmn_cs.resume('ALL', outputFileSize=20*1024)
 
     lmn_cs.finalcheck(btsFileSize=70*1024**2, outFileSize=85*1024**2,
                       damFileSize=20*1024)
