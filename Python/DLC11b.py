@@ -39,6 +39,7 @@ from pyfast import DLC
 import json
 import time
 import multiprocessing
+import os
 
 
 
@@ -111,6 +112,7 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
     print('========== Multiprocessing Mode ==========')
     # prepare a callback function
     length = len(seeds)
+    print('[INFO] {} tasks is submitted'.format(length))
     completed = []
     def printer(seed):
         pos = seeds.index(seed) + 1
