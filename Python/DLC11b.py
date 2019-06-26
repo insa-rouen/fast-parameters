@@ -45,6 +45,7 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 #!                                   CLASS DEFINITION
 #!------------------------------------------------------------------------------
+CORES = int( os.cpu_count() )
 
 
 
@@ -120,7 +121,7 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
               '{} tasks waiting to be completed ...'.format(pos, length,seed[0],
               seed[1], seed[2], hour, minute, rest))
     # begin multiprocessing
-    pool = multiprocessing.Pool()
+    pool = multiprocessing.Pool(CORES)
     [pool.apply_async(runALL, args=(seed, thetaStep, outputFolder, compress,
      silence,  echo), callback=printer, error_callback=utils.handle_error) for
      seed in seeds]

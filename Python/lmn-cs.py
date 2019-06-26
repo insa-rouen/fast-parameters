@@ -69,10 +69,10 @@ def main():
     # Load Seeds ===============================================================
     with utils.cd('~/aster1/Wind'):
     #with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Wind/'):
-        with open('1000seeds@1.0mps.json', 'r') as f:
+        with open('10000seeds2.json', 'r') as f:
             seeds = json.loads(f.read())
-    liste = [s for s in seeds if s[0] == "NTM"]
-    seeds = liste[:7000]
+    liste = [s for s in seeds if s[0] == "NTM" and s[1] == "4"]
+    seeds = liste
     
     # Recalculate TurbSim + FAST + Stress
     # with utils.cd("~/lmn-cs/Wind"):
