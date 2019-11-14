@@ -26,10 +26,10 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils, server
-# from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
-# from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
-from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
-from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
+from DLC11b import runTurbSim_multiprocess, runFAST_multiprocess
+from DLC11b import runStressFatigue_multiprocess, runALL_multiprocess
+# from DLC13b import runTurbSim_multiprocess, runFAST_multiprocess
+# from DLC13b import runStressFatigue_multiprocess, runALL_multiprocess
 #*============================= Modules Communs ================================
 import time
 import json
@@ -84,16 +84,16 @@ def main():
     #         seeds = json.loads(f.read())
  
     # seeds = seeds1
-    # seeds = [['NTM', '11', '-1296467363'], ]
+    seeds = [["NTM", "21", "-800757005"], ]
 
     # Run ======================================================================
     mac = server.Aster1(inputSeeds=seeds,
-                    windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.3",
-                outputPath="~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.3",
+                    windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1",
+                outputPath="~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1",
                         echo=False)
     mac.seeds = seeds # set list of seeds manually
-
-    runMode = 1
+    
+    runMode = 2
     if runMode == 1:
         # All-In-One: TurbSim + FAST + Stress + Fatigue ------------------------
         mac.run(runALL_multiprocess, 10, "", False) # thetaStep, outputFolder,
@@ -101,18 +101,18 @@ def main():
 
     if runMode == 2:
         # TurbSim --------------------------------------------------------------
-        # mac.run(runTurbSim_multiprocess, True, False) # silence, echo
+        mac.run(runTurbSim_multiprocess, False, True) # silence, echo
         # time.sleep(5)
 
         # FAST -----------------------------------------------------------------
-        # mac.run(runFAST_multiprocess, True, False) # silence, echo
-        # time.sleep(5)
+        mac.run(runFAST_multiprocess, False, True) # silence, echo
+        time.sleep(5)
         
         # Stress + Fatigue -----------------------------------------------------
-        mac.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
+        # mac.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
         # mac.resume('Fatigue', inputFileSize=85*1024**2,
         #               outputFileSize=20*1024, compress=True)
-        time.sleep(5)
+        # time.sleep(5)
 
         # TurbSim + FAST + Stress + Fatigue ------------------------------------
         # [ATTENTION] This will only overwrite recomputeALL.json
