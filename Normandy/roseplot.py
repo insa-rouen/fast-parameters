@@ -22,6 +22,7 @@
 #!------------------------------------------------------------------------------
 #*============================= Modules Personnels =============================
 from tools import utils
+from pycrunch import fatigue
 #* ============================= Modules Communs ==============================
 # import windrose
 from windrose import WindroseAxes, WindAxesFactory
@@ -161,25 +162,37 @@ def calculate_damage_speed(damages_direction, show=False):
 #!                                    MAIN FUNCTION
 #!------------------------------------------------------------------------------
 def main2():
+    axis = plt.subplot(111, polar=True)
+    axis.set_theta_zero_location("N")  # set angle=0 at the top
+    axis.set_theta_direction(-1)  # set angle increasing clockwise
+    axis.set_thetagrids(np.arange(0, 360, 22.5))
 
-    # Step 1
-    location = "Caen"  # Octeville, Le Touquet
-    filename = "./data/SM_{}_2009 UV.csv".format(location)
-    dataframe = pandas.read_csv(filename, delimiter=";", header=None)
+    allfatigue = []
+    for q in (0.05, 0.25, 0.5, 0.75, 0.95):
+        caen = fatigue.Lifetime(
+            measure_file="./data/SM_Caen_2009 UV.csv",
+            measure_duration=30, measure_height=10,
+            wind_speed_range=range(3, 27, 2),
+            distribution_directory="~/PhD/Memo/DLC1.1b/Figures/10000seeds",
+            years=20, quantile=q, zhub=80, simulated_time=10)
+        
+        # caen.plot_wind_rose(bins=np.arange(0, 27, 2), normed=True, show=True)
 
-    df = dataframe.iloc[:, [3, 2]].copy()
-    df.columns = ["direction", "speed"]
+        res = caen.evaluate_fatige_life(show=False)
+        allfatigue.append(res)
+        # plot result
+        X = np.radians(caen.theta)
+        X = X.append(X.iloc[0], ignore_index=True)
+        Y = res.append(res.iloc[0], ignore_index=True)
+        axis.plot(X, Y, label="Quantile at {}%".format(q*100))
+    # plot fatigue result at different quantile
+    axis.legend()
+    axis.set_title("Cumulative fatigue for {} years".format(caen.years))
+    xlabels = ('N', '', 'N-E', '', 'E', '', 'S-E', '', 'S', '', 'S-W',
+               '', 'W', '', 'N-W', '',)
+    axis.set_xticklabels(xlabels)
+    plt.show()
 
-    wd_time = plot_speed_range(measure_data=df, vmin=2.0, vmax=4.0, duration=30,
-        show=False)
-    
-    # Step 2
-    unit_dam = load_sts("/Users/hbai/PhD/Memo/DLC1.1b/Figures/10000seeds/10000@9mps.sts", quantile=0.95)
-    
-    # Step 3
-    dmg_dir = calculate_damage_direction(wind_direction_time=wd_time,
-        unit_damage=unit_dam, show=False)
-    calculate_damage_speed(dmg_dir, show=True)
 
 
 def main1():
