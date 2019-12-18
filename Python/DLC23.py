@@ -106,14 +106,16 @@ def main():
     wind = 'EOG'
     speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]
     timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
-    
-    # Restart unfinished tasks
-    outputList =_find("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3", '*.out', 25*1024**2)
-    # find out wind profiles that are planned to be generated
-    inputList = ["{}_{}_{}".format(wind, v, t) for v in speedRange
-                        for t in timeRange]
-    recompute = list(set(inputList).difference(set(outputList)))
-    list_recompute = _convertToSeed(recompute)
+    timeRange = [9999.9,] # used when only study the effect of wind gust
+
+    # Recomputing (optional) ===================================================
+    # # Restart unfinished tasks
+    # outputList =_find("~/Eolien/Parameters/Python/DLC2.3/Output/DLC2.3", '*.out', 25*1024**2)
+    # # find out wind profiles that are planned to be generated
+    # inputList = ["{}_{}_{}".format(wind, v, t) for v in speedRange
+    #                     for t in timeRange]
+    # recompute = list(set(inputList).difference(set(outputList)))
+    # list_recompute = _convertToSeed(recompute)
 
     # Generate wind profile ====================================================
     runIECWind(cutin=3, cutout=25, speedstep=0.1, silence=True)
@@ -133,7 +135,7 @@ def main():
     #        list_gridloss.append([wind, speed, str(time)])
     # Run ======================================================================
     # list_gridloss = [["EOG", 25.0, 75.7], ["EOG", "O", 75.7]] # testing
-    runFAST_multiprocess(list_recompute, silence=1, echo=0)
+    runFAST_multiprocess(list_gridloss, silence=1, echo=0)
 
 
 

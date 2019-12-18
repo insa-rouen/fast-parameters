@@ -48,7 +48,7 @@ import multiprocessing
 #!------------------------------------------------------------------------------
 @utils.timer
 def main():
-    testCase = 3
+    testCase = 5
     if testCase == 1: # simple case
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3/withoutTRD/EOGO"):
             # bande of grid loss
@@ -68,7 +68,8 @@ def main():
 
     wind = 'EOG'
     speedRange = utils.frange(3.0, 25.1, 0.1) # wind speed [m/s]   
-    timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
+    # timeRange = utils.frange(70.0, 80.1, 0.1) # grid loss time [s]
+    timeRange = [9999.9, ]
     channels = ['YawBrTDxt',]
     if testCase == 2: # complex case
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC2.3"):
@@ -131,9 +132,9 @@ def main():
 
     # To verifiy if .out file contains NaN
     if testCase == 5:
-        with utils.cd("."):
+        with utils.cd("./basic"):
             list_filebase = utils.find(".", "*.out")
-            option = 1
+            option = 2
             # Option 1: through multiprocessing
             if option == 1:
                 amp.find_peak_valley_multiprocess(list_filebase=list_filebase,
@@ -145,7 +146,7 @@ def main():
             if option == 2:
                 for f in list_filebase:
                     try:
-                        utils.readcsv("./"+f+".out")
+                        utils.readcsv("./"+f+".out", checkNaN=True)
                     except:
                         print("[ERROR] {} has an error during reading, please "
                               "check this file".format(f))
