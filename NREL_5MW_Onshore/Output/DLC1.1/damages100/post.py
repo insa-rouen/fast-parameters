@@ -9,7 +9,7 @@
 # Date: 29/10/2018
 #
 # Comments:
-#     - 0.0: Init version
+#     - 0.0: Init verson
 #     
 # Description:
 # 
