@@ -96,7 +96,7 @@ def optiObj(optiVar):
     # update objective function
     try:
         file = run_TRD(mode1=optiVar, gridloss=['CST', '25.0mps'], 
-            outputFolder='', silence=0, echo=0)
+            outputFolder='', silence=1, echo=0)
     except KeyboardInterrupt as e:
         raise e
     except:
@@ -131,8 +131,11 @@ def optiProblem():
     """
     optiProb = Optimization('OptiTour',optiObj) # def problem
     # add groups of var
-    optiProb.addVarGroup('K',2,type='c',value=250., lower=0., upper=500.)
-    optiProb.addVarGroup('L',2,type='c',value=-250., lower=-500., upper=0.)
+    optiProb.addVar('K1', type='c', value=446.60, lower=1., upper=600.)
+    optiProb.addVar('K2', type='c', value=261.38,  lower=1., upper=270.)
+    optiProb.addVar('L1', type='c', value=-181.81, lower=-220., upper=-1.)
+    optiProb.addVar('L2', type='c', value=-99.76, lower=-1., upper=-220.)
+
     # add name of objectif function
     optiProb.addObj('f')
     # configuration of ALPSO
