@@ -9,12 +9,15 @@
 #
 # Comments:
 #     - 0.0: [20/11/2018] Initial version
-#
+#     - 0.1: [18/12/2019] Replace wind condition to uniform constant @ 25 m/s
 # Description:
-#     
+# An fatal error is found in DLC2.3 gust wind condition, NaN values may be
+# found in .out file. See the bug report for more information:
+# https://gitlab.insa-rouen.fr/lmn-eolien/fast-parameters/issues/2
 # 
-# 
-# 
+# An other error is found considering TRD under the unifor constant wind, see:
+# https://gitlab.insa-rouen.fr/lmn-eolien/fast-parameters/issues/3
+#
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -67,27 +70,33 @@ def run_TRD(mode1, gridloss, case='DLC2.3', outputFolder='', silence=False,
 
 def get_peak_valley(filename):
     # Reference data
+    # --- for DLC2.3@cut-out
     # ref_time = (75.20, 77.33, 78.94, 80.48, 82.04, 83.56, 85.1, 86.64, 88.17,
     #              89.7) # time that occurs extremum deflection
-    ref_index = (1520, 1733, 1894, 2048, 2204, 2356, 2510, 2664, 2817, 2970) # index of time in list of time
     # ref_deflX = (0.5529, -0.8429, 0.495, -0.6029, 0.5595, -0.5398, 0.5607, -0.5233, 0.5454, -0.5063) # extremum deflection
-    
+    # ref_index = (1520, 1733, 1894, 2048, 2204, 2356, 2510, 2664, 2817, 2970) # index of time in list of time
+    # --- for DLC0.1@25m/s
+    # ref_time = (75.09, 77.36, 79.02, 80.54, 82.11, 83.61, 85.15, 86.69, 88.23,
+    #     89.76,)
+    ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
+
     # get peak and valley
     data = utils.readcsv(filename='./Output/'+filename, header=7, datarow=6009,
                          echo=False)
     deflX = data.get("YawBrTDxt")["Records"]
     trd_deflX = [deflX[i] for i in ref_index]
     # norme des amplitutes: valeurs à minimiser
-    norme = np.linalg.norm(trd_deflX)
-    return norme
+    # result = np.linalg.norm(trd_deflX) # HB : ??? why norm ?
+    result = np.sum(np.absolute(trd_deflX))
+    return result
 
 def optiObj(optiVar):
     """ Optimization problem: objective function
     """
     # update objective function
     try:
-        file = run_TRD(mode1=optiVar, gridloss=['EOG', 'O'], outputFolder='',
-                       silence=1, echo=0)
+        file = run_TRD(mode1=optiVar, gridloss=['CST', '25.0mps'], 
+            outputFolder='', silence=0, echo=0)
     except KeyboardInterrupt as e:
         raise e
     except:
@@ -152,8 +161,9 @@ def main():
 
     if runCode == 1: # for testing
         file = run_TRD(mode1=[277.8, 26.7, -86.712, -17.0222],
-                       gridloss=['EOG', 'O'], outputFolder='', silence=1, echo=1)
-        get_peak_valley(file)
+                       gridloss=['CST', '25.0mps'], outputFolder='', silence=0, echo=1)
+        norme_value = get_peak_valley(file)
+        print(norme_value)
 
     if runCode == 2: # for optimization
         optiProblem()
