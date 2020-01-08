@@ -55,8 +55,8 @@ sys.excepthook = IPython.core.ultratb.ColorTB()
 #!                             FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
 def plot_YawBrTD():
-    data1 = utils.readcsv("./DLC2.3_CST_25.0mps.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_CST_25.0mps_TRD.out", datarow=6009)
+    data1 = utils.readcsv("./DLC2.3_CST_25.0mps_ref.out", datarow=9)
+    data2 = utils.readcsv("./DLC2.3_CST_25.0mps_TRD_new.out", datarow=9)
 
     fig, ax = plt.subplots()
 
@@ -73,6 +73,28 @@ def plot_YawBrTD():
         ax.plot(X[i], Y2[i], 'ro')
     plt.legend()
     
+
+    plt.show()
+
+
+def plot_NTRD():
+    data1 = utils.readcsv("./DLC2.3_CST_25.0mps_ref.out", datarow=9)
+    data2 = utils.readcsv("./DLC2.3_CST_25.0mps_TRD_new.out", datarow=9)
+
+    fig, ax = plt.subplots()
+
+    X = data1.get(1)['Records']
+
+    Y1 = data1.get(-2)['Records']
+    ax.plot(X, Y1, label=" ")
+
+    Y2 = data2.get(-2)['Records']
+    ax.plot(X, Y2, "-", markevery=(0.1), label=data2.get(-2)['Title'])
+
+    ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
+    for i in ref_index:
+        ax.plot(X[i], Y2[i], 'ro')
+    plt.legend()
 
     plt.show()
 
@@ -97,7 +119,8 @@ def find_ref_time_for_peak():
 #!                                MAIN FUNCTION
 #!------------------------------------------------------------------------------
 def main():
-    plot_YawBrTD()
+    plot_NTRD()
+    # plot_YawBrTD()
     # find_ref_time_for_peak()
 
 

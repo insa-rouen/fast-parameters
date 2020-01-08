@@ -53,7 +53,7 @@ except:
 #!------------------------------------------------------------------------------
 #!                             FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def run_TRD(mode1, gridloss, case='DLC2.3', outputFolder='', silence=False,
+def run_TRD(mode1, gridloss, case="DLC2.3", outputFolder="", silence=False,
             echo=False):
     temp = DLC.TRD(mode1=mode1,gridloss=gridloss,case=case,
                    outputFolder=outputFolder, echo=echo)
@@ -81,13 +81,14 @@ def get_peak_valley(filename):
     ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
 
     # get peak and valley
-    data = utils.readcsv(filename='./Output/'+filename, header=7, datarow=6009,
+    data = utils.readcsv(filename="./Output/"+filename, header=7, datarow=6009,
                          echo=False)
     deflX = data.get("YawBrTDxt")["Records"]
     trd_deflX = [deflX[i] for i in ref_index]
     # norme des amplitutes: valeurs à minimiser
-    # result = np.linalg.norm(trd_deflX) # HB : ??? why norm ?
-    result = np.sum(np.absolute(trd_deflX))
+    # "Frobenius Norm" is equivalent to the vector's length
+    result = np.linalg.norm(trd_deflX) 
+    # result = np.sum(np.absolute(trd_deflX))
     return result
 
 def optiObj(optiVar):
@@ -112,7 +113,7 @@ def optiObj(optiVar):
         else:
             fail = 0
             print("[{}] ✅ Optimal variables: {}; Objectif function value: {}".format(myrank, optiVar, f))
-    g = []
+    g = [] # constraints
     sys.stdout.flush()
     return f, g, fail
 
@@ -140,9 +141,11 @@ def optiProblem():
     optiProb.addObj('f')
     # configuration of ALPSO
     optiDriv=ALPSO(pll_type='SPM')
-    optiDriv.setOption('dynInnerIter',1)
-    optiDriv.setOption('maxInnerIter',10)
-    optiDriv.setOption('maxOuterIter',200)
+    optiDriv.setOption('SwarmSize', 40) # default: 40
+    optiDriv.setOption('dynInnerIter',1) # deafault: 0
+    optiDriv.setOption('maxInnerIter',10) # default: 6
+    optiDriv.setOption('maxOuterIter',100) # default: 200
+    optiDriv.setOption('printOuterIters',5) # default: 0
     optiDriv.setOption('fileout',3) # summary+print
     optiDriv.setOption('dtol',0.001)
     # rerun

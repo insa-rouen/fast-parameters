@@ -10,7 +10,7 @@ Input file for twin rotor damper
 0.0         TRD_PHI_DSP  - TRD initial position (radians)
 ------------------ TRD CONTROL PARAMETERS - COMMON ------------------------
 1           TRD_CMODE  - control mode {1:damping of one mode; 2:damping of all vibrations} (-)
-60.0        TRD_TIMEON - Time before activation of TRD (s)
+73.9        TRD_TIMEON - Time before activation of TRD (s)
 0.4         TRD_AON    - TRD activation threshold (-)
 0.05        TRD_AOFF   - TRD deactivation threshold (-)
 3.20000E-01 TRD_F0     - TRD frequency of the mode to be damped (Hz)
