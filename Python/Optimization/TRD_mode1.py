@@ -91,6 +91,18 @@ def get_peak_valley(filename):
     # result = np.sum(np.absolute(trd_deflX))
     return result
 
+def get_amplitude(filename, N, echo):
+    # with utils.cd("~/Eolien/Parameters/Python/Optimization"):
+    filebase = "./Output/" + filename.replace(".out", "")
+    amp.find_peak_valley(filebase, header=7, startline=12,
+                        datarow=6009, channels=['YawBrTDxt', ], echo=echo)
+    amplX = amp.Amplitude.calculate_p2p_amplitude(filebase+"_YawBrTDxt.ext",)
+    trd_amplX = [value[-1] for value in amplX[:N]]
+    result = np.linalg.norm(trd_amplX)
+    return result
+
+
+
 def optiObj(optiVar):
     """ Optimization problem: objective function
     """
@@ -105,7 +117,8 @@ def optiObj(optiVar):
         print("[{}] ❌ Optimal variables: {}; FAST fails in calculation !".format(myrank, optiVar))
         f = None
     else:
-        f = get_peak_valley(file)
+        # f = get_peak_valley(file)
+        f = get_amplitude(file, N=10, echo=False)
         if np.isnan(f):
             fail = 1
             print("[{}] ⚠️ Optimal variables: {}; Objectif function returns: {} !".format(
@@ -167,8 +180,11 @@ def main():
 
     if runCode == 1: # for testing
         file = run_TRD(mode1=[277.8, 26.7, -86.712, -17.0222],
-                       gridloss=['EOG', 'O'], outputFolder='', silence=0, echo=1)
-        norme_value = get_peak_valley(file)
+                       gridloss=['EOG', 'O'], outputFolder='', silence=0, 
+                       echo=1)
+        
+        # norme_value = get_peak_valley(file)
+        norme_value = get_amplitude(file, N=10, echo=True)
         print(norme_value)
 
     if runCode == 2: # for optimization

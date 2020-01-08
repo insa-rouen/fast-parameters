@@ -22,7 +22,7 @@
 #!------------------------------------------------------------------------------
 #!                                   MODULES
 #!------------------------------------------------------------------------------
-#============================== Modules Personnels ==============================
+#============================= Modules Personnels =============================
 import csv
 import pickle
 import numpy
@@ -34,12 +34,14 @@ from mpl_toolkits.axes_grid1.inset_locator import zoomed_inset_axes
 from matplotlib import gridspec
 from matplotlib import ticker
 from matplotlib import pyplot as plt
-import sys
-import IPython  # to colorize traceback errors in terminal
 from pycrunch import amplitude as amp
 from tools import utils
-sys.excepthook = IPython.core.ultratb.ColorTB()
-#============================== Modules Communs ==============================
+try:
+    import sys, IPython
+    sys.excepthook = IPython.core.ultratb.ColorTB()
+except:
+    pass
+#============================= Modules Communs =============================
 
 
 
@@ -56,16 +58,16 @@ sys.excepthook = IPython.core.ultratb.ColorTB()
 #!------------------------------------------------------------------------------
 def plot_YawBrTD():
     data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O_old.out", datarow=6009)
+    data2 = utils.readcsv("./DLC2.3_EOG_O.out", datarow=6009)
 
     fig, ax = plt.subplots()
 
     X = data1.get(1)['Records']
 
-    Y1 = data1.get(5)['Records']
+    Y1 = data1.get("YawBrTDxt")['Records']
     ax.plot(X, Y1, label="Ref.")
 
-    Y2 = data2.get(5)['Records']
+    Y2 = data2.get("YawBrTDxt")['Records']
     ax.plot(X, Y2, "--", markevery=(0.1), label="with TRD")
 
     ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
@@ -79,7 +81,7 @@ def plot_YawBrTD():
 
 def plot_NTRD():
     data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O_old.out", datarow=6009)
+    data2 = utils.readcsv("./DLC2.3_EOG_O.out", datarow=6009)
 
     fig, ax = plt.subplots()
 
@@ -102,18 +104,18 @@ def find_ref_time_for_peak():
     ''' time that occurs extremum deflection
     '''
     channels = ['YawBrTDxt', ]
-    amp.find_peak_valley("DLC2.3_CST_25.0mps", header=7, startline=12,
+    amp.find_peak_valley("DLC2.3_EOG_O", header=7, startline=12,
         datarow=6009, channels=channels)
-    amp.Amplitude.max_p2p_amplitude("DLC2.3_CST_25.0mps", channels, ".ext", 
-        True)
-
+    temp = amp.Amplitude.max_p2p_amplitude("DLC2.3_EOG_O", channels, ".ext", N=10)
+    
     ref_time = (75.09, 77.36, 79.02, 80.54, 82.11, 83.61, 85.15, 86.69, 88.23,
                 89.76,)
-    data = utils.readcsv("./DLC2.3_CST_25.0mps.out", datarow=6009)
+    data = utils.readcsv("./DLC2.3_EOG_O.out", datarow=6009)
     X = data.get(1)['Records']
     ref_index = [X.index(t) for t in ref_time]
     print(ref_index)
-        
+
+
 
 #!------------------------------------------------------------------------------
 #!                                MAIN FUNCTION
@@ -122,6 +124,7 @@ def main():
     plot_NTRD()
     plot_YawBrTD()
     # find_ref_time_for_peak()
+
 
 
 #!------------------------------------------------------------------------------
