@@ -167,7 +167,7 @@ def main():
 
     if runCode == 1: # for testing
         file = run_TRD(mode1=[277.8, 26.7, -86.712, -17.0222],
-                       gridloss=['CST', '25.0mps'], outputFolder='', silence=0, echo=1)
+                       gridloss=['EOG', 'O'], outputFolder='', silence=0, echo=1)
         norme_value = get_peak_valley(file)
         print(norme_value)
 
