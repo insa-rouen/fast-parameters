@@ -56,17 +56,36 @@ except:
 #!------------------------------------------------------------------------------
 #!                             FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def plot_YawBrTD():
+def plot(item):
     data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O.out", datarow=6009)
+    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
 
     fig, ax = plt.subplots()
 
     X = data1.get(1)['Records']
+    Y1 = data1.get(item)['Records']
+    ax.plot(X, Y1, label="Ref.")
 
+    X = data2.get(1)['Records']
+    Y2 = data2.get(item)['Records']
+    ax.plot(X, Y2, "--", markevery=(0.1), label="with TRD")
+
+    ax.set_title(item)
+    plt.legend()
+
+    plt.show()
+
+def plot_YawBrTD():
+    data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
+    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
+
+    fig, ax = plt.subplots()
+
+    X = data1.get(1)['Records']
     Y1 = data1.get("YawBrTDxt")['Records']
     ax.plot(X, Y1, label="Ref.")
 
+    X = data2.get(1)['Records']
     Y2 = data2.get("YawBrTDxt")['Records']
     ax.plot(X, Y2, "--", markevery=(0.1), label="with TRD")
 
@@ -81,17 +100,17 @@ def plot_YawBrTD():
 
 def plot_NTRD():
     data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O.out", datarow=6009)
+    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
 
     fig, ax = plt.subplots()
 
     X = data1.get(1)['Records']
-
-    Y1 = data1.get(-2)['Records']
+    Y1 = data1.get("NTRD_A")['Records']
     ax.plot(X, Y1, label="Ref.")
 
-    Y2 = data2.get(-2)['Records']
-    ax.plot(X, Y2, "--", markevery=(0.1), label=data2.get(-2)['Title'])
+    X = data2.get(1)['Records']
+    Y2 = data2.get("NTRD_A")['Records']
+    ax.plot(X, Y2, "--", markevery=(0.1), label=data2.get("NTRD_A")['Title'])
 
     ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
     for i in ref_index:
@@ -121,6 +140,7 @@ def find_ref_time_for_peak():
 #!                                MAIN FUNCTION
 #!------------------------------------------------------------------------------
 def main():
+    plot("Wind1VelX")
     plot_NTRD()
     plot_YawBrTD()
     # find_ref_time_for_peak()
