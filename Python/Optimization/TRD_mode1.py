@@ -68,6 +68,8 @@ def run_TRD(mode1, gridloss, case="DLC2.3", outputFolder="", silence=False,
     temp.run(silence)
     return temp.outputFilename
 
+
+# objective function v1, proposed by Hao
 def get_peak_valley(filename):
     # Reference data
     # --- for DLC2.3@cut-out
@@ -91,16 +93,21 @@ def get_peak_valley(filename):
     # result = np.sum(np.absolute(trd_deflX))
     return result
 
+
+# objectiv function v2, proposed by Didier
 def get_amplitude(filename, N, echo):
     # with utils.cd("~/Eolien/Parameters/Python/Optimization"):
     filebase = "./Output/" + filename.replace(".out", "")
-    amp.find_peak_valley(filebase, header=7, startline=12,
+    try:
+        amp.find_peak_valley(filebase, header=7, startline=12,
                         datarow=6009, channels=['YawBrTDxt', ], echo=echo)
+    except:
+        return np.nan # trigger the error in this case
     amplX = amp.Amplitude.calculate_p2p_amplitude(filebase+"_YawBrTDxt.ext",)
     trd_amplX = [value[-1] for value in amplX[:N]]
-    result = np.linalg.norm(trd_amplX)
+    # result = np.linalg.norm(trd_amplX)
+    result = abs(trd_amplX[2])  # objective function v3, proposed by Jean-Marc
     return result
-
 
 
 def optiObj(optiVar):
@@ -108,21 +115,22 @@ def optiObj(optiVar):
     """
     # update objective function
     try:
-        file = run_TRD(mode1=optiVar, gridloss=['CST', '25.0mps'], 
+        file = run_TRD(mode1=optiVar, gridloss=['EOG', 'O'], 
             outputFolder='', silence=1, echo=0)
     except KeyboardInterrupt as e:
         raise e
     except:
         fail = 1
-        print("[{}] ❌ Optimal variables: {}; FAST fails in calculation !".format(myrank, optiVar))
+        print("[{}] ❌ Optimal variables: {}; FAST fails in calculation !"
+              .format(myrank, optiVar))
         f = None
     else:
         # f = get_peak_valley(file)
         f = get_amplitude(file, N=10, echo=False)
         if np.isnan(f):
             fail = 1
-            print("[{}] ⚠️ Optimal variables: {}; Objectif function returns: {} !".format(
-                myrank, optiVar, f))
+            print("[{}] ⚠️ Optimal variables: {}; Objectif function value: {} !"
+                  .format(myrank, optiVar, f))
         else:
             fail = 0
             print("[{}] ✅ Optimal variables: {}; Objectif function value: {}".format(myrank, optiVar, f))
@@ -130,15 +138,18 @@ def optiObj(optiVar):
     sys.stdout.flush()
     return f, g, fail
 
+
 def optiInequalConstraint(parameter_list):
     """ Optimization problem: inequality constraints
     """
     pass
 
+
 def optiEqualConstraint(parameter_list):
     """ Optimization problem: equality constraints
     """
     pass
+
 
 def optiProblem():
     """ Optimization problem: gather all features

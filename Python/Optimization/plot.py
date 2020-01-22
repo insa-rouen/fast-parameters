@@ -56,9 +56,9 @@ except:
 #!------------------------------------------------------------------------------
 #!                             FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def plot(item):
-    data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
+def plot(item, file_ref, file2):
+    data1 = utils.readcsv(file_ref, datarow=6009)
+    data2 = utils.readcsv(file2, datarow=6009)
 
     fig, ax = plt.subplots()
 
@@ -75,9 +75,9 @@ def plot(item):
 
     plt.show()
 
-def plot_YawBrTD():
-    data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
+def plot_YawBrTD(file_ref, file2):
+    data1 = utils.readcsv(file_ref, datarow=6009)
+    data2 = utils.readcsv(file2, datarow=6009)
 
     fig, ax = plt.subplots()
 
@@ -98,9 +98,9 @@ def plot_YawBrTD():
     plt.show()
 
 
-def plot_NTRD():
-    data1 = utils.readcsv("./DLC2.3_EOG_O_ref.out", datarow=6009)
-    data2 = utils.readcsv("./DLC2.3_EOG_O_TRD_old.out", datarow=6009)
+def plot_NTRD(file_ref, file2):
+    data1 = utils.readcsv(file_ref, datarow=6009)
+    data2 = utils.readcsv(file2, datarow=6009)
 
     fig, ax = plt.subplots()
 
@@ -140,9 +140,11 @@ def find_ref_time_for_peak():
 #!                                MAIN FUNCTION
 #!------------------------------------------------------------------------------
 def main():
-    plot("Wind1VelX")
-    plot_NTRD()
-    plot_YawBrTD()
+    file_ref = "./DLC2.3_EOG_O_ref.out"
+    file2 = "./DLC2.3_EOG_O.out"
+    plot("Wind1VelX", file_ref=file_ref, file2=file2)
+    plot_NTRD(file_ref=file_ref, file2=file2)
+    plot_YawBrTD(file_ref=file_ref, file2=file2)
     # find_ref_time_for_peak()
 
 
