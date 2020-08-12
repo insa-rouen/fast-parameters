@@ -56,9 +56,9 @@ except:
 #!------------------------------------------------------------------------------
 #!                             FUNCTION DEFINITION
 #!------------------------------------------------------------------------------
-def plot(item, file_ref, file2):
-    data1 = utils.readcsv(file_ref, datarow=6009)
-    data2 = utils.readcsv(file2, datarow=6009)
+def plot(item, file_ref, file2, datarow):
+    data1 = utils.readcsv(file_ref, datarow=datarow)
+    data2 = utils.readcsv(file2, datarow=datarow)
 
     fig, ax = plt.subplots()
 
@@ -75,9 +75,10 @@ def plot(item, file_ref, file2):
 
     plt.show()
 
-def plot_YawBrTD(file_ref, file2):
-    data1 = utils.readcsv(file_ref, datarow=6009)
-    data2 = utils.readcsv(file2, datarow=6009)
+
+def plot_YawBrTD(file_ref, file2, datarow):
+    data1 = utils.readcsv(file_ref, datarow=datarow)
+    data2 = utils.readcsv(file2, datarow=datarow)
 
     fig, ax = plt.subplots()
 
@@ -89,18 +90,19 @@ def plot_YawBrTD(file_ref, file2):
     Y2 = data2.get("YawBrTDxt")['Records']
     ax.plot(X, Y2, "--", markevery=(0.1), label="with TRD")
 
-    ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
-    for i in ref_index:
-        ax.plot(X[i], Y2[i], 'ro')
-    plt.legend()
-    
+    # ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
+    # for i in ref_index:
+    #     ax.plot(X[i], Y2[i], 'ro')
+    ax.set_yticks(utils.frange(-1.0, 1.8, 0.2))
+    ax.legend()
+    ax.grid()
 
     plt.show()
 
 
-def plot_NTRD(file_ref, file2):
-    data1 = utils.readcsv(file_ref, datarow=6009)
-    data2 = utils.readcsv(file2, datarow=6009)
+def plot_NTRD(file_ref, file2, datarow):
+    data1 = utils.readcsv(file_ref, datarow=datarow)
+    data2 = utils.readcsv(file2, datarow=datarow)
 
     fig, ax = plt.subplots()
 
@@ -112,10 +114,10 @@ def plot_NTRD(file_ref, file2):
     Y2 = data2.get("NTRD_A")['Records']
     ax.plot(X, Y2, "--", markevery=(0.1), label=data2.get("NTRD_A")['Title'])
 
-    ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
-    for i in ref_index:
-        ax.plot(X[i], Y2[i], 'ro')
-    plt.legend()
+    # ref_index = (1509, 1736, 1902, 2054, 2211, 2361, 2515, 2669, 2823, 2976)
+    # for i in ref_index:
+    #     ax.plot(X[i], Y2[i], 'ro')
+    ax.legend()
 
     plt.show()
 
@@ -141,10 +143,11 @@ def find_ref_time_for_peak():
 #!------------------------------------------------------------------------------
 def main():
     file_ref = "./DLC2.3_EOG_O_ref.out"
-    file2 = "./DLC2.3_EOG_O.out"
-    plot("Wind1VelX", file_ref=file_ref, file2=file2)
-    plot_NTRD(file_ref=file_ref, file2=file2)
-    plot_YawBrTD(file_ref=file_ref, file2=file2)
+    file2 = "./TRD_AOFF=0.2/DLC2.3_EOG_O.out"
+    datarow = 9
+    # plot("Wind1VelX", file_ref=file_ref, file2=file2, datarow=datarow)
+    # plot_NTRD(file_ref=file_ref, file2=file2, datarow=datarow)
+    plot_YawBrTD(file_ref=file_ref, file2=file2, datarow=datarow)
     # find_ref_time_for_peak()
 
 
