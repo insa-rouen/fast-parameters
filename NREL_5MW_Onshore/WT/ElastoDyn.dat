@@ -245,6 +245,8 @@ True          TabDelim    - Use tab delimiters in text tabular output file? (fla
 "Azimuth"    - LSSTipPxa: Rotor azimuth angle (position) (°) = Low-speed shaft tip position = Blade 1 azimuth angle
 "RotSpeed"   - LSSTipVxa: Rotor azimuth angular speed (rpm) = Low-speed shaft tip speed
 "NacYaw"     - YawPzn: Nacelle yaw angle (position) (°)
+"LSShftFxa"  - LSS thrust force (this is constant along the shaft and is equivalent to the rotor thrust force)
+"LSShftMxa"  - LSS torque (this is constant along the shaft and is equivalent to the rotor torque)
 
 END of input file (the word "END" must appear in the first 3 columns of this last OutList line)
 ---------------------------------------------------------------------------------------
