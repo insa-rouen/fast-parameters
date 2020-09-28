@@ -136,16 +136,23 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
     pool.join()
 
 
-def runTurbSim_FAST(seed, outputFolder="", compress=False, silence=False, 
+def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False, 
     echo=True):
     try:
         logpath = "~/Eolien/Parameters/Python/DLC1.1/log"
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
+        wind_dir = Path("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/")
+        with utils.cd(wind_dir):
             turb.get_turbulence(seed, logpath, silence,echo)  # generate TurbSim
         DLC.get_DLC11(seed, outputFolder, silence, echo)  # run FAST
     except:
         raise
     else:
+        if remove == True:
+            time.sleep(10)
+            filetodelete = wind_dir.joinpath(
+                "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])
+                ).expanduser()
+            filetodelete.unlink()
         return seed
 
 
@@ -171,7 +178,7 @@ def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True,
     # begin multiprocessing
     pool = multiprocessing.Pool(CORES)
     [pool.apply_async(runTurbSim_FAST,
-        args=(seed, outputFolder, compress, silence,  echo), 
+        args=(seed, outputFolder, True, silence,  echo), 
         callback=printer, error_callback=utils.handle_error) 
         for seed in seeds]
     pool.close()
@@ -288,8 +295,12 @@ def check_seeds():
 def main():
     # Load Seeds ===============================================================
     # Initiation
-    seed_path = Path("~/aster1/Wind").expanduser()
-    seed_path = Path("~/Eolien/Parameters/NREL_5MW_Onshore/Wind").expanduser()
+    if "lmn-cs" in PLATFORM:
+        seed_path = Path(
+            "~/aster1/Eolien/Parameters/NREL_5MW_Onshore/Wind").expanduser()
+    else:
+        seed_path = Path(
+            "~/Eolien/Parameters/NREL_5MW_Onshore/Wind").expanduser()
     # seeds file
     seeds_odd = utils.load_json(seed_path.joinpath("10000seeds.json"))
     seeds_even = utils.load_json(seed_path.joinpath("10000seeds2.json"))
