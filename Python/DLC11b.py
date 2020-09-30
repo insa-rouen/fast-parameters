@@ -236,7 +236,7 @@ def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True,
             statistic["Z_50"] = np.percentile(speedz, 50)
             statistic["Z_75"] = np.percentile(speedz, 75)
             output[s[2]] = statistic
-        attach = Path(output_dir.stem+".json").absolute()
+        attach = Path("{}_{}mps.json".format(s[0], s[1])).absolute()
         utils.save_json(output, attach, True)
     tok = time.time()
     duration = datetime.timedelta(seconds=round(tok-tik))
@@ -244,7 +244,7 @@ def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True,
     ## send e-mail
     print("|- Sending notification to user ...", end="\n ")
     subject = "[{}] {} is terminated, elapsed time: {}".format(
-        PLATFORM.split(".")[0], output_dir.stem, duration)
+        PLATFORM.split(".")[0], attach.stem, duration)
     data = {"name": "Hao",
             "address": ["hao.bai@insa-rouen.fr", ],
             "subject": subject,
@@ -252,7 +252,7 @@ def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True,
             "attachment": attach,
             "list_of_files": [attach.stem, ]
             }
-    gmail.send(data=data, by="gmail", debug=0)
+    gmail.send(data=data, by="hotmail", debug=0)
 
 
 def check_seeds():
