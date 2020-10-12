@@ -15,10 +15,10 @@ Input file for twin rotor damper
 0.1        TRD_AOFF   - TRD deactivation threshold (-)
 3.20000E-01 TRD_F0     - TRD frequency of the mode to be damped (Hz)
 ------------------ TRD CONTROL PARAMETERS - MODE 1 ------------------------
-599.9707954027328       TRD_K(1)   - TRD K vector first coefficient (-): default 277.8
-269.7874308754611        TRD_K(2)   - TRD K vector second coefficient (-): default 26.7
--219.9327974345733     TRD_L(1)   - TRD L vector first coefficient (-): default -205
--76.62986651029942    TRD_L(2)   - TRD L vector second coefficient (-): default -26
+277.8       TRD_K(1)   - TRD K vector first coefficient (-): default 277.8
+26.7        TRD_K(2)   - TRD K vector second coefficient (-): default 26.7
+-205     TRD_L(1)   - TRD L vector first coefficient (-): default -205
+-26    TRD_L(2)   - TRD L vector second coefficient (-): default -26
 4.78920E+05 TRD_M  	   - TRD modal mass of the mode to be damped (kg)
 ------------------ TRD CONTROL PARAMETERS - MODE 2 ------------------------
 ------------- A matrix (4x4) for input signal filtering -------------------
