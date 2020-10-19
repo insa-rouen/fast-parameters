@@ -19,7 +19,7 @@
 from pywind import seed
 from tools import utils
 # ============================== Modules Communs ==============================
-
+import numpy as np
 
 
 #-------------------------------------------------------------------------------
@@ -34,7 +34,8 @@ from tools import utils
 def main():
     # seed.auto(1000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
     # seed.auto(10000, speedRange=range(3, 27, 2), allowDuplicate=False) # give the number of seeds per speed
-    seed.auto(10000, speedRange=range(4, 26, 2), keys=("NTM",), 
+
+    seed.auto(10000, speedRange=utils.frange(3.5, 25.5, 1.0), keys=("NTM",),
         allowDuplicate=False, reuseSeed=False)
 
     # seed.auto(100, speedRange=utils.frange(3.0, 25.1, 0.1))

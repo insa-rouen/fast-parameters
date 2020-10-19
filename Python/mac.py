@@ -61,23 +61,31 @@ def main():
     # seeds = liste
 
     # Recalculate TurbSim + FAST + Stress
-    # with utils.cd("~/aster1/Wind"):
-    #     with open("10seeds.json", "r") as f:
-    #        seeds1 = json.loads(f.read())
+    #* aster1
+    with utils.cd("~/aster1/Wind"):
+        with open("recomputeALL.json", "r") as f:
+           seeds = json.loads(f.read())
     #     #with open("failedRunsStress.json", "r") as f:
     #     #    seeds2 = json.loads(f.read())
         # with open("failedRunsFAST.json", "r") as f:
         #     seeds3 = json.loads(f.read())
     # #seeds1.extend(seeds2)
+    
+    #* lmn-cs
     # with utils.cd("~/lmn-cs/Wind"):
     #     with open("recomputeALL.json", "r") as f:
-    #         seeds4 = json.loads(f.read())
+    #         seeds = json.loads(f.read())
     #     with open("failedRunsFAST.json", "r") as f:
     #         seeds5 = json.loads(f.read())
-    
-    # liste = [s for s in seeds1 if s[0] == "NTM"]
-    # seeds1 = [ liste[303], liste[1700], ]
+
+    #* lofims
+    # with utils.cd("~/lofims/Wind/"):
+    #     with open("recomputeALL.json", "r") as f:
+    #         seeds = json.loads(f.read())
+ 
+    # seeds = seeds1
     seeds = [["NTM", "21", "-800757005"], ]
+
     # Run ======================================================================
     mac = server.Aster1(inputSeeds=seeds,
                     windPath="~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1",
