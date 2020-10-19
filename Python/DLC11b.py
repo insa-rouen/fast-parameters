@@ -20,6 +20,7 @@
 #     - 0.8: [25/12/18] Run 10 000 simulations at wind speed 3 m/s
 #     - 1.0: [25/04/19] Run 10 simulations for wind speed [3, 3.1, 3.2, ..., 25]
 #     - 2.0: [27/09/20] Get statistical info of wind speeds
+#     - 2.1: [19/10/20] Run 10 000 simulations at 3.5 m/s
 # Description:
 # 
 # 
@@ -79,7 +80,7 @@ def runStress_multiprocess(seeds, thetaStep=30, echo=True):
 def runFatigue_multiprocess(seeds, echo=True):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
-        life.get_fatigue_multiprocess(list_filebase, gages=[1,2,3,4,5,6,7,8,9], lifetime=20*365*24*6, echo=echo)
+        life.get_fatigue_multiprocess(list_filebase, gages=[1,9], lifetime=20*365*24*6, echo=echo)
 
 def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     ''' Run Stress and Fatigue in same time
@@ -94,26 +95,30 @@ def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
            echo=True):
     try:
         logpath = "~/Eolien/Parameters/Python/DLC1.1/log"
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/"):
+        wind_dir = Path("~/Eolien/Parameters/NREL_5MW_Onshore/Wind/DLC1.1/")
+        with utils.cd(wind_dir):
             turb.get_turbulence(seed, logpath, silence, echo) # generate TurbSim
         DLC.get_DLC11(seed, outputFolder, silence, echo) # run FAST
         with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
             filebase = "{}_{}mps_{}".format(seed[0], seed[1], seed[2])
             life.get_stress_fatigue(filebase, datarow=6009,
-                                    gages=[1, 2, 3, 4, 5, 6, 7, 8, 9],
+                                    gages=[1, 9],
                                     thetaStep=thetaStep, lifetime=20*365*24*6,
                                     echo=echo) # calculate Stress and Fatigue
     except:
         raise
     else:
-        with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
-            if compress:
-                utils.compress(filename=filebase+".out", removeSource=True)
+        time.sleep(5)
+        filetodelete = wind_dir.joinpath(
+            "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])
+            ).expanduser()
+        filetodelete.unlink()
         return seed
 
 def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
-                        silence=True, echo=False):
-    print('All-In-One: TurbSim + FAST + Stress + Fatigue v0.1 (December 10 2018)')
+                        sendmail=True, silence=True, echo=False):
+    tik = time.time()
+    print('All-In-One: TurbSim + FAST + Stress + Fatigue v2.1 (Oct. 2020)')
     print('========== Multiprocessing Mode ==========')
     # prepare a callback function
     length = len(seeds)
@@ -134,6 +139,77 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", compress=True,
      seed in seeds]
     pool.close()
     pool.join()
+    
+    ##* Post-process
+    print("|- Post-processing ...")
+    with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
+        # get .out files
+        out_list = utils.find(path=".", pattern="{}_{}mps_*.out".format(
+            seeds[0][0], seeds[0][1]))
+        if len(out_list) != len(seeds):
+            raise RuntimeError("The number of .out files ({}) doesn't match the"
+                               " number of seeds ({})"
+                               .format(len(out_list),len(seeds)))
+        # make subfolder
+        output_dir = Path("lmn-cs_out@{}mps".format(seeds[0][1]))
+        if not output_dir.exists():
+            output_dir.mkdir()
+        # move files
+        for filebase in out_list:
+            f = Path(filebase+".out")
+            destination = output_dir.joinpath(f)
+            f.replace(destination)
+        # compress folder
+        if compress == True:
+            utils.compress(filebase=str(output_dir)+".out", source=output_dir,
+                           remove_source=False)
+        # calculate statistical values
+        output = {}
+        for s in seeds:
+            statistic = {}
+            filename = output_dir.joinpath("{}_{}mps_{}.out".format(
+                s[0], s[1], s[2]))
+            data = utils.readcsv(filename=filename, datarow=6009,
+                                 checkNaN=False, echo=echo)
+            speedx = np.array(data.get("Wind1VelX")["Records"])
+            speedy = np.array(data.get("Wind1VelY")["Records"])
+            speedz = np.array(data.get("Wind1VelZ")["Records"])
+            # speed in X direction
+            statistic["X_mean"] = speedx.mean()
+            statistic["X_std"] = speedx.std()
+            statistic["X_25"] = np.percentile(speedx, 25)
+            statistic["X_50"] = np.percentile(speedx, 50)
+            statistic["X_75"] = np.percentile(speedx, 75)
+            # speed in Y direction
+            statistic["Y_mean"] = speedy.mean()
+            statistic["Y_std"] = speedy.std()
+            statistic["Y_25"] = np.percentile(speedy, 25)
+            statistic["Y_50"] = np.percentile(speedy, 50)
+            statistic["Y_75"] = np.percentile(speedy, 75)
+            # speed in Z direction
+            statistic["Z_mean"] = speedz.mean()
+            statistic["Z_std"] = speedz.std()
+            statistic["Z_25"] = np.percentile(speedz, 25)
+            statistic["Z_50"] = np.percentile(speedz, 50)
+            statistic["Z_75"] = np.percentile(speedz, 75)
+            output[s[2]] = statistic
+        attach = Path("{}_{}mps.json".format(s[0], s[1])).absolute()
+        utils.save_json(output, attach, True)
+    tok = time.time()
+    duration = datetime.timedelta(seconds=round(tok-tik))
+
+    ## send e-mail
+    print("|- Sending notification to user ...", end="\n ")
+    subject = "[{}] {} is terminated, elapsed time: {}".format(
+        PLATFORM.split(".")[0], attach.stem, duration)
+    data = {"name": "Hao",
+            "address": ["hao.bai@insa-rouen.fr", ],
+            "subject": subject,
+            "message": "",
+            "attachment": attach,
+            "list_of_files": [attach.stem, ]
+            }
+    gmail.send(data=data, by="hotmail", debug=0)
 
 
 def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False, 
@@ -148,7 +224,7 @@ def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False,
         raise
     else:
         if remove == True:
-            time.sleep(10)
+            time.sleep(5)
             filetodelete = wind_dir.joinpath(
                 "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])
                 ).expanduser()
@@ -184,7 +260,7 @@ def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True,
     pool.close()
     pool.join()
     
-    ## Post-process
+    ##* Post-process
     print("|- Post-processing ...")
     with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
         # get .out files
@@ -305,7 +381,7 @@ def main():
     seeds_odd = utils.load_json(seed_path.joinpath("10000seeds.json"))
     seeds_even = utils.load_json(seed_path.joinpath("10000seeds2.json"))
     seeds = seeds_odd + seeds_even
-    seeds = [s for s in seeds if s[0] == "NTM" and s[1] == "3.0"]
+    seeds = [s for s in seeds if s[0] == "NTM" and s[1] == "3.5"]
     # liste = [s for s in seeds if s[0] == "NTM"]
     # seeds = liste
 
@@ -331,11 +407,13 @@ def main():
     # DLC.get_DLC11(['NTM', '4.0', '1879136045'], outputFolder='', silence=False, 
     #                echo=True)
     
-    runTurbSim_FAST_multiprocess(seeds[:3], sendmail=1, silence=1, echo=1)
+    # runALL(seeds[0], thetaStep=90, silence=1, echo=1)
+    runALL_multiprocess(seeds[:4], thetaStep=90, sendmail=1, silence=1, echo=0)
+    # runTurbSim_FAST_multiprocess(seeds[:3], sendmail=1, silence=1, echo=1)
     # runTurbSim_multiprocess(seeds, silence=1, echo=1)
     # runFAST_multiprocess(seeds, silence=0, echo=1)
-    # # runStress_multiprocess(seeds, echo=0)
-    # # runFatigue_multiprocess(seeds, echo=0)
+    # runStress_multiprocess(seeds[:6], echo=1)
+    # runFatigue_multiprocess(seeds[:6], echo=1)
     # runStressFatigue_multiprocess(seeds, 10, echo=0)
     return
     
