@@ -92,7 +92,7 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
                                              gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep,
                                              lifetime=20*365*24*6,echo=echo)
 
-def runALL(seed, thetaStep, outputFolder="", compress=False, silence=False,
+def runALL(seed, thetaStep, outputFolder="", silence=False,
            echo=True):
     try:
         logpath = "~/Eolien/Parameters/Python/DLC1.1/log"
@@ -135,7 +135,7 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", silence=True,
               seed[1], seed[2], hour, minute, rest))
     # begin multiprocessing
     pool = multiprocessing.Pool(CORES)
-    [pool.apply_async(runALL, args=(seed, thetaStep, outputFolder, compress,
+    [pool.apply_async(runALL, args=(seed, thetaStep, outputFolder,
      silence,  echo), callback=printer, error_callback=utils.handle_error) for
      seed in seeds]
     pool.close()
@@ -143,10 +143,10 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", silence=True,
 
 
 ##* Post-process
-def post_process(seeds, sendmail=True, compress=True):
+def post_process(seeds, sendmail=True, compress=True, echo=False):
     print("[INFO] Post-processing ...")
     with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
-        # get .out files
+        ## get .out files
         out_list = utils.find(path=".", pattern="{}_{}mps_*.out".format(
             seeds[0][0], seeds[0][1]))
         if len(out_list) != len(seeds):
@@ -166,7 +166,21 @@ def post_process(seeds, sendmail=True, compress=True):
         if compress == True:
             utils.compress(filebase=str(output_dir)+".out", source=output_dir,
                            remove_source=False)
-        # calculate statistical values
+        
+        ## get .dam files
+        dam_list = utils.find(path=".", pattern="{}_{}mps_*.dam".format(
+                    seeds[0][0], seeds[0][1]))
+        # make subfolder
+        dam_dir = Path("lmn-cs_fatigue@{}mps".format(seeds[0][1]))
+        if not output_dir.exists():
+            output_dir.mkdir()
+        # move files
+        for filebase in dam_list:
+            f = Path(filebase+".dam")
+            destination = output_dir.joinpath(f)
+            f.replace(destination)
+
+        ## calculate statistical values
         output = {}
         for s in seeds:
             statistic = {}
@@ -317,7 +331,7 @@ def main():
     
     
     # Run ======================================================================
-    for v in utils.frange(15.5, 25.5, 1.0):
+    for v in utils.frange(16.5, 25.5, 1.0):
         TIK = time.time()
         seeds = [s for s in seeds_all if s[0] == "NTM" and s[1] == str(v)]
         runALL_multiprocess(seeds[:1000], thetaStep=10, silence=1, echo=0)
@@ -347,7 +361,7 @@ def main():
                     if oldseed == s:
                         seeds_odd[i] = _
 
-        if newseeds != []
+        if newseeds != []:
             print("|- {} runs have failed {}, begin re-executing now ..."
                   .format(len(newseeds), newseeds))
             runALL_multiprocess(newseeds, thetaStep=10, silence=1, echo=0)
@@ -364,7 +378,7 @@ def main():
     # seeds = [["NTM", "21", "-800757005"], ]
 
         ##* Post-process
-        post_process(seeds[:1000], sendmail=1, compress=1)
+        post_process(seeds[:1000], sendmail=1, compress=1, echo=1)
     return
     
     
