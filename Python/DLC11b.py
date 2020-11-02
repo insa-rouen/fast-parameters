@@ -53,7 +53,6 @@ import numpy as np
 #!------------------------------------------------------------------------------
 CORES = int( os.cpu_count() )
 PLATFORM = platform.node()
-TIK, TOK = time.time(), time.time()
 
 
 
@@ -89,7 +88,8 @@ def runStressFatigue_multiprocess(seeds, thetaStep, echo=True):
     list_filebase = ['{}_{}mps_{}'.format(s[0], s[1], s[2]) for s in seeds]
     with utils.cd('~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/'):
         life.get_stress_fatigue_multiprocess(list_filebase, datarow=6009,
-                                             gages=[1,2,3,4,5,6,7,8,9], thetaStep=thetaStep,
+                                             gages=[1,2,3,4,5,6,7,8,9], 
+                                             thetaStep=thetaStep,
                                              lifetime=20*365*24*6,echo=echo)
 
 def runALL(seed, thetaStep, outputFolder="", silence=False,
@@ -109,21 +109,20 @@ def runALL(seed, thetaStep, outputFolder="", silence=False,
     except:
         raise
     else:
-        time.sleep(5)
         filetodelete = wind_dir.joinpath(
-            "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])
-            ).expanduser()
+            "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])).expanduser()
         filetodelete.unlink()
         return seed
 
 
 def runALL_multiprocess(seeds, thetaStep, outputFolder="", silence=True, 
     echo=False):
-    print('All-In-One: TurbSim + FAST + Stress + Fatigue v2.2 (Oct. 2020)')
+    print('All-In-One: TurbSim + FAST + Stress + Fatigue v2.3 (Nov. 2020)')
     print('========== Multiprocessing Mode ==========')
     ##* prepare a callback function
     length = len(seeds)
-    print('[INFO] {} tasks is submitted'.format(length))
+    print('[INFO] {} tasks is submitted for {} m/s'.format(length, seeds[0][1]))
+    print('[INFO] Compute fatigue damage on spot per {}°'.format(thetaStep))
     completed = []
     def printer(seed):
         pos = seeds.index(seed) + 1
@@ -143,10 +142,11 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", silence=True,
 
 
 ##* Post-process
-def post_process(seeds, sendmail=True, compress=True, echo=False):
+def post_process(seeds, tik, sendmail=True, compress=True, echo=False):
     print("[INFO] Post-processing ...")
     with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
-        ## get .out files
+        ##* get .out files
+        print("|- Checking .out files ...")
         out_list = utils.find(path=".", pattern="{}_{}mps_*.out".format(
             seeds[0][0], seeds[0][1]))
         if len(out_list) != len(seeds):
@@ -164,23 +164,30 @@ def post_process(seeds, sendmail=True, compress=True, echo=False):
             f.replace(destination)
         # compress folder
         if compress == True:
+            print("|- Compressing {}.out.tgz folder ...".format(output_dir))
             utils.compress(filebase=str(output_dir)+".out", source=output_dir,
                            remove_source=False)
         
-        ## get .dam files
+        ##* get .dam files
+        print("|- Checking .dam files ...")
         dam_list = utils.find(path=".", pattern="{}_{}mps_*.dam".format(
                     seeds[0][0], seeds[0][1]))
         # make subfolder
         dam_dir = Path("lmn-cs_fatigue@{}mps".format(seeds[0][1]))
-        if not output_dir.exists():
-            output_dir.mkdir()
+        if not dam_dir.exists():
+            dam_dir.mkdir()
         # move files
         for filebase in dam_list:
             f = Path(filebase+".dam")
-            destination = output_dir.joinpath(f)
+            destination = dam_dir.joinpath(f)
             f.replace(destination)
+        # compress folder
+        if compress == True:
+            print("|- Compressing {}.dam.tgz folder ...".format(dam_dir))
+            utils.compress(filebase=str(dam_dir)+".dam", source=dam_dir,
+                           remove_source=False)
 
-        ## calculate statistical values
+        ##* calculate statistical values
         output = {}
         for s in seeds:
             statistic = {}
@@ -212,8 +219,7 @@ def post_process(seeds, sendmail=True, compress=True, echo=False):
             output[s[2]] = statistic
         attach = Path("{}_{}mps.json".format(s[0], s[1])).absolute()
         utils.save_json(output, attach, True)
-    TOK = time.time()
-    duration = datetime.timedelta(seconds=round(TOK-TIK))
+    duration = datetime.timedelta(seconds=round(time.time()-tik))
     # send e-mail
     if sendmail == True:
         print("[INFO] Sending notification to user ...", end="\n ")
@@ -251,7 +257,6 @@ def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False,
 
 def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True, 
     sendmail=True, silence=True, echo=False):
-    tik = time.time()
     print('Wind & FAST: TurbSim + FAST v0.1 (September 26 2020)')
     print('Run TurbSim and calculate statistical values of wind speed at HH')
     print('========== Multiprocessing Mode ==========')
@@ -331,10 +336,10 @@ def main():
     
     
     # Run ======================================================================
-    for v in utils.frange(16.5, 25.5, 1.0):
+    for v in utils.frange(3.5, 25.5, 1.0):
         TIK = time.time()
         seeds = [s for s in seeds_all if s[0] == "NTM" and s[1] == str(v)]
-        runALL_multiprocess(seeds[:1000], thetaStep=10, silence=1, echo=0)
+        runALL_multiprocess(seeds[1000:2000], thetaStep=10, silence=1, echo=0)
     
         ##* Re-run
         print("[INFO] Checking failed runs ...")
@@ -378,7 +383,7 @@ def main():
     # seeds = [["NTM", "21", "-800757005"], ]
 
         ##* Post-process
-        post_process(seeds[:1000], sendmail=1, compress=1, echo=1)
+        post_process(seeds[1000:2000], tik=TIK, sendmail=1, compress=1, echo=0)
     return
     
     
