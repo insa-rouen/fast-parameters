@@ -142,7 +142,8 @@ def runALL_multiprocess(seeds, thetaStep, outputFolder="", silence=True,
 
 
 ##* Post-process
-def post_process(seeds, tik, sendmail=True, compress=True, echo=False):
+def post_process(seeds, tik, sendmail=True, compress=True, check_dam=True, 
+    echo=False):
     print("[INFO] Post-processing ...")
     with utils.cd("~/Eolien/Parameters/NREL_5MW_Onshore/Output/DLC1.1/"):
         ##* get .out files
@@ -169,23 +170,24 @@ def post_process(seeds, tik, sendmail=True, compress=True, echo=False):
                            remove_source=False)
         
         ##* get .dam files
-        print("|- Checking .dam files ...")
-        dam_list = utils.find(path=".", pattern="{}_{}mps_*.dam".format(
-                    seeds[0][0], seeds[0][1]))
-        # make subfolder
-        dam_dir = Path("lmn-cs_fatigue@{}mps".format(seeds[0][1]))
-        if not dam_dir.exists():
-            dam_dir.mkdir()
-        # move files
-        for filebase in dam_list:
-            f = Path(filebase+".dam")
-            destination = dam_dir.joinpath(f)
-            f.replace(destination)
-        # compress folder
-        if compress == True:
-            print("|- Compressing {}.dam.tgz folder ...".format(dam_dir))
-            utils.compress(filebase=str(dam_dir)+".dam", source=dam_dir,
-                           remove_source=False)
+        if check_dam == True:
+            print("|- Checking .dam files ...")
+            dam_list = utils.find(path=".", pattern="{}_{}mps_*.dam".format(
+                        seeds[0][0], seeds[0][1]))
+            # make subfolder
+            dam_dir = Path("lmn-cs_fatigue@{}mps".format(seeds[0][1]))
+            if not dam_dir.exists():
+                dam_dir.mkdir()
+            # move files
+            for filebase in dam_list:
+                f = Path(filebase+".dam")
+                destination = dam_dir.joinpath(f)
+                f.replace(destination)
+            # compress folder
+            if compress == True:
+                print("|- Compressing {}.dam.tgz folder ...".format(dam_dir))
+                utils.compress(filebase=str(dam_dir)+".dam", source=dam_dir,
+                            remove_source=False)
 
         ##* calculate statistical values
         output = {}
@@ -247,7 +249,6 @@ def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False,
         raise
     else:
         if remove == True:
-            time.sleep(5)
             filetodelete = wind_dir.joinpath(
                 "{}_{}mps_{}.bts".format(seed[0], seed[1], seed[2])
                 ).expanduser()
@@ -255,9 +256,9 @@ def runTurbSim_FAST(seed, outputFolder="", remove=False, silence=False,
         return seed
 
 
-def runTurbSim_FAST_multiprocess(seeds, outputFolder="", compress=True, 
-    sendmail=True, silence=True, echo=False):
-    print('Wind & FAST: TurbSim + FAST v0.1 (September 26 2020)')
+def runTurbSim_FAST_multiprocess(seeds, outputFolder="", silence=True, 
+    echo=False):
+    print('Wind & FAST: TurbSim + FAST v0.2 (November 2020)')
     print('Run TurbSim and calculate statistical values of wind speed at HH')
     print('========== Multiprocessing Mode ==========')
     
@@ -336,10 +337,10 @@ def main():
     
     
     # Run ======================================================================
-    for v in utils.frange(3.5, 25.5, 1.0):
+    for v in utils.frange(3.5, 25.01, 1.0):
         TIK = time.time()
         seeds = [s for s in seeds_all if s[0] == "NTM" and s[1] == str(v)]
-        runALL_multiprocess(seeds[1000:2000], thetaStep=10, silence=1, echo=0)
+        runALL_multiprocess(seeds[2000:5000], thetaStep=10, silence=1, echo=0)
     
         ##* Re-run
         print("[INFO] Checking failed runs ...")
@@ -356,15 +357,16 @@ def main():
     # ----- Rerun failed cases automatically
     # seeds1.extend(seeds2)
         newseeds = []
-        for s in allfails:
-            if s[0] == "NTM" and s[1] == str(v):
-                # change seed number
-                _ = ["NTM", str(v), s[2][:-3] + s[2][-2:]]
-                newseeds.append(_)
-                # replace seed number
-                for i, oldseed in enumerate(seeds_odd):
-                    if oldseed == s:
-                        seeds_odd[i] = _
+        if allfails != []:
+            for s in allfails:
+                if s[0] == "NTM" and s[1] == str(v):
+                    # change seed number
+                    _ = ["NTM", str(v), s[2][:-3] + s[2][-2:]]
+                    newseeds.append(_)
+                    # replace seed number
+                    for i, oldseed in enumerate(seeds_odd):
+                        if oldseed == s:
+                            seeds_odd[i] = _
 
         if newseeds != []:
             print("|- {} runs have failed {}, begin re-executing now ..."
@@ -383,7 +385,7 @@ def main():
     # seeds = [["NTM", "21", "-800757005"], ]
 
         ##* Post-process
-        post_process(seeds[1000:2000], tik=TIK, sendmail=1, compress=1, echo=0)
+        post_process(seeds[2000:5000], tik=TIK, sendmail=1, compress=1, echo=0)
     return
     
     
@@ -433,9 +435,64 @@ def main():
     computers.run(runStressFatigue_multiprocess, 10, False) # thetaStep, echo
 
 
+def rerun():
+    # Load Seeds ===============================================================
+    # Initiation
+    if "lmn-cs" in PLATFORM:
+        seed_path = Path(
+            "~/Eolien/Parameters/NREL_5MW_Onshore/Wind").expanduser()
+    else:
+        seed_path = Path(
+            "~/Eolien/Parameters/NREL_5MW_Onshore/Wind").expanduser()
+    # seeds file
+    seeds_odd = utils.load_json(seed_path.joinpath("10000seeds.json"))
+    seeds_even = utils.load_json(seed_path.joinpath("10000seeds2.json"))
+    seeds_all = seeds_odd + seeds_even
+
+    # Run ======================================================================
+    for v in utils.frange(5.0, 25.01, 1.0):
+        TIK = time.time()
+        seeds = [s for s in seeds_all if s[0] == "NTM" and s[1] == str(v)]
+        runTurbSim_FAST_multiprocess(seeds, silence=1, echo=1)
+
+        ##* Re-run
+        print("[INFO] Checking failed runs ...")
+        allfails = utils.load_json(seed_path.joinpath("failedRunsFAST.json"))
+
+    # ----- Rerun failed cases automatically
+        newseeds = []
+        if allfails != []:
+            for s in allfails:
+                if s[0] == "NTM" and s[1] == str(v):
+                    # change seed number
+                    _ = ["NTM", str(v), s[2][:-3] + s[2][-2:]]
+                    newseeds.append(_)
+                    # replace seed number
+                    for i, oldseed in enumerate(seeds_odd):
+                        if oldseed == s:
+                            seeds_odd[i] = _
+
+        if newseeds != []:
+            print("|- {} runs have failed {}, begin re-executing now ..."
+                  .format(len(newseeds), newseeds))
+            runALL_multiprocess(newseeds, thetaStep=10, silence=1, echo=0)
+            # save changed seed to file
+            utils.save_json(seeds_odd, seed_path.joinpath("10000seeds.json"),
+                            replace=True)
+            # reload seed numbers
+            seeds = [s for s in seeds_odd if s[0] == "NTM" and s[1] == str(v)]
+        else:
+            print("|- No failed runs !")
+
+        ##* Post-process
+        post_process(seeds, tik=TIK, sendmail=1, compress=0, check_dam=0,)
+
+
+
 #!------------------------------------------------------------------------------
 #!                                     RUNNING TEST
 #!------------------------------------------------------------------------------
 if __name__ == '__main__':
-        main()
+        # main()
         # check_seeds()
+        rerun()
