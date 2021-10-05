@@ -60,8 +60,8 @@ True          GenTiStp     - Method to stop the generator {T: timed using TimGen
 ---------------------- TUNED MASS DAMPER ---------------------------------------
 False         CompNTMD     - Compute nacelle tuned mass damper {true/false} (flag)
 "ServoDyn_TMD.dat"    NTMDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
-False         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
-"unused"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
+True         CompTTMD     - Compute tower tuned mass damper {true/false} (flag)
+"ServoDyn_TMD.dat"      TTMDfile     - Name of the file for tower tuned mass damper (quoted string) [unused when CompTTMD is false]
 ---------------------- TWIN ROTOR DAMPER ---------------------------------------
 False         CompNTRD     - Compute nacelle twin rotor damper {true/false} (flag)
 "ServoDyn_TRD.dat"    NTRDfile     - Name of the file for nacelle tuned mass damper (quoted string) [unused when CompNTMD is false]
