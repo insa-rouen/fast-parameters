@@ -3,7 +3,7 @@ Input file for tuned mass damper, module by William La Cava & Matt Lackner (UMas
 ---------------------- TMD DEGREES OF FREEDOM ---------------------------------
           1   TMD_DOF_MODE - DOF mode (switch) {0: No TMD DOF; 1: TMD_X_DOF and TMD_Y_DOF (two independent TMD DOFs) 2: TMD_XY_DOF (Omni-Directional TMD)}
 true          TMD_X_DOF    - DOF on or off (flag) {Used only when TMD_DOF_MODE is 1}
-true          TMD_Y_DOF    - DOF on or off (flag) {Used only when TMD_DOF_MODE is 1}
+false         TMD_Y_DOF    - DOF on or off (flag) {Used only when TMD_DOF_MODE is 1}
 ---------------------- TMD INITIAL CONDITIONS ---------------------------------
           0   TMD_X_DSP    - TMD_X initial displacement (m)
           0   TMD_Y_DSP    - TMD_Y initial displacement (m)
@@ -11,22 +11,22 @@ true          TMD_Y_DOF    - DOF on or off (flag) {Used only when TMD_DOF_MODE i
           0   TMD_P_X      - At rest position of TMDs (X) (m) [relative to the nacelle (NTMD) or tower base (TTMD)]
           0   TMD_P_Y      - At rest position of TMDs (Y) (m) [relative to the nacelle (NTMD) or tower base (TTMD)]
        87.6   TMD_P_Z      - At rest position of TMDs (Z) (m) [relative to the nacelle (NTMD) or tower base (TTMD)]
-         10   TMD_X_DWSP   - DW stop position (maximum X mass displacement) (m)
-        -10   TMD_X_UWSP   - UW stop position (minimum X mass displacement) (m)
-         10   TMD_Y_PLSP   - Positive lateral stop position (maximum Y mass displacement) (m)
-        -10   TMD_Y_NLSP   - Negative lateral stop position (minimum Y mass displacement) (m)
+        1.0   TMD_X_DWSP   - DownWind stop position (maximum X mass displacement) (m)
+       -1.0   TMD_X_UWSP   - UpWind stop position (minimum X mass displacement) (m)
+          0   TMD_Y_PLSP   - Positive lateral stop position (maximum Y mass displacement) (m)
+          0   TMD_Y_NLSP   - Negative lateral stop position (minimum Y mass displacement) (m)
 ---------------------- TMD MASS, STIFFNESS, & DAMPING -------------------------
-      35000   TMD_X_M      - TMD mass (kg)
-      35000   TMD_Y_M      - TMD mass (kg)
-      70000   TMD_XY_M     - TMDXY mass (kg)
-      15000   TMD_X_K      - TMD stiffness (N/m)
-      15000   TMD_Y_K      - TMD stiffness (N/m)
-      10000   TMD_X_C      - TMD damping (N/(m/s))
-      10000   TMD_Y_C      - TMD damping (N/(m/s))
-      15000   TMD_X_KS     - Stop spring stiffness of TMD_X (N/m)
-      15000   TMD_Y_KS     - Stop spring stiffness of TMD_Y (N/m)
-      10000   TMD_X_CS     - Stop spring damping (N/(m/s))
-      10000   TMD_Y_CS     - Stop spring damping (N/(m/s))
+       2000   TMD_X_M      - TMD mass (kg)
+          0   TMD_Y_M      - TMD mass (kg)
+          0   TMD_XY_M     - TMDXY mass (kg)
+       8245   TMD_X_K      - TMD stiffness (N/m)
+          0   TMD_Y_K      - TMD stiffness (N/m)
+        252   TMD_X_C      - TMD damping (N/(m/s))
+          0   TMD_Y_C      - TMD damping (N/(m/s))
+     500000   TMD_X_KS     - Stop spring stiffness of TMD_X (N/m) see Lackner, 2011, Passive structural control of offshore wind turbines
+          0   TMD_Y_KS     - Stop spring stiffness of TMD_Y (N/m)
+     500000   TMD_X_CS     - Stop spring damping (N/(m/s))
+          0   TMD_Y_CS     - Stop spring damping (N/(m/s))
 ---------------------- TMD USER-DEFINED SPRING FORCES ------------------------
 False         Use_F_TBL    - Use spring force from user-defined table (flag)
          17   NKInpSt      - Number of spring force input stations
